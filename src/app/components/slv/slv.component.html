@@ -1,0 +1,301 @@
+<div class="contenedor">
+    <span>Sistema de Liquidación de Valores</span>
+    <div>
+        <br>
+        <div class="title"><img src="assets/img/slv/kcontrol.png">Gatillos del SLV</div>
+        <hr>
+        <form [formGroup]="forma">
+            <div class="new-space">
+                <div class="label">
+                    Gatillo de monto ($):
+                </div>
+                <div class="control">
+                    <mat-form-field>
+                        <input matInput formControlName="f_gm">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Gatillo de número de ops:
+                </div>
+                <div class="control">
+                    <span class="label-min">1</span>
+                    <span class="label-max">5000</span>
+                    <mat-slider formControlName="f_gno" min="1" max="5000" step="5" thumbLabel tickInterval="50">
+                    </mat-slider>
+                </div>
+            </div>
+
+
+            <div class="new">
+                <div class="label">
+                    Gatillo de tiempo (minutos):
+                </div>
+                <div class="control">
+                    <span class="label-min">2</span>
+                    <span class="label-max">90</span>
+                    <mat-slider formControlName="f_gtm" min="2" max="90" step="1" tickInterval="10" thumbLabel>
+                    </mat-slider>
+                </div>
+            </div>
+
+
+            <div class="new">
+                <div class="label">
+                    Gatillo de purgado automático (minutos):
+                </div>
+                <div class="control">
+                    <span class="label-min">2</span>
+                    <span class="label-max">90</span>
+                    <mat-slider formControlName="f_gpa" min="2" max="90" step="1" thumbLabel tickInterval="10">
+
+                    </mat-slider>
+                </div>
+            </div>
+
+
+
+            <div class="new">
+                <div class="label">
+                    Gatillo dinamico activo:
+                </div>
+                <div class="control espacio">
+                    <mat-checkbox formControlName="f_gda"></mat-checkbox>
+
+                </div>
+            </div>
+
+
+
+            <div class="new">
+                <div class="label">
+                    Reencolado automático activo:
+                </div>
+                <div class="control espacio">
+                    <mat-checkbox formControlName="f_raa"></mat-checkbox>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Limitar Retiros de Efectivo:
+                </div>
+                <div class="control espacio">
+                    <mat-checkbox formControlName="f_lre"></mat-checkbox>&nbsp;&nbsp;
+                    <mat-form-field>
+                        <input matInput formControlName="f_lre_i">
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+
+            <div class="title new margen"><img src="assets/img/slv/kalarm.png">Horarios del SVL</div>
+            <hr>
+            <div class="new">
+                <div class="label">
+                    Apertura Liq. en Bruto MAV:
+                </div>
+                <div class="control">
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_alb_h" min="0" max="23">
+                    </mat-form-field>&nbsp;&nbsp;
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_alb_m" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Cierre Liq. en Bruto MAV:
+                </div>
+                <div class="control">
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_clb_h" min="0" max="23">
+                    </mat-form-field>&nbsp;&nbsp;
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_clb_m" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Recepción:
+                </div>
+                <div class="control">
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_r_h" min="0" max="23">
+                    </mat-form-field>&nbsp;&nbsp;
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_r_m" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="new">
+                <div class="label">
+                    Apertura:
+                </div>
+                <div class="control">
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_a_h" min="0" max="23">
+                    </mat-form-field>&nbsp;&nbsp;
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_a_h" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Pre-Cierre:
+                </div>
+                <div class="control">
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_pc_h" min="0" max="23">
+                    </mat-form-field>&nbsp;&nbsp;
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_pc_m" min="0" max="59">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="new">
+                <div class="label">
+                    Cierre:
+                </div>
+                <div class="control">
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_c_h" min="0" max="23">
+                    </mat-form-field>&nbsp;&nbsp;
+                    <mat-form-field class="small">
+                        <input matInput type="number" formControlName="f_c_m" min="0" max="59" digitOnly>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Días de Liquidación:
+                </div>
+                <div class="control espacio">
+                    <mat-checkbox formControlName="f_lu"><span class="day">Lun</span></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_ma"><span class="day">Mar</span></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_mi"><span class="day">Mie</span></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_ju"><span class="day">Jue</span></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_vi"><span class="day">Vie</span></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_sa"><span class="day">Sab</span></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_do"><span class="day">Dom</span></mat-checkbox>
+                </div>
+            </div>
+
+
+
+            <div class="title new margen"><img src="assets/img/slv/package_games_arcade.png">Parámetros del Compensador</div>
+            <hr>
+            <div class="new-space">
+                <div class="label">
+                    Precio máximo para compensación ($):
+                </div>
+                <div class="control">
+                    <mat-form-field>
+                        <input matInput formControlName="f_pmc">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="new">
+                <div class="label">
+                    Timeout del compensador (segundos):
+                </div>
+                <div class="control">
+                    <span class="label-min">1</span>
+                    <span class="label-max">600</span>
+                    <mat-slider formControlName="f_tc" max="600" min="1" step="1" thumbLabel tickInterval="60">
+                    </mat-slider>
+                </div>
+            </div>
+        </form>
+        <!--
+<input type="range" name="quantity" min="1" max="10">
+-->
+        <div class="title new margen"><img src="assets/img/slv/kmplot.png">Contadores de monto, número y tipo de operaciones</div>
+        <hr>
+        <div class="new">
+            <div class="label">
+                Número actual de operaciones:
+            </div>
+            <div class="control espacio-5">
+                0
+            </div>
+        </div>
+        <div class="new">
+            <div class="label">
+                Compensables:
+            </div>
+            <div class="control espacio-5">
+                0
+            </div>
+        </div>
+        <div class="new">
+            <div class="label">
+                Compuestas:
+            </div>
+            <div class="control espacio-5">
+                0
+            </div>
+        </div>
+        <div class="new">
+            <div class="label">
+                Retiros de Efectivo:
+            </div>
+            <div class="control espacio-5">
+                0
+            </div>
+        </div>
+        <div class="new">
+            <div class="label">
+                Monto total actual acumulado de operaciones ($):
+            </div>
+            <div class="control espacio-5">
+                0
+            </div>
+        </div>
+        <div class="new">
+            <div class="label">
+                Valor actual de gatillo dinamico:
+            </div>
+            <div class="control espacio-5">
+                5000
+            </div>
+        </div>
+
+
+
+        <div class="title new margen"><img src="assets/img/slv/wizard.png">Acciones</div>
+        <hr>
+        <div class="container-box" [className]="classDisabled">
+            <div class="box"><img src="assets/img/slv/{{finDiaImg}}"><span>Liq. de fin de día</span></div>
+            <div [className]="classDisabledAccion"><img src="assets/img/slv/aperturaPreLiqFinDia_Disabled.png"><span>Apertura pre Liq. de fin de día</span></div>
+            <div [className]="classDisabledAccion"><img src="assets/img/slv/cache_disabled.png"><span>Forzar ciclo de liq.</span></div>
+            <div class="box"><img src="assets/img/slv/{{reanudarImg}}"><span>Reanudar SVL.</span></div>
+            <div class="box"><img src="assets/img/slv/{{desactivarImg}}"><span>Desactivar comp.</span></div>
+            <div class="box"><img src="assets/img/slv/{{purgarImg}}"><span>Purgar y reencolar.</span></div>
+            <div [className]="classDisabledAccion"><img src="assets/img/slv/aperturaPostLiqFinDia_Disabled.png"><span>Apertura Post liq. de fin de día</span></div>
+        </div>
+        <button mat-stroked-button class="btn-edit" (click)="edit()"><img src="assets/img/slv/{{editButtonImg}}">&nbsp;&nbsp;{{labelEditar}}</button>
+        <!--
+        <mat-slider thumbLabel min="0" max="10" step="1" tickInterval="2"></mat-slider>
+        -->
+        <br>
+        <br>
+        <br>
+    </div>
+
+
+    <button mat-stroked-button class="btn-left"><img src="assets/img/slv/reload_page.png">&nbsp;&nbsp;Actualizar Info</button> &nbsp;&nbsp;
+    <button mat-stroked-button class="btn" [disabled]="isDisabled"><img src="assets/img/slv/{{aplicarCambiosImg}}">&nbsp;&nbsp;Aplicar Cambios</button>
+
+</div>

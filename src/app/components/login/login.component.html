@@ -1,0 +1,45 @@
+<div class="contenedor">
+
+    <div class="principal-Login"></div>
+
+    <div class="contenedor-img">
+        <img src="./assets/img/Login/fondo_tabla_login.gif" />
+    </div>
+
+    <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
+        <div class="contenedor-form">
+
+            <div class="logo">
+                <img src="./assets/img/Login/logo_indeval_inicio_n.png" class="logo_indeval_login" />
+            </div>
+
+
+            <div class="text-input">
+                <mat-form-field>
+                    <mat-label>Usuario:</mat-label>
+                    <span matPrefix><mat-icon class="white-icon">person</mat-icon> &nbsp;</span>
+                    <input matInput formControlName="username" required>
+                    <mat-error *ngIf="formLogin.get('username').hasError('required')">
+                        El usuario es requerido.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="text-input">
+                <mat-form-field>
+                    <mat-label>Contraseña:</mat-label>
+                    <span matPrefix><mat-icon class="white-icon">vpn_key</mat-icon> &nbsp;</span>
+                    <input matInput formControlName="password" required>
+                    <mat-error *ngIf="formLogin.get('password').hasError('required')">
+                        El password es requerido.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+
+            <div>
+                <button type="submit" [disabled]="!formLogin.valid" mat-raised-button color="primary">Ingresar</button>
+            </div>
+
+        </div>
+    </form>
+</div>
