@@ -14,8 +14,10 @@ export class InterceptorService implements HttpInterceptor {
     // const token: string = localStorage.getItem('token');
     const token: string = this.appStorageService.getToken();
     let request = req;
+    console.log('>>>>> Interceptor == ' + token);
 
     if (token) {
+      console.log('>>>>> Entro a modificar el request == ' + token);
       request = req.clone({
         setHeaders: {
           authorization: `Bearer ${ token }`

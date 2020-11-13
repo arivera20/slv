@@ -4,6 +4,11 @@
         "secure": true,
         "logLevel": "debug",
         "changeOrigin": true
+    }, 
+    "/slv-preliquidador/*": {
+        "target": "http://10.150.201.205:8380",
+        "secure": true,
+        "logLevel": "debug",
+        "changeOrigin": true
     }
-
 }

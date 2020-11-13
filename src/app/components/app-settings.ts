@@ -21,13 +21,18 @@ export class AppSettings {
   // global - config
   readonly httpOptionsJson = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
   // SLV URLs
-  readonly urlLOGIN: string = 'http://10.150.201.205:8380/slv-persistidor/api/auth';
+  //readonly urlLOGIN: string = 'http://10.150.201.205:8380/slv-persistidor/api/auth';
+  readonly urlLOGIN: string = 'slv-persistidor/api/auth';
+
+  // http://10.150.201.205:8380/slv-preliquidador/api/compensadorController/isCompensadorActivo
+  readonly urlTEST: string = 'slv-preliquidador/api/compensadorController/isCompensadorActivo';
 
 
 
 
 
 
+  
   // URL para Login
   private readonly urlAPP: string = 'http://127.0.0.1:8091/RestService/';
   // URL menu

@@ -21,6 +21,8 @@ export class SlvComponent implements OnInit {
   public purgarImg = 'konquest_disabled.png';
   public aplicarCambiosImg = 'unapply.png';
 
+  editable: boolean; 
+
   constructor(private spinnerService: NgxSpinnerService,
               private fb: FormBuilder) {
 
@@ -29,6 +31,15 @@ export class SlvComponent implements OnInit {
 
   ngOnInit(): void {
     this.forma.disable();
+    this.editable=false;
+
+
+    this.refresh();
+
+  }
+
+  refresh(): void {
+
   }
 
   edit(): void {

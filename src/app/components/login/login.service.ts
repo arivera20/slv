@@ -19,4 +19,13 @@ export class LoginService {
       return this.http.post<LoginResponse>
             (this.appSettings.urlLOGIN, dataInput, this.appSettings.httpOptionsJson);
     }
+
+    // http://10.150.201.205:8380/slv-preliquidador/api/compensadorController/isCompensadorActivo
+    // test
+    public getTest(): Observable<LoginResponse> {
+      console.log('Entre al servicio de test....');
+      console.log(this.appSettings.urlTEST);
+      return this.http.get<LoginResponse>
+            (this.appSettings.urlTEST, this.appSettings.httpOptionsJson);
+      }
 }

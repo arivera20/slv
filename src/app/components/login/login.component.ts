@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
     private appStorageService: AppStorageService) {
 
     this.crearFormulario();
+    this.appStorageService.logout();
   }
 
   ngOnInit(): void {
@@ -37,8 +38,8 @@ export class LoginComponent implements OnInit {
   crearFormulario(): void {
 
     this.formLogin = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      username: ['omarnl', [Validators.required]],
+      password: ['asff2', [Validators.required]]
     });
   }
 
@@ -48,8 +49,8 @@ export class LoginComponent implements OnInit {
     this.loginRequest.username = this.formLogin.get('username').value;
     this.loginRequest.password = this.formLogin.get('password').value;
     console.log(this.loginRequest);
-    //this.callService();
-    this.router.navigate(['/slv']);
+    this.callService();
+    //this.router.navigate(['/slv']);
   }
 
   // LLAMADO DEL SERVICIO
@@ -65,8 +66,8 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.spinnerService.hide();
-          this.msg = 'En este momento no podemos ingresar, intentelo en otro momento.';
-          console.error('ERROR AL RECUPERAR EL USUARIO - (LoginInitComponent)');
+          this.msg = 'En este momento no podemos ingresar, inténtelo en otro momento.';
+          console.error('ERROR AL RECUPERAR EL USUARIO - (LoginComponent)');
           swal.fire({
             icon: 'error',
             title: 'Autentificación Fallida',
@@ -77,10 +78,12 @@ export class LoginComponent implements OnInit {
 
   // VALIDANDO LA RESPUESTA DEL SERVICIO
   private validUser(): void {
-    if (this.loginResponse.status == true) {
+    if (this.loginResponse.token != '') {
       console.log('Usuario entro correctamente');
       this.appStorageService.setToken(this.loginResponse.token);
       console.log(this.appStorageService.getToken);
+      console.log('######### llamando servicio test');
+      this.callServiceTest();
       this.router.navigate(['/slv']);
     } else {
       this.msg = this.loginResponse.msg;
@@ -91,5 +94,27 @@ export class LoginComponent implements OnInit {
       });
     }
   }
+
+
+    // LLAMADO DEL SERVICIO TEST
+    private callServiceTest(): void {
+      this.spinnerService.show();
+      this.loginService.getTest()
+        .subscribe(
+          data => {
+            this.loginResponse = data;
+            console.log(this.loginResponse);
+          },
+          error => {
+            this.spinnerService.hide();
+            this.msg = 'En este momento no podemos ingresar, inténtelo en otro momento.';
+            console.error('ERROR AL RECUPERAR INFORMACION - (LoginComponent)');
+            swal.fire({
+              icon: 'error',
+              title: 'Autentificación Fallida',
+              text: this.msg
+            });
+          });
+    }
 
 }
