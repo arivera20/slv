@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PreliquidadorService } from './services/preliquidador.service';
+import swal from 'sweetalert2';
+import { NumberFormatStyle } from '@angular/common';
 
 @Component({
   selector: 'app-slv',
@@ -21,17 +24,22 @@ export class SlvComponent implements OnInit {
   public purgarImg = 'konquest_disabled.png';
   public aplicarCambiosImg = 'unapply.png';
 
-  editable: boolean; 
+  msg = '';
+  editable: boolean;
+  version: string;
+  precioTituloMaximoParaCompensacion: number;
+  montoTotalActualInstrucciones: number;
 
   constructor(private spinnerService: NgxSpinnerService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private preliquidadorService: PreliquidadorService) {
 
     this.crearFormulario();
   }
 
   ngOnInit(): void {
     this.forma.disable();
-    this.editable=false;
+    this.editable = false;
 
 
     this.refresh();
@@ -39,8 +47,81 @@ export class SlvComponent implements OnInit {
   }
 
   refresh(): void {
-
+    this.callServiceGetVersion();
+    this.callServiceGetPrecioTituloMaximoParaCompensacion();
+    this.callServiceGetMontoTotalActualInstrucciones();
   }
+
+  // LLAMADO DEL SERVICIO GetVersion
+  private callServiceGetVersion(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.getVersion()
+      .subscribe(
+        data => {
+          this.version = data;
+          console.log(this.version);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.spinnerService.hide();
+          this.msg = 'En este momento no podemos obtener información, inténtelo en otro momento.';
+          console.error('ERROR callServiceGetVersion - (SlvComponent)');
+          swal.fire({
+            icon: 'error',
+            title: 'Lo sentimos',
+            text: this.msg
+          });
+        });
+  }
+
+          // LLAMADO DEL SERVICIO GetPrecioTituloMaximoParaCompensacion
+          private callServiceGetPrecioTituloMaximoParaCompensacion(): void {
+            this.spinnerService.show();
+            this.preliquidadorService.getPrecioTituloMaximoParaCompensacion()
+              .subscribe(
+                data => {
+                  this.precioTituloMaximoParaCompensacion = data;
+                  console.log(this.precioTituloMaximoParaCompensacion);
+                  this.spinnerService.hide();
+                },
+                error => {
+                  this.spinnerService.hide();
+                  this.msg = 'En este momento no podemos obtener información, inténtelo en otro momento.';
+                  console.error('ERROR callServiceGetPrecioTituloMaximoParaCompensacion - (SlvComponent)');
+                  swal.fire({
+                    icon: 'error',
+                    title: 'Lo sentimos',
+                    text: this.msg
+                  });
+                });
+          }
+
+    // LLAMADO DEL SERVICIO GetPrecioTituloMaximoParaCompensacion
+    private callServiceGetMontoTotalActualInstrucciones(): void {
+      this.spinnerService.show();
+      this.preliquidadorService.getMontoTotalActualInstrucciones()
+        .subscribe(
+          data => {
+            this.montoTotalActualInstrucciones = data;
+            console.log(this.montoTotalActualInstrucciones);
+            this.spinnerService.hide();
+          },
+          error => {
+            this.spinnerService.hide();
+            this.msg = 'En este momento no podemos obtener información, inténtelo en otro momento.';
+            console.error('ERROR callServiceGetMontoTotalActualInstrucciones - (SlvComponent)');
+            swal.fire({
+              icon: 'error',
+              title: 'Lo sentimos',
+              text: this.msg
+            });
+          });
+    }
+
+
+
+
+
 
   edit(): void {
     if (this.editButton === true) {
