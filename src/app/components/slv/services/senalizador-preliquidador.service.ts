@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppSettings } from '../../app-settings';
+import { HoraVO } from '../slv-class/HoraVO';
 
 @Injectable({
   providedIn: 'root'
@@ -35,50 +36,50 @@ export class SenalizadorPreliquidadorService {
   }
 
   // getFrecuenciaInicioValoresSlv    VO   salida
-  public getFrecuenciaInicioValoresSlv(): Observable<number> {
+  public getFrecuenciaInicioValoresSlv(): Observable<HoraVO> {
     console.log('SERVICIO - preliquidador - getFrecuenciaInicioValoresSlv');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaInicioValoresSlv);
-    return this.http.get<number>
+    return this.http.get<HoraVO>
       (this.appSettings.URL_senalizador_getFrecuenciaInicioValoresSlv, this.appSettings.httpOptionsJson);
   }
 
   // getFrecuenciaFinValoresSlv    VO   salida
-  public getFrecuenciaFinValoresSlv(): Observable<number> {
+  public getFrecuenciaFinValoresSlv(): Observable<HoraVO> {
     console.log('SERVICIO - preliquidador - getFrecuenciaFinValoresSlv');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaFinValoresSlv);
-    return this.http.get<number>
+    return this.http.get<HoraVO>
       (this.appSettings.URL_senalizador_getFrecuenciaFinValoresSlv, this.appSettings.httpOptionsJson);
   }
 
   // getFrecuenciaRecepcionSlv    VO   salida
-  public getFrecuenciaRecepcionSlv(): Observable<number> {
+  public getFrecuenciaRecepcionSlv(): Observable<HoraVO> {
     console.log('SERVICIO - preliquidador - getFrecuenciaRecepcionSlv');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaRecepcionSlv);
-    return this.http.get<number>
+    return this.http.get<HoraVO>
       (this.appSettings.URL_senalizador_getFrecuenciaRecepcionSlv, this.appSettings.httpOptionsJson);
   }
 
   // getFrecuenciaAperturaSlv    VO   salida
-  public getFrecuenciaAperturaSlv(): Observable<number> {
+  public getFrecuenciaAperturaSlv(): Observable<HoraVO> {
     console.log('SERVICIO - preliquidador - getFrecuenciaAperturaSlv');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaAperturaSlv);
-    return this.http.get<number>
+    return this.http.get<HoraVO>
       (this.appSettings.URL_senalizador_getFrecuenciaAperturaSlv, this.appSettings.httpOptionsJson);
   }
 
   // getFrecuenciaPreCierreSlv    VO   salida
-  public getFrecuenciaPreCierreSlv(): Observable<number> {
+  public getFrecuenciaPreCierreSlv(): Observable<HoraVO> {
     console.log('SERVICIO - preliquidador - getFrecuenciaPreCierreSlv');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaPreCierreSlv);
-    return this.http.get<number>
+    return this.http.get<HoraVO>
       (this.appSettings.URL_senalizador_getFrecuenciaPreCierreSlv, this.appSettings.httpOptionsJson);
   }
 
   // getFrecuenciaCierreSlv    VO   salida
-  public getFrecuenciaCierreSlv(): Observable<number> {
+  public getFrecuenciaCierreSlv(): Observable<HoraVO> {
     console.log('SERVICIO - preliquidador - getFrecuenciaCierreSlv');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaCierreSlv);
-    return this.http.get<number>
+    return this.http.get<HoraVO>
       (this.appSettings.URL_senalizador_getFrecuenciaCierreSlv, this.appSettings.httpOptionsJson);
   }
 

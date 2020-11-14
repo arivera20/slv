@@ -6,6 +6,7 @@ import swal from 'sweetalert2';
 import { NumberFormatStyle } from '@angular/common';
 import { SenalizadorPreliquidadorService } from './services/senalizador-preliquidador.service';
 import { CompensadorService } from './services/compensador.service';
+import { HoraVO } from './slv-class/HoraVO';
 
 @Component({
   selector: 'app-slv',
@@ -48,7 +49,12 @@ export class SlvComponent implements OnInit {
   estadoSlv: boolean;
   frecuenciaSlv: number;
   frecuenciaPurgadoSlv: number;
-
+  frecuenciaInicioValoresSlv = new HoraVO();
+  frecuenciaFinValoresSlv = new HoraVO();
+  frecuenciaRecepcionSlv = new HoraVO();
+  frecuenciaAperturaSlv = new HoraVO();
+  frecuenciaPreCierreSlv = new HoraVO();
+  frecuenciaCierreSlv = new HoraVO();
   frecuenciaDiasLiq: string;
   timeoutRespuesta: number;
   compensadorActivo: boolean;
@@ -93,7 +99,12 @@ export class SlvComponent implements OnInit {
     this.getEstadoSlv();
     this.getFrecuenciaSlv();
     this.getFrecuenciaPurgadoSlv();
-
+    this.getFrecuenciaInicioValoresSlv();
+    this.getFrecuenciaFinValoresSlv();
+    this.getFrecuenciaRecepcionSlv();
+    this.getFrecuenciaAperturaSlv();
+    this.getFrecuenciaPreCierreSlv();
+    this.getFrecuenciaCierreSlv();
     this.getFrecuenciaDiasLiq();
     this.getTimeoutRespuesta();
     this.isCompensadorActivo();
@@ -404,6 +415,101 @@ export class SlvComponent implements OnInit {
           this.errorHttp('getFrecuenciaPurgadoSlv', '', error.mesage);
         });
   }
+
+  // SERVICIO - getFrecuenciaInicioValoresSlv
+  private getFrecuenciaInicioValoresSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaInicioValoresSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaInicioValoresSlv = data;
+          console.log(this.frecuenciaPurgadoSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaInicioValoresSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaFinValoresSlv
+  private getFrecuenciaFinValoresSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaFinValoresSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaInicioValoresSlv = data;
+          console.log(this.frecuenciaPurgadoSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaFinValoresSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaRecepcionSlv
+  private getFrecuenciaRecepcionSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaRecepcionSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaInicioValoresSlv = data;
+          console.log(this.frecuenciaPurgadoSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaRecepcionSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaAperturaSlv
+  private getFrecuenciaAperturaSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaAperturaSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaAperturaSlv = data;
+          console.log(this.frecuenciaPurgadoSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaAperturaSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaPreCierreSlv
+  private getFrecuenciaPreCierreSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaPreCierreSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaPreCierreSlv = data;
+          console.log(this.frecuenciaPurgadoSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaPreCierreSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaCierreSlv
+  private getFrecuenciaCierreSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaCierreSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaCierreSlv = data;
+          console.log(this.frecuenciaPurgadoSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaCierreSlv', '', error.mesage);
+        });
+  }
+
+
+
+
+
 
 
   // SERVICIO - getFrecuenciaDiasLiq
