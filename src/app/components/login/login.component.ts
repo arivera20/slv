@@ -81,6 +81,7 @@ export class LoginComponent implements OnInit {
     if (this.loginResponse.token != '') {
       console.log('Usuario entro correctamente');
       this.appStorageService.setToken(this.loginResponse.token);
+      this.appStorageService.setUserName(this.loginRequest.username);
       console.log(this.appStorageService.getToken);
       console.log('######### llamando servicio test');
       this.callServiceTest();
