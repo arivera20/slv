@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from '../../app-settings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Cadena } from '../slv-class/Cadena';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,13 @@ export class PreliquidadorService {
 
   constructor(private http: HttpClient, private appSettings: AppSettings) { }
 
+  // /slv-preliquidador/api/preliquidador/getVersion
   // getVersion
   public getVersion(): Observable<string> {
     console.log('SERVICIO - preliquidador - getVersion');
     console.log(this.appSettings.URL_preliquidador_getVersion);
     return this.http.get<string>
-      (this.appSettings.URL_preliquidador_getVersion, this.appSettings.httpOptionsJson);
+    (this.appSettings.URL_preliquidador_getVersion, this.appSettings.httpOptionsJson);
   }
 
   // preliquidador/getPrecioTituloMaximoParaCompensacion

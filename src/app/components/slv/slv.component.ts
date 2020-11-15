@@ -108,6 +108,7 @@ export class SlvComponent implements OnInit {
     this.getFrecuenciaDiasLiq();
     this.getTimeoutRespuesta();
     this.isCompensadorActivo();
+    
   }
 
 
@@ -123,7 +124,8 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.version = data;
-          console.log(this.version);
+          console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+          console.log( this.version);
           this.spinnerService.hide();
         },
         error => {
@@ -566,7 +568,7 @@ export class SlvComponent implements OnInit {
     if (msgError === '') {
       msgError = 'En este momento no podemos obtener información, inténtelo en otro momento.';
     }
-    console.error(error);
+    // console.error(error);
     console.error('ERROR ' + method + ' - (SlvComponent)');
     swal.fire({
       icon: 'error',

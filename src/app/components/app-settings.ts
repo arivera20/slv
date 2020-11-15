@@ -20,7 +20,7 @@ export class AppSettings {
 
   // httpOptionsJson
   readonly httpOptionsJson = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-
+  // {responseType: 'text'}
 
   //readonly urlLOGIN: string = 'http://10.150.201.205:8380/slv-persistidor/api/auth';
   readonly urlLOGIN: string = 'slv-persistidor/api/auth';
