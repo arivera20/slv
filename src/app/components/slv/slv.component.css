@@ -70,6 +70,15 @@
     margin-left: 1%;
 }
 
+.img-version {
+    position: relative;
+    display: block;
+    float: right;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-right: 1%;
+}
+
 .btn-edit {
     float: right;
     margin-top: 20px;
@@ -306,4 +315,8 @@ div[disabled="true"] {
 ::ng-deep.mat-form-field-appearance-legacy .mat-input-element {
     caret-color: black;
     color: black;
+}
+
+.swal2-popup {
+    font-size: 10px;
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from '../../app-settings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cadena } from '../slv-class/Cadena';
 
 @Injectable({
   providedIn: 'root'

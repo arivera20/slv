@@ -17,7 +17,8 @@ export class AppStorageService {
   public logout() {
     console.log('Metodo logout()');
     localStorage.removeItem(TOKEN_KEY);
-  } 
+    localStorage.removeItem(USER_NAME);
+  }
 
   // GUARDAR EL TOKEN
   public setToken(token: string): void {
@@ -58,7 +59,6 @@ export class AppStorageService {
   public getPerfil(): string {
     return localStorage.getItem(PERFIL);
   }
-
 
   public isLogged(): boolean {
     return localStorage.getItem(TOKEN_KEY) ? true : false;

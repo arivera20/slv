@@ -228,7 +228,7 @@
                 Número actual de operaciones:
             </div>
             <div class="control espacio-5">
-                0
+                {{numeroTotalActualInstrucciones}}
             </div>
         </div>
         <div class="new">
@@ -236,7 +236,7 @@
                 Compensables:
             </div>
             <div class="control espacio-5">
-                0
+                {{numeroInstruccionesCompensables}}
             </div>
         </div>
         <div class="new">
@@ -244,7 +244,7 @@
                 Compuestas:
             </div>
             <div class="control espacio-5">
-                0
+                {{numeroInstruccionesCompuestas}}
             </div>
         </div>
         <div class="new">
@@ -252,7 +252,7 @@
                 Retiros de Efectivo:
             </div>
             <div class="control espacio-5">
-                0
+                {{numeroInstruccionesRetirosEfectivo}}
             </div>
         </div>
         <div class="new">
@@ -260,7 +260,7 @@
                 Monto total actual acumulado de operaciones ($):
             </div>
             <div class="control espacio-5">
-                0
+                {{montoTotalActualInstrucciones}}
             </div>
         </div>
         <div class="new">
@@ -268,7 +268,7 @@
                 Valor actual de gatillo dinamico:
             </div>
             <div class="control espacio-5">
-                5000
+                {{numeroAdaptableMaxInstrucciones}}
             </div>
         </div>
 
@@ -297,5 +297,5 @@
 
     <button mat-stroked-button class="btn-left"><img src="assets/img/slv/reload_page.png">&nbsp;&nbsp;Actualizar Info</button> &nbsp;&nbsp;
     <button mat-stroked-button class="btn" [disabled]="isDisabled"><img src="assets/img/slv/{{aplicarCambiosImg}}">&nbsp;&nbsp;Aplicar Cambios</button>
-
+    <img class="img-version" (click)="viewVersion()" src="assets/img/slv/about_big.png">
 </div>

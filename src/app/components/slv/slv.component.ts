@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PreliquidadorService } from './services/preliquidador.service';
-import swal from 'sweetalert2';
-import { NumberFormatStyle } from '@angular/common';
-import { SenalizadorPreliquidadorService } from './services/senalizador-preliquidador.service';
-import { CompensadorService } from './services/compensador.service';
+import Swal from 'sweetalert2';
 import { HoraVO } from './slv-class/HoraVO';
+import { PreliquidadorService } from './slv-services/preliquidador.service';
+import { SenalizadorPreliquidadorService } from './slv-services/senalizador-preliquidador.service';
+import { CompensadorService } from './slv-services/compensador.service';
+
 
 @Component({
   selector: 'app-slv',
@@ -29,18 +29,18 @@ export class SlvComponent implements OnInit {
 
   msg = '';
   editable: boolean;
-  version: string;
+  version = '222';
   precioTituloMaximoParaCompensacion: number;
-  montoTotalActualInstrucciones: number;
-  numeroTotalActualInstrucciones: number;
+  montoTotalActualInstrucciones = 8;
+  numeroTotalActualInstrucciones = 0;
   montoTotalMaxInstrucciones: number;
   numeroTotalMaxInstrucciones: number;
-  numeroAdaptableMaxInstrucciones: number;
+  numeroAdaptableMaxInstrucciones = 9;
   gatilloDinamicoActivo: boolean;
   reencoladoAutomatico: boolean;
-  numeroInstruccionesRetirosEfectivo: number;
-  numeroInstruccionesCompuestas: number;
-  numeroInstruccionesCompensables: number;
+  numeroInstruccionesRetirosEfectivo = 7;
+  numeroInstruccionesCompuestas = 6;
+  numeroInstruccionesCompensables = 0;
   liquidacionFinDeDiaActivada: boolean;
   limitarRetiros: boolean;
   numeroMaximoRetiros: number;
@@ -50,13 +50,33 @@ export class SlvComponent implements OnInit {
   frecuenciaSlv: number;
   frecuenciaPurgadoSlv: number;
   frecuenciaInicioValoresSlv = new HoraVO();
+  horaInicioValores: number;
+  minutosInicioValores: number;
   frecuenciaFinValoresSlv = new HoraVO();
+  horaFinValores: number;
+  minutosFinValores: number;
   frecuenciaRecepcionSlv = new HoraVO();
+  horaRecepcion: number;
+  minutosRecepcion: number;
   frecuenciaAperturaSlv = new HoraVO();
+  horaApertura: number;
+  minutosApertura: number;
   frecuenciaPreCierreSlv = new HoraVO();
+  horaPreCierre: number;
+  minutosPreCierre: number;
   frecuenciaCierreSlv = new HoraVO();
+  horaCierre: number;
+  minutosCierre: number;
   frecuenciaDiasLiq: string;
-  timeoutRespuesta: number;
+  diasLiq: string;
+  isLunesActivo: boolean;
+  isMartesActivo: boolean;
+  isMiercolesActivo: boolean;
+  isJuevesActivo: boolean;
+  isViernesActivo: boolean;
+  isSabadoActivo: boolean;
+  isDomingoActivo: boolean;
+  timeoutRespuestaCompensador: number;
   compensadorActivo: boolean;
 
 
@@ -65,7 +85,6 @@ export class SlvComponent implements OnInit {
     private preliquidadorService: PreliquidadorService,
     private senalizadorService: SenalizadorPreliquidadorService,
     private compensadorService: CompensadorService) {
-
     this.crearFormulario();
   }
 
@@ -74,8 +93,50 @@ export class SlvComponent implements OnInit {
     this.editable = false;
 
 
-    this.refresh();
+    //this.refresh();
+  }
 
+  /* Metodo para crear el Fomulario */
+  private crearFormulario(): void {
+    this.forma = this.fb.group({
+      f_gm: ['9999999999999', [Validators.required, Validators.minLength(3)]],
+      f_gno: ['5000', [Validators.required]],
+      f_gtm: ['2', [Validators.required]],
+      f_gpa: ['90', [Validators.required]],
+      f_gda: [false, [Validators.required]],
+      f_raa: [true, [Validators.required]],
+      f_lre: [true, [Validators.required]],
+      f_lre_i: ['100', [Validators.required]],
+      f_alb_h: ['0', [Validators.required]],
+      f_alb_m: ['12', [Validators.required]],
+      f_clb_h: ['0', [Validators.required]],
+      f_clb_m: ['47', [Validators.required]],
+      f_r_h: ['0', [Validators.required]],
+      f_r_m: ['19', [Validators.required]],
+      f_a_h: ['7', [Validators.required]],
+      f_a_m: ['15', [Validators.required]],
+      f_pc_h: ['23', [Validators.required]],
+      f_pc_m: ['10', [Validators.required]],
+      f_c_h: ['23', [Validators.required]],
+      f_c_m: ['30', [Validators.required]],
+      f_lu: [true, [Validators.required]],
+      f_ma: [true, [Validators.required]],
+      f_mi: [true, [Validators.required]],
+      f_ju: [true, [Validators.required]],
+      f_vi: [true, [Validators.required]],
+      f_sa: [false, [Validators.required]],
+      f_do: [false, [Validators.required]],
+      f_pmc: ['25000', [Validators.required]],
+      f_tc: ['108', [Validators.required]]
+    });
+  }
+
+  viewVersion(): void {
+    Swal.fire({
+      icon: 'info',
+      title: 'La versión es:',
+      text: this.version
+    });
   }
 
   refresh(): void {
@@ -108,7 +169,6 @@ export class SlvComponent implements OnInit {
     this.getFrecuenciaDiasLiq();
     this.getTimeoutRespuesta();
     this.isCompensadorActivo();
-    
   }
 
 
@@ -124,8 +184,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.version = data;
-          console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-          console.log( this.version);
+          console.log(this.version);
           this.spinnerService.hide();
         },
         error => {
@@ -141,6 +200,7 @@ export class SlvComponent implements OnInit {
         data => {
           this.precioTituloMaximoParaCompensacion = data;
           console.log(this.precioTituloMaximoParaCompensacion);
+          this.forma.controls.f_pmc.setValue(this.precioTituloMaximoParaCompensacion);
           this.spinnerService.hide();
         },
         error => {
@@ -185,6 +245,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.montoTotalMaxInstrucciones = data;
+          this.forma.controls.f_gm.setValue(data);
           console.log(this.montoTotalMaxInstrucciones);
           this.spinnerService.hide();
         },
@@ -200,6 +261,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.numeroTotalMaxInstrucciones = data;
+          this.forma.controls.f_gno.setValue(data);
           console.log(this.numeroTotalMaxInstrucciones);
           this.spinnerService.hide();
         },
@@ -230,6 +292,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.gatilloDinamicoActivo = data;
+          this.forma.controls.f_gda.setValue(data);
           console.log(this.gatilloDinamicoActivo);
           this.spinnerService.hide();
         },
@@ -245,6 +308,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.reencoladoAutomatico = data;
+          this.forma.controls.f_raa.setValue(data);
           console.log(this.reencoladoAutomatico);
           this.spinnerService.hide();
         },
@@ -320,6 +384,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.limitarRetiros = data;
+          this.forma.controls.f_lre.setValue(data);
           console.log(this.limitarRetiros);
           this.spinnerService.hide();
         },
@@ -335,6 +400,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.numeroMaximoRetiros = data;
+          this.forma.controls.f_lre_i.setValue(data);
           console.log(this.numeroMaximoRetiros);
           this.spinnerService.hide();
         },
@@ -395,6 +461,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaSlv = data;
+          this.forma.controls.f_gtm.setValue(data);
           console.log(this.frecuenciaSlv);
           this.spinnerService.hide();
         },
@@ -410,6 +477,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaPurgadoSlv = data;
+          this.forma.controls.f_gpa.setValue(data);
           console.log(this.frecuenciaPurgadoSlv);
           this.spinnerService.hide();
         },
@@ -425,7 +493,11 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaInicioValoresSlv = data;
-          console.log(this.frecuenciaPurgadoSlv);
+          this.horaInicioValores = this.frecuenciaInicioValoresSlv.hora;
+          this.minutosInicioValores = this.frecuenciaInicioValoresSlv.minuto;
+          this.forma.controls.f_alb_h.setValue(this.horaInicioValores);
+          this.forma.controls.f_alb_m.setValue(this.minutosInicioValores);
+          console.log(this.frecuenciaInicioValoresSlv);
           this.spinnerService.hide();
         },
         error => {
@@ -439,8 +511,12 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaFinValoresSlv()
       .subscribe(
         data => {
-          this.frecuenciaInicioValoresSlv = data;
-          console.log(this.frecuenciaPurgadoSlv);
+          this.frecuenciaFinValoresSlv = data;
+          this.horaFinValores = this.frecuenciaFinValoresSlv.hora;
+          this.minutosFinValores = this.frecuenciaFinValoresSlv.minuto;
+          this.forma.controls.f_clb_h.setValue(this.horaFinValores);
+          this.forma.controls.f_clb_m.setValue(this.minutosFinValores);
+          console.log(this.frecuenciaFinValoresSlv);
           this.spinnerService.hide();
         },
         error => {
@@ -454,8 +530,12 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaRecepcionSlv()
       .subscribe(
         data => {
-          this.frecuenciaInicioValoresSlv = data;
-          console.log(this.frecuenciaPurgadoSlv);
+          this.frecuenciaRecepcionSlv = data;
+          this.horaRecepcion = this.frecuenciaRecepcionSlv.hora;
+          this.minutosRecepcion = this.frecuenciaRecepcionSlv.minuto;
+          this.forma.controls.f_r_h.setValue(this.horaRecepcion);
+          this.forma.controls.f_r_m.setValue(this.minutosRecepcion);
+          console.log(this.frecuenciaRecepcionSlv);
           this.spinnerService.hide();
         },
         error => {
@@ -470,7 +550,11 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaAperturaSlv = data;
-          console.log(this.frecuenciaPurgadoSlv);
+          this.horaApertura = this.frecuenciaAperturaSlv.hora;
+          this.minutosApertura = this.frecuenciaAperturaSlv.minuto;
+          this.forma.controls.f_a_h.setValue(this.horaApertura);
+          this.forma.controls.f_a_m.setValue(this.minutosApertura);
+          console.log(this.frecuenciaAperturaSlv);
           this.spinnerService.hide();
         },
         error => {
@@ -485,7 +569,11 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaPreCierreSlv = data;
-          console.log(this.frecuenciaPurgadoSlv);
+          this.horaPreCierre = this.frecuenciaPreCierreSlv.hora;
+          this.minutosPreCierre = this.frecuenciaPreCierreSlv.minuto;
+          this.forma.controls.f_pc_h.setValue(this.horaPreCierre);
+          this.forma.controls.f_pc_m.setValue(this.minutosPreCierre);
+          console.log(this.frecuenciaPreCierreSlv);
           this.spinnerService.hide();
         },
         error => {
@@ -500,7 +588,11 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaCierreSlv = data;
-          console.log(this.frecuenciaPurgadoSlv);
+          this.horaCierre = this.frecuenciaCierreSlv.hora;
+          this.minutosCierre = this.frecuenciaCierreSlv.minuto;
+          this.forma.controls.f_c_h.setValue(this.horaCierre);
+          this.forma.controls.f_c_m.setValue(this.minutosCierre);
+          console.log(this.frecuenciaCierreSlv);
           this.spinnerService.hide();
         },
         error => {
@@ -521,6 +613,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaDiasLiq = data;
+          this.loadDiasLiq(this.frecuenciaDiasLiq);
           console.log(this.frecuenciaDiasLiq);
           this.spinnerService.hide();
         },
@@ -529,14 +622,69 @@ export class SlvComponent implements OnInit {
         });
   }
 
+  private loadDiasLiq(diasLiqSrt: string): void {
+    this.diasLiq = diasLiqSrt;
+    if (diasLiqSrt.search('MON') >= 0) {
+      this.isLunesActivo = true;
+    }
+    else {
+      this.isLunesActivo = false;
+    }
+    if (diasLiqSrt.search('TUE') >= 0) {
+      this.isMartesActivo = true;
+    }
+    else {
+      this.isMartesActivo = false;
+    }
+    if (diasLiqSrt.search('WED') >= 0) {
+      this.isMiercolesActivo = true;
+    }
+    else {
+      this.isMiercolesActivo = false;
+    }
+    if (diasLiqSrt.search('THU') >= 0) {
+      this.isJuevesActivo = true;
+    }
+    else {
+      this.isJuevesActivo = false;
+    }
+    if (diasLiqSrt.search('FRI') >= 0) {
+      this.isViernesActivo = true;
+    }
+    else {
+      this.isViernesActivo = false;
+    }
+    if (diasLiqSrt.search('SAT') >= 0) {
+      this.isSabadoActivo = true;
+    }
+    else {
+      this.isSabadoActivo = false;
+    }
+    if (diasLiqSrt.search('SUN') >= 0) {
+      this.isDomingoActivo = true;
+    }
+    else {
+      this.isDomingoActivo = false;
+    }
+
+    this.forma.controls.f_lu.setValue(this.isLunesActivo);
+    this.forma.controls.f_ma.setValue(this.isMartesActivo);
+    this.forma.controls.f_mi.setValue(this.isMiercolesActivo);
+    this.forma.controls.f_ju.setValue(this.isJuevesActivo);
+    this.forma.controls.f_vi.setValue(this.isViernesActivo);
+    this.forma.controls.f_sa.setValue(this.isSabadoActivo);
+    this.forma.controls.f_do.setValue(this.isDomingoActivo);
+  }
+
   // SERVICIO - getTimeoutRespuesta
   private getTimeoutRespuesta(): void {
     this.spinnerService.show();
     this.compensadorService.getTimeoutRespuesta()
       .subscribe(
         data => {
-          this.timeoutRespuesta = data;
-          console.log(this.timeoutRespuesta);
+          this.timeoutRespuestaCompensador = data;
+          this.forma.controls.f_tc.setValue(data);
+          console.log(this.timeoutRespuestaCompensador);
           this.spinnerService.hide();
         },
         error => {
@@ -570,7 +718,7 @@ export class SlvComponent implements OnInit {
     }
     // console.error(error);
     console.error('ERROR ' + method + ' - (SlvComponent)');
-    swal.fire({
+    Swal.fire({
       icon: 'error',
       title: 'Lo sentimos',
       text: msgError
@@ -609,39 +757,6 @@ export class SlvComponent implements OnInit {
     }
   }
 
-  /* Metodo para crear el Fomulario */
-  private crearFormulario(): void {
-    this.forma = this.fb.group({
-      f_gm: ['9999999999999', [Validators.required, Validators.minLength(3)]],
-      f_gno: ['5000', [Validators.required]],
-      f_gtm: ['2', [Validators.required]],
-      f_gpa: ['90', [Validators.required]],
-      f_gda: ['', [Validators.required]],
-      f_raa: ['true', [Validators.required]],
-      f_lre: ['true', [Validators.required]],
-      f_lre_i: ['100', [Validators.required]],
-      f_alb_h: ['0', [Validators.required]],
-      f_alb_m: ['12', [Validators.required]],
-      f_clb_h: ['0', [Validators.required]],
-      f_clb_m: ['47', [Validators.required]],
-      f_r_h: ['0', [Validators.required]],
-      f_r_m: ['19', [Validators.required]],
-      f_a_h: ['7', [Validators.required]],
-      f_a_m: ['15', [Validators.required]],
-      f_pc_h: ['23', [Validators.required]],
-      f_pc_m: ['10', [Validators.required]],
-      f_c_h: ['23', [Validators.required]],
-      f_c_m: ['30', [Validators.required]],
-      f_lu: ['true', [Validators.required]],
-      f_ma: ['true', [Validators.required]],
-      f_mi: ['true', [Validators.required]],
-      f_ju: ['true', [Validators.required]],
-      f_vi: ['true', [Validators.required]],
-      f_sa: ['', [Validators.required]],
-      f_do: ['', [Validators.required]],
-      f_pmc: ['25000', [Validators.required]],
-      f_tc: ['108', [Validators.required]]
-    });
-  }
+
 
 }
