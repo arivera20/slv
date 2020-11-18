@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { HoraVO } from './slv-class/HoraVO';
 import { PreliquidadorService } from './slv-services/preliquidador.service';
 import { SenalizadorPreliquidadorService } from './slv-services/senalizador-preliquidador.service';
 import { CompensadorService } from './slv-services/compensador.service';
+import { HoraVO } from './slv-class/HoraVO';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class SlvComponent implements OnInit {
 
   msg = '';
   editable: boolean;
-  version = '222';
+  version = '';
   precioTituloMaximoParaCompensacion: number;
   montoTotalActualInstrucciones = 8;
   numeroTotalActualInstrucciones = 0;
@@ -49,10 +49,10 @@ export class SlvComponent implements OnInit {
   estadoSlv: boolean;
   frecuenciaSlv: number;
   frecuenciaPurgadoSlv: number;
-  frecuenciaInicioValoresSlv = new HoraVO();
+  frecuenciaInicioValoresSlv = new HoraVO(); 
   horaInicioValores: number;
   minutosInicioValores: number;
-  frecuenciaFinValoresSlv = new HoraVO();
+  frecuenciaFinValoresSlv = new HoraVO(); 
   horaFinValores: number;
   minutosFinValores: number;
   frecuenciaRecepcionSlv = new HoraVO();
@@ -86,6 +86,7 @@ export class SlvComponent implements OnInit {
     private senalizadorService: SenalizadorPreliquidadorService,
     private compensadorService: CompensadorService) {
     this.crearFormulario();
+    //this.frecuenciaInicioValoresSlv = new HoraVO();
   }
 
   ngOnInit(): void {
@@ -93,41 +94,41 @@ export class SlvComponent implements OnInit {
     this.editable = false;
 
 
-    //this.refresh();
+    this.refresh();
   }
 
   /* Metodo para crear el Fomulario */
   private crearFormulario(): void {
     this.forma = this.fb.group({
-      f_gm: ['9999999999999', [Validators.required, Validators.minLength(3)]],
-      f_gno: ['5000', [Validators.required]],
-      f_gtm: ['2', [Validators.required]],
-      f_gpa: ['90', [Validators.required]],
+      f_gm: ['', [Validators.required, Validators.minLength(3)]],
+      f_gno: ['', [Validators.required]],
+      f_gtm: ['', [Validators.required]],
+      f_gpa: ['', [Validators.required]],
       f_gda: [false, [Validators.required]],
-      f_raa: [true, [Validators.required]],
-      f_lre: [true, [Validators.required]],
-      f_lre_i: ['100', [Validators.required]],
-      f_alb_h: ['0', [Validators.required]],
-      f_alb_m: ['12', [Validators.required]],
-      f_clb_h: ['0', [Validators.required]],
-      f_clb_m: ['47', [Validators.required]],
-      f_r_h: ['0', [Validators.required]],
-      f_r_m: ['19', [Validators.required]],
-      f_a_h: ['7', [Validators.required]],
-      f_a_m: ['15', [Validators.required]],
-      f_pc_h: ['23', [Validators.required]],
-      f_pc_m: ['10', [Validators.required]],
-      f_c_h: ['23', [Validators.required]],
-      f_c_m: ['30', [Validators.required]],
-      f_lu: [true, [Validators.required]],
-      f_ma: [true, [Validators.required]],
-      f_mi: [true, [Validators.required]],
-      f_ju: [true, [Validators.required]],
-      f_vi: [true, [Validators.required]],
+      f_raa: [false, [Validators.required]],
+      f_lre: [false, [Validators.required]],
+      f_lre_i: ['', [Validators.required]],
+      f_alb_h: [0, [Validators.required]],
+      f_alb_m: [0, [Validators.required]],
+      f_clb_h: [0, [Validators.required]],
+      f_clb_m: [0, [Validators.required]],
+      f_r_h: [0, [Validators.required]],
+      f_r_m: [0, [Validators.required]],
+      f_a_h: [0, [Validators.required]],
+      f_a_m: [0, [Validators.required]],
+      f_pc_h: [0, [Validators.required]],
+      f_pc_m: [0, [Validators.required]],
+      f_c_h: [0, [Validators.required]],
+      f_c_m: [0, [Validators.required]],
+      f_lu: [false, [Validators.required]],
+      f_ma: [false, [Validators.required]],
+      f_mi: [false, [Validators.required]],
+      f_ju: [false, [Validators.required]],
+      f_vi: [false, [Validators.required]],
       f_sa: [false, [Validators.required]],
       f_do: [false, [Validators.required]],
-      f_pmc: ['25000', [Validators.required]],
-      f_tc: ['108', [Validators.required]]
+      f_pmc: ['', [Validators.required]],
+      f_tc: ['', [Validators.required]]
     });
   }
 
@@ -140,7 +141,8 @@ export class SlvComponent implements OnInit {
   }
 
   refresh(): void {
-    this.getVersion();
+    
+    this.getVersion();  
     this.getPrecioTituloMaximoParaCompensacion();
     this.getMontoTotalActualInstrucciones();
     this.getNumeroTotalActualInstrucciones();
@@ -169,6 +171,8 @@ export class SlvComponent implements OnInit {
     this.getFrecuenciaDiasLiq();
     this.getTimeoutRespuesta();
     this.isCompensadorActivo();
+
+
   }
 
 
@@ -313,6 +317,7 @@ export class SlvComponent implements OnInit {
           this.spinnerService.hide();
         },
         error => {
+          console.log('Aqui fallo');
           this.errorHttp('isReencoladoAutomatico', '', error.mesage);
         });
   }
@@ -492,12 +497,14 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaInicioValoresSlv()
       .subscribe(
         data => {
+          console.log(data);
           this.frecuenciaInicioValoresSlv = data;
           this.horaInicioValores = this.frecuenciaInicioValoresSlv.hora;
           this.minutosInicioValores = this.frecuenciaInicioValoresSlv.minuto;
+
           this.forma.controls.f_alb_h.setValue(this.horaInicioValores);
           this.forma.controls.f_alb_m.setValue(this.minutosInicioValores);
-          console.log(this.frecuenciaInicioValoresSlv);
+          
           this.spinnerService.hide();
         },
         error => {

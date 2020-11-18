@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppSettings } from '../../app-settings';
@@ -86,9 +86,10 @@ export class SenalizadorPreliquidadorService {
   // getFrecuenciaDiasLiq
   public getFrecuenciaDiasLiq(): Observable<string> {
     console.log('SERVICIO - preliquidador - getFrecuenciaDiasLiq');
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     console.log(this.appSettings.URL_senalizador_getFrecuenciaDiasLiq);
     return this.http.get<string>
-      (this.appSettings.URL_senalizador_getFrecuenciaDiasLiq, this.appSettings.httpOptionsJson);
+      (this.appSettings.URL_senalizador_getFrecuenciaDiasLiq,  { headers, responseType: 'text' as 'json'  });
   }
 
 

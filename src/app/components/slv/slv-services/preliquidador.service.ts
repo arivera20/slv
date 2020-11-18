@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../../app-settings';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,8 +15,9 @@ export class PreliquidadorService {
   public getVersion(): Observable<string> {
     console.log('SERVICIO - preliquidador - getVersion');
     console.log(this.appSettings.URL_preliquidador_getVersion);
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.http.get<string>
-    (this.appSettings.URL_preliquidador_getVersion, this.appSettings.httpOptionsJson);
+    (this.appSettings.URL_preliquidador_getVersion, { headers, responseType: 'text' as 'json'  });
   }
 
   // preliquidador/getPrecioTituloMaximoParaCompensacion

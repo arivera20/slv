@@ -19,7 +19,7 @@ export class InterceptorService implements HttpInterceptor {
     if (token) {
       // console.log('>>>>> Entro a modificar el request == ' + token);
       request = req.clone({
-        responseType: 'text' as 'json',
+        //responseType: 'text' as 'json',
         setHeaders: {
           authorization: `Bearer ${ token }`
         }
