@@ -2,16 +2,18 @@
     <span>Sistema de Liquidación de Valores</span>
     <div>
         <br>
-        <div class="title"><img src="assets/img/slv/kcontrol.png">Gatillos del SLV</div>
-        <hr>
         <form [formGroup]="forma">
+            <!-- SECCION GATILLOS -->
+            <div class="title"><img src="assets/img/slv/kcontrol.png">Gatillos del SLV</div>
+            <hr>
+
             <div class="new-space">
                 <div class="label">
                     Gatillo de monto ($):
                 </div>
                 <div class="control">
                     <mat-form-field>
-                        <input matInput formControlName="f_gm">
+                        <input matInput formControlName="f_gatilloDeMonto">
                     </mat-form-field>
                 </div>
             </div>
@@ -23,7 +25,7 @@
                 <div class="control">
                     <span class="label-min">1</span>
                     <span class="label-max">5000</span>
-                    <mat-slider formControlName="f_gno" min="1" max="5000" step="5" thumbLabel tickInterval="50">
+                    <mat-slider formControlName="f_gatilloDeNumeroDeOps" min="1" max="5000" step="5" thumbLabel tickInterval="50">
                     </mat-slider>
                 </div>
             </div>
@@ -36,7 +38,7 @@
                 <div class="control">
                     <span class="label-min">2</span>
                     <span class="label-max">90</span>
-                    <mat-slider formControlName="f_gtm" min="2" max="90" step="1" tickInterval="10" thumbLabel>
+                    <mat-slider formControlName="f_gatilloDeTiempo" min="2" max="90" step="1" tickInterval="10" thumbLabel>
                     </mat-slider>
                 </div>
             </div>
@@ -49,7 +51,7 @@
                 <div class="control">
                     <span class="label-min">2</span>
                     <span class="label-max">90</span>
-                    <mat-slider formControlName="f_gpa" min="2" max="90" step="1" thumbLabel tickInterval="10">
+                    <mat-slider formControlName="f_gatilloDePurgadoAutomatico" min="2" max="90" step="1" thumbLabel tickInterval="10">
 
                     </mat-slider>
                 </div>
@@ -62,7 +64,7 @@
                     Gatillo dinamico activo:
                 </div>
                 <div class="control espacio">
-                    <mat-checkbox formControlName="f_gda"></mat-checkbox>
+                    <mat-checkbox formControlName="f_gatilloDinamicoActivo"></mat-checkbox>
 
                 </div>
             </div>
@@ -74,7 +76,7 @@
                     Reencolado automático activo:
                 </div>
                 <div class="control espacio">
-                    <mat-checkbox formControlName="f_raa"></mat-checkbox>
+                    <mat-checkbox formControlName="f_reencoladoAutomaticoActivo"></mat-checkbox>
                 </div>
             </div>
 
@@ -83,7 +85,7 @@
                     Limitar Retiros de Efectivo:
                 </div>
                 <div class="control espacio">
-                    <mat-checkbox formControlName="f_lre"></mat-checkbox>&nbsp;&nbsp;
+                    <mat-checkbox formControlName="f_limitarRetirosDeEfectivo" (change)="change()"></mat-checkbox>&nbsp;&nbsp;
                     <mat-form-field>
                         <input matInput formControlName="f_lre_i">
                     </mat-form-field>
@@ -91,7 +93,7 @@
             </div>
 
 
-
+            <!-- SECCION HORARIOS -->
             <div class="title new margen"><img src="assets/img/slv/kalarm.png">Horarios del SVL</div>
             <hr>
             <div class="new">
@@ -191,8 +193,7 @@
                 </div>
             </div>
 
-
-
+            <!-- SECCION PARAMETROS -->
             <div class="title new margen"><img src="assets/img/slv/package_games_arcade.png">Parámetros del Compensador</div>
             <hr>
             <div class="new-space">
@@ -218,9 +219,8 @@
                 </div>
             </div>
         </form>
-        <!--
-<input type="range" name="quantity" min="1" max="10">
--->
+
+        <!-- SECCION CONTADORES -->
         <div class="title new margen"><img src="assets/img/slv/kmplot.png">Contadores de monto, número y tipo de operaciones</div>
         <hr>
         <div class="new">
@@ -272,8 +272,7 @@
             </div>
         </div>
 
-
-
+        <!-- SECCION ACCIONES -->
         <div class="title new margen"><img src="assets/img/slv/wizard.png">Acciones</div>
         <hr>
         <div class="container-box" [className]="classDisabled">
@@ -294,8 +293,8 @@
         <br>
     </div>
 
-
-    <button mat-stroked-button class="btn-left"><img src="assets/img/slv/reload_page.png">&nbsp;&nbsp;Actualizar Info</button> &nbsp;&nbsp;
-    <button mat-stroked-button class="btn" [disabled]="isDisabled"><img src="assets/img/slv/{{aplicarCambiosImg}}">&nbsp;&nbsp;Aplicar Cambios</button>
+    <!-- SECCION BOTONES -->
+    <button mat-stroked-button class="btn-left" (click)="refresh()"><img src="assets/img/slv/reload_page.png">&nbsp;&nbsp;Actualizar Info</button> &nbsp;&nbsp;
+    <button mat-stroked-button class="btn" (click)="applyChanges()" [disabled]="isDisabled"><img src="assets/img/slv/{{aplicarCambiosImg}}">&nbsp;&nbsp;Aplicar Cambios</button>
     <img class="img-version" (click)="viewVersion()" src="assets/img/slv/about_big.png">
 </div>

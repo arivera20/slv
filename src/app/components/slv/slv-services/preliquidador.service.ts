@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../../app-settings';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class PreliquidadorService {
     console.log(this.appSettings.URL_preliquidador_getVersion);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.http.get<string>
-    (this.appSettings.URL_preliquidador_getVersion, { headers, responseType: 'text' as 'json'  });
+      (this.appSettings.URL_preliquidador_getVersion, { headers, responseType: 'text' as 'json' });
   }
 
   // preliquidador/getPrecioTituloMaximoParaCompensacion
@@ -148,4 +148,19 @@ export class PreliquidadorService {
       (this.appSettings.URL_preliquidador_isDiaInhabil, this.appSettings.httpOptionsJson);
   }
 
+  // preliquidador/modificarPrecioTituloMaximoParaCompensacion/{umbralCompensacionPrecioTitulo}/{usuario}
+  public modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): Observable<void> {
+    console.log('SERVICIO - preliquidador - modificarPrecioTituloMaximoParaCompensacion');
+    console.log(this.appSettings.URL_preliquidador_isDiaInhabil);
+    const headers = new HttpHeaders().append('header', 'value');
+    let param2s = new HttpParams().set('umbralCompensacionPrecioTitulo', umbral).set('usuario', usuario); //Create new HttpParams
+    const params = new HttpParams().append('umbralCompensacionPrecioTitulo', umbral).append('usuario', usuario);
+    this.http.get<boolean>('url', { headers, params });
+    return of();
+  }
+  /*
+      const headers = new HttpHeaders().append('header', 'value');
+      const params = new HttpParams().append('param', 'value');
+      this.http.get('url', {headers, params});
+  */
 }

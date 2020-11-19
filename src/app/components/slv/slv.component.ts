@@ -16,6 +16,7 @@ import { HoraVO } from './slv-class/HoraVO';
 export class SlvComponent implements OnInit {
   public forma: FormGroup;
   public isDisabled = true;
+  public isDisabledCheckbox: boolean = true;
   public classDisabled = 'div-disabled';
   public classDisabledAccion = 'box';
   public labelEditar = 'Editar Campos';
@@ -27,32 +28,37 @@ export class SlvComponent implements OnInit {
   public purgarImg = 'konquest_disabled.png';
   public aplicarCambiosImg = 'unapply.png';
 
+  montoTotalMaxInstrucciones: number;
+
+
+
+
   msg = '';
   editable: boolean;
   version = '';
   precioTituloMaximoParaCompensacion: number;
   montoTotalActualInstrucciones = 8;
   numeroTotalActualInstrucciones = 0;
-  montoTotalMaxInstrucciones: number;
+
   numeroTotalMaxInstrucciones: number;
   numeroAdaptableMaxInstrucciones = 9;
-  gatilloDinamicoActivo: boolean;
-  reencoladoAutomatico: boolean;
+  isGatilloDinamicoActivo: boolean;
+  isReencoladoAutomatico: boolean;
   numeroInstruccionesRetirosEfectivo = 7;
   numeroInstruccionesCompuestas = 6;
   numeroInstruccionesCompensables = 0;
   liquidacionFinDeDiaActivada: boolean;
-  limitarRetiros: boolean;
+  isLimitarRetiros: boolean;
   numeroMaximoRetiros: number;
   slvCerrado: boolean;
   diaInhabil: boolean;
   estadoSlv: boolean;
   frecuenciaSlv: number;
   frecuenciaPurgadoSlv: number;
-  frecuenciaInicioValoresSlv = new HoraVO(); 
+  frecuenciaInicioValoresSlv = new HoraVO();
   horaInicioValores: number;
   minutosInicioValores: number;
-  frecuenciaFinValoresSlv = new HoraVO(); 
+  frecuenciaFinValoresSlv = new HoraVO();
   horaFinValores: number;
   minutosFinValores: number;
   frecuenciaRecepcionSlv = new HoraVO();
@@ -79,6 +85,63 @@ export class SlvComponent implements OnInit {
   timeoutRespuestaCompensador: number;
   compensadorActivo: boolean;
 
+  /** VARIABLES TEMPORALES */
+  montoTotalMaxInstruccionesTmp: number;          // 1 Gatillo de monto ($)
+  numeroTotalMaxInstruccionesTmp: number;         // 2 Gatillo de numero de ops.
+  frecuenciaSlvTmp: number;                       // 3 Gatillo de tiempo (minutos)
+  frecuenciaPurgadoSlvTmp: number;                // 4 Gatillo de purgado automatico (minutos)
+  isGatilloDinamicoActivoTmp: boolean;            // 5 Gatillo dinamico activo
+  isReencoladoAutomaticoTmp: boolean;             // 6 Reencolado automatico activo
+  isLimitarRetirosTmp: boolean;                   // 7 Limitar Retiros de Efectivo
+  numeroMaximoRetirosTmp: number;                 // 8 Limitar Retiros de Efectivo - Input
+  horaInicioValoresTmp: number;                   // 9 Apertura Liq. en Bruto MAV - hora
+  minutosInicioValoresTmp: number;                // 9 Apertura Liq. en Bruto MAV - minuto
+  horaFinValoresTmp: number;                      // 10 Cierre Liq. en Bruto MAV - hora
+  minutosFinValoresTmp: number;                   // 10 Cierre Liq. en Bruto MAV - minuto
+  horaRecepcionTmp: number;                       // 11 Recepcion - hora
+  minutosRecepcionTmp: number;                    // 11 Recepcion - minuto
+  horaAperturaTmp: number;                        // 12 Apertura - hora
+  minutosAperturaTmp: number;                     // 12 Apertura - minuto
+  horaPreCierreTmp: number;                       // 13 Pre-Cierre - hora
+  minutosPreCierreTmp: number;                    // 13 Pre-Cierre - minuto
+  horaCierreTmp: number;                          // 14 Cierre - hora
+  minutosCierreTmp: number;                       // 14 Cierre - minuto
+  diasLiqTmp: string;                             // 15 Dias de Liquidacion
+  precioTituloMaximoParaCompensacionTmp: number;  // 16 Precio maximo para compensacion ($)
+  timeoutRespuestaCompensadorTmp: number;         // 17 Timeout del compensador (segundos)
+
+
+  refresh(): void {
+    this.getVersion();
+    this.getMontoTotalMaxInstrucciones();            // 1 Gatillo de monto ($)
+    this.getNumeroTotalMaxInstrucciones();           // 2 Gatillo de numero de ops.
+    this.getFrecuenciaSlv();                         // 3 Gatillo de tiempo (minutos)
+    this.getFrecuenciaPurgadoSlv();                  // 4 Gatillo de purgado automatico (minutos)
+    this.isGatilloDinamicoActivo_M();                // 5 Gatillo dinamico activo
+    this.isReencoladoAutomatico_M();                 // 6 Reencolado automatico activo
+    this.isLimitarRetiros_M();                       // 7 Limitar Retiros de Efectivo
+    this.getNumeroMaximoRetiros();                   // 8 Limitar Retiros de Efectivo - Input
+    this.getFrecuenciaInicioValoresSlv();            // 9 Apertura Liq. en Bruto MAV - hora y minuto
+    this.getFrecuenciaFinValoresSlv();               // 10 Cierre Liq. en Bruto MAV  - hora y minuto
+    this.getFrecuenciaRecepcionSlv();                // 11 Recepcion - hora y  minuto
+    this.getFrecuenciaAperturaSlv();                 // 12 Apertura Liq. en Bruto MAV - hora y minuto
+    this.getFrecuenciaPreCierreSlv();                // 13 Pre-Cierre - hora y minuto
+    this.getFrecuenciaCierreSlv();                   // 14 Cierre - hora y minuto
+    this.getFrecuenciaDiasLiq();                     // 15 Dias de Liquidacion
+    this.getPrecioTituloMaximoParaCompensacion();    // 16 Precio maximo para compensacion ($)
+    this.getTimeoutRespuesta();                      // 17 Timeout del compensador (segundos)
+    this.getNumeroTotalActualInstrucciones();        // 18 Numero actual de operaciones
+    this.getNumeroInstruccionesCompensables();       // 19 Compensables
+    this.getNumeroInstruccionesCompuestas();         // 20 Compuestas
+    this.getNumeroInstruccionesRetirosEfectivo();    // 21 Retiros de Efectivo
+    this.getMontoTotalActualInstrucciones();         // 22 Monto total actual acumulado de operaciones ($)
+    this.getNumeroAdaptableMaxInstrucciones();       // 23 Valor actual de gatillo dinamico:
+    this.isLiquidacionFinDeDiaActivada();
+    this.isSlvCerrado();
+    this.isDiaInhabil();
+    this.getEstadoSlv();
+    this.isCompensadorActivo();
+  }
 
   constructor(private spinnerService: NgxSpinnerService,
     private fb: FormBuilder,
@@ -86,27 +149,44 @@ export class SlvComponent implements OnInit {
     private senalizadorService: SenalizadorPreliquidadorService,
     private compensadorService: CompensadorService) {
     this.crearFormulario();
-    //this.frecuenciaInicioValoresSlv = new HoraVO();
   }
 
   ngOnInit(): void {
     this.forma.disable();
     this.editable = false;
+    // this.refresh();
+    this.llamar();
+  }
+
+  llamar(): void {
+    this.getPrecioTituloMaximoParaCompensacion();
+    this.modificarPrecioTituloMaximoParaCompensacion();
+  }
 
 
-    this.refresh();
+
+  change(): void {
+    console.log('Cambiando');
+    if (this.isDisabledCheckbox) {
+      this.isDisabledCheckbox = false;
+      this.forma.controls.f_lre_i.enable();
+    } else {
+      this.isDisabledCheckbox = true;
+      this.forma.controls.f_lre_i.disable();
+    }
+    console.log(this.isDisabledCheckbox);
   }
 
   /* Metodo para crear el Fomulario */
   private crearFormulario(): void {
     this.forma = this.fb.group({
-      f_gm: ['', [Validators.required, Validators.minLength(3)]],
-      f_gno: ['', [Validators.required]],
-      f_gtm: ['', [Validators.required]],
-      f_gpa: ['', [Validators.required]],
-      f_gda: [false, [Validators.required]],
-      f_raa: [false, [Validators.required]],
-      f_lre: [false, [Validators.required]],
+      f_gatilloDeMonto: ['', [Validators.required, Validators.minLength(3)]],
+      f_gatilloDeNumeroDeOps: ['', [Validators.required]],
+      f_gatilloDeTiempo: ['', [Validators.required]],
+      f_gatilloDePurgadoAutomatico: ['', [Validators.required]],
+      f_gatilloDinamicoActivo: [false, [Validators.required]],
+      f_reencoladoAutomaticoActivo: [false, [Validators.required]],
+      f_limitarRetirosDeEfectivo: [false, [Validators.required]],
       f_lre_i: ['', [Validators.required]],
       f_alb_h: [0, [Validators.required]],
       f_alb_m: [0, [Validators.required]],
@@ -130,7 +210,17 @@ export class SlvComponent implements OnInit {
       f_pmc: ['', [Validators.required]],
       f_tc: ['', [Validators.required]]
     });
+    this.forma.controls.f_gatilloDeMonto.valueChanges.subscribe(data => {
+      console.log('f_gatilloDeMonto => ' + data);
+    });
+
+
   }
+
+  applyChanges(): void {
+    console.log('Cambios');
+  }
+
 
   viewVersion(): void {
     Swal.fire({
@@ -140,40 +230,7 @@ export class SlvComponent implements OnInit {
     });
   }
 
-  refresh(): void {
-    
-    this.getVersion();  
-    this.getPrecioTituloMaximoParaCompensacion();
-    this.getMontoTotalActualInstrucciones();
-    this.getNumeroTotalActualInstrucciones();
-    this.getMontoTotalMaxInstrucciones();
-    this.getNumeroTotalMaxInstrucciones();
-    this.getNumeroAdaptableMaxInstrucciones();
-    this.isGatilloDinamicoActivo();
-    this.isReencoladoAutomatico();
-    this.getNumeroInstruccionesRetirosEfectivo();
-    this.getNumeroInstruccionesCompuestas();
-    this.getNumeroInstruccionesCompensables();
-    this.isLiquidacionFinDeDiaActivada();
-    this.isLimitarRetiros();
-    this.getNumeroMaximoRetiros();
-    this.isSlvCerrado();
-    this.isDiaInhabil();
-    this.getEstadoSlv();
-    this.getFrecuenciaSlv();
-    this.getFrecuenciaPurgadoSlv();
-    this.getFrecuenciaInicioValoresSlv();
-    this.getFrecuenciaFinValoresSlv();
-    this.getFrecuenciaRecepcionSlv();
-    this.getFrecuenciaAperturaSlv();
-    this.getFrecuenciaPreCierreSlv();
-    this.getFrecuenciaCierreSlv();
-    this.getFrecuenciaDiasLiq();
-    this.getTimeoutRespuesta();
-    this.isCompensadorActivo();
 
-
-  }
 
 
 
@@ -196,6 +253,185 @@ export class SlvComponent implements OnInit {
         });
   }
 
+  // SERVICIO - Gatillo de monto ($): - getMontoTotalMaxInstrucciones == f_gatilloDeMonto   1
+  private getMontoTotalMaxInstrucciones(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.getMontoTotalMaxInstrucciones()
+      .subscribe(
+        data => {
+          this.montoTotalMaxInstruccionesTmp = data;
+          this.forma.controls.f_gatilloDeMonto.setValue(data);
+          console.log(data);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getMontoTotalMaxInstrucciones', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getNumeroTotalMaxInstrucciones == f_gatilloDeNumeroDeOps    2
+  private getNumeroTotalMaxInstrucciones(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.getNumeroTotalMaxInstrucciones()
+      .subscribe(
+        data => {
+          this.numeroTotalMaxInstruccionesTmp = data;
+          this.forma.controls.f_gatilloDeNumeroDeOps.setValue(data);
+          console.log(data);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getNumeroTotalMaxInstrucciones', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaSlv == f_gatilloDeTiempo    3
+  private getFrecuenciaSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaSlvTmp = data;
+          this.forma.controls.f_gatilloDeTiempo.setValue(data);
+          console.log(data);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaPurgadoSlv == f_gatilloDePurgadoAutomático    4
+  private getFrecuenciaPurgadoSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaPurgadoSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaPurgadoSlvTmp = data;
+          this.forma.controls.f_gatilloDePurgadoAutomatico.setValue(data);
+          console.log(data);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaPurgadoSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - isGatilloDinamicoActivo == f_gatilloDinamicoActivo      5
+  private isGatilloDinamicoActivo_M(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.isGatilloDinamicoActivo()
+      .subscribe(
+        data => {
+          this.isGatilloDinamicoActivoTmp = data;
+          this.forma.controls.f_gatilloDinamicoActivo.setValue(data);
+          console.log(data);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('isGatilloDinamicoActivo', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - isReencoladoAutomatico == f_reencoladoAutomaticoActivo    6
+  private isReencoladoAutomatico_M(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.isReencoladoAutomatico()
+      .subscribe(
+        data => {
+          this.isReencoladoAutomaticoTmp = data;
+          this.forma.controls.f_reencoladoAutomaticoActivo.setValue(data);
+          console.log(data);
+          this.spinnerService.hide();
+        },
+        error => {
+          console.log('Aqui fallo');
+          this.errorHttp('isReencoladoAutomatico_M', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - isLimitarRetiros == f_limitarRetirosDeEfectivo     7
+  private isLimitarRetiros_M(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.isLimitarRetiros()
+      .subscribe(
+        data => {
+          this.isLimitarRetirosTmp = data;
+          this.forma.controls.f_limitarRetirosDeEfectivo.setValue(data);
+          console.log('isDisabledCheckbox');
+          this.isDisabledCheckbox = data;
+          if (this.isDisabledCheckbox) {
+            this.forma.controls.f_lre_i.enable();
+          } else {
+            this.forma.controls.f_lre_i.disable();
+          }
+          console.log(this.isDisabledCheckbox);
+          console.log(this.isLimitarRetiros);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('isLimitarRetiros', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getNumeroMaximoRetiros == f_lre_i     8
+  private getNumeroMaximoRetiros(): void {
+    this.spinnerService.show();
+    this.preliquidadorService.getNumeroMaximoRetiros()
+      .subscribe(
+        data => {
+          this.numeroMaximoRetiros = data;
+          this.forma.controls.f_lre_i.setValue(data);
+          console.log(this.numeroMaximoRetiros);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getNumeroMaximoRetiros', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaInicioValoresSlv ==     9
+  private getFrecuenciaInicioValoresSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaInicioValoresSlv()
+      .subscribe(
+        data => {
+          console.log(data);
+          this.horaInicioValoresTmp = data.hora;
+          this.minutosInicioValoresTmp = data.minuto;
+
+          this.horaInicioValores = data.hora;
+          this.minutosInicioValores = data.minuto;
+
+          this.forma.controls.f_alb_h.setValue(this.horaInicioValores);
+          this.forma.controls.f_alb_m.setValue(this.minutosInicioValores);
+
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaInicioValoresSlv', '', error.mesage);
+        });
+  }
+
+  // SERVICIO - getFrecuenciaFinValoresSlv ==    10
+  private getFrecuenciaFinValoresSlv(): void {
+    this.spinnerService.show();
+    this.senalizadorService.getFrecuenciaFinValoresSlv()
+      .subscribe(
+        data => {
+          this.frecuenciaFinValoresSlv = data;
+          this.horaFinValores = this.frecuenciaFinValoresSlv.hora;
+          this.minutosFinValores = this.frecuenciaFinValoresSlv.minuto;
+          this.forma.controls.f_clb_h.setValue(this.horaFinValores);
+          this.forma.controls.f_clb_m.setValue(this.minutosFinValores);
+          console.log(this.frecuenciaFinValoresSlv);
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('getFrecuenciaFinValoresSlv', '', error.mesage);
+        });
+  }
+
   // SERVICIO - getPrecioTituloMaximoParaCompensacion
   private getPrecioTituloMaximoParaCompensacion(): void {
     this.spinnerService.show();
@@ -211,6 +447,20 @@ export class SlvComponent implements OnInit {
           this.errorHttp('getPrecioTituloMaximoParaCompensacion', '', error.mesage);
         });
   }
+
+    // SERVICIO - modificarPrecioTituloMaximoParaCompensacion
+    private modificarPrecioTituloMaximoParaCompensacion(): void {
+      this.spinnerService.show();
+      this.preliquidadorService.modificarPrecioTituloMaximoParaCompensacion('200', 'omarnl')
+        .subscribe(
+          data => {
+            console.log('Se modifico con exito');
+            this.spinnerService.hide();
+          },
+          error => {
+            this.errorHttp('modificarPrecioTituloMaximoParaCompensacion', '', error.mesage);
+          });
+    }
 
   // SERVICIO - getMontoTotalActualInstrucciones
   private getMontoTotalActualInstrucciones(): void {
@@ -242,37 +492,9 @@ export class SlvComponent implements OnInit {
         });
   }
 
-  // SERVICIO - getMontoTotalMaxInstrucciones
-  private getMontoTotalMaxInstrucciones(): void {
-    this.spinnerService.show();
-    this.preliquidadorService.getMontoTotalMaxInstrucciones()
-      .subscribe(
-        data => {
-          this.montoTotalMaxInstrucciones = data;
-          this.forma.controls.f_gm.setValue(data);
-          console.log(this.montoTotalMaxInstrucciones);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getMontoTotalMaxInstrucciones', '', error.mesage);
-        });
-  }
 
-  // SERVICIO - getNumeroTotalMaxInstrucciones
-  private getNumeroTotalMaxInstrucciones(): void {
-    this.spinnerService.show();
-    this.preliquidadorService.getNumeroTotalMaxInstrucciones()
-      .subscribe(
-        data => {
-          this.numeroTotalMaxInstrucciones = data;
-          this.forma.controls.f_gno.setValue(data);
-          console.log(this.numeroTotalMaxInstrucciones);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getNumeroTotalMaxInstrucciones', '', error.mesage);
-        });
-  }
+
+
 
   // SERVICIO - getNumeroAdaptableMaxInstrucciones
   private getNumeroAdaptableMaxInstrucciones(): void {
@@ -289,38 +511,9 @@ export class SlvComponent implements OnInit {
         });
   }
 
-  // SERVICIO - isGatilloDinamicoActivo
-  private isGatilloDinamicoActivo(): void {
-    this.spinnerService.show();
-    this.preliquidadorService.isGatilloDinamicoActivo()
-      .subscribe(
-        data => {
-          this.gatilloDinamicoActivo = data;
-          this.forma.controls.f_gda.setValue(data);
-          console.log(this.gatilloDinamicoActivo);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('isGatilloDinamicoActivo', '', error.mesage);
-        });
-  }
 
-  // SERVICIO - isReencoladoAutomatico
-  private isReencoladoAutomatico(): void {
-    this.spinnerService.show();
-    this.preliquidadorService.isReencoladoAutomatico()
-      .subscribe(
-        data => {
-          this.reencoladoAutomatico = data;
-          this.forma.controls.f_raa.setValue(data);
-          console.log(this.reencoladoAutomatico);
-          this.spinnerService.hide();
-        },
-        error => {
-          console.log('Aqui fallo');
-          this.errorHttp('isReencoladoAutomatico', '', error.mesage);
-        });
-  }
+
+
 
   // SERVICIO - getNumeroInstruccionesRetirosEfectivo
   private getNumeroInstruccionesRetirosEfectivo(): void {
@@ -382,37 +575,9 @@ export class SlvComponent implements OnInit {
         });
   }
 
-  // SERVICIO - isLimitarRetiros
-  private isLimitarRetiros(): void {
-    this.spinnerService.show();
-    this.preliquidadorService.isLimitarRetiros()
-      .subscribe(
-        data => {
-          this.limitarRetiros = data;
-          this.forma.controls.f_lre.setValue(data);
-          console.log(this.limitarRetiros);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('isLimitarRetiros', '', error.mesage);
-        });
-  }
 
-  // SERVICIO - getNumeroMaximoRetiros
-  private getNumeroMaximoRetiros(): void {
-    this.spinnerService.show();
-    this.preliquidadorService.getNumeroMaximoRetiros()
-      .subscribe(
-        data => {
-          this.numeroMaximoRetiros = data;
-          this.forma.controls.f_lre_i.setValue(data);
-          console.log(this.numeroMaximoRetiros);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getNumeroMaximoRetiros', '', error.mesage);
-        });
-  }
+
+
 
   // SERVICIO - isSlvCerrado
   private isSlvCerrado(): void {
@@ -459,77 +624,13 @@ export class SlvComponent implements OnInit {
         });
   }
 
-  // SERVICIO - getEstadoSlv
-  private getFrecuenciaSlv(): void {
-    this.spinnerService.show();
-    this.senalizadorService.getFrecuenciaSlv()
-      .subscribe(
-        data => {
-          this.frecuenciaSlv = data;
-          this.forma.controls.f_gtm.setValue(data);
-          console.log(this.frecuenciaSlv);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getFrecuenciaSlv', '', error.mesage);
-        });
-  }
 
-  // SERVICIO - getFrecuenciaPurgadoSlv
-  private getFrecuenciaPurgadoSlv(): void {
-    this.spinnerService.show();
-    this.senalizadorService.getFrecuenciaPurgadoSlv()
-      .subscribe(
-        data => {
-          this.frecuenciaPurgadoSlv = data;
-          this.forma.controls.f_gpa.setValue(data);
-          console.log(this.frecuenciaPurgadoSlv);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getFrecuenciaPurgadoSlv', '', error.mesage);
-        });
-  }
 
-  // SERVICIO - getFrecuenciaInicioValoresSlv
-  private getFrecuenciaInicioValoresSlv(): void {
-    this.spinnerService.show();
-    this.senalizadorService.getFrecuenciaInicioValoresSlv()
-      .subscribe(
-        data => {
-          console.log(data);
-          this.frecuenciaInicioValoresSlv = data;
-          this.horaInicioValores = this.frecuenciaInicioValoresSlv.hora;
-          this.minutosInicioValores = this.frecuenciaInicioValoresSlv.minuto;
 
-          this.forma.controls.f_alb_h.setValue(this.horaInicioValores);
-          this.forma.controls.f_alb_m.setValue(this.minutosInicioValores);
-          
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getFrecuenciaInicioValoresSlv', '', error.mesage);
-        });
-  }
 
-  // SERVICIO - getFrecuenciaFinValoresSlv
-  private getFrecuenciaFinValoresSlv(): void {
-    this.spinnerService.show();
-    this.senalizadorService.getFrecuenciaFinValoresSlv()
-      .subscribe(
-        data => {
-          this.frecuenciaFinValoresSlv = data;
-          this.horaFinValores = this.frecuenciaFinValoresSlv.hora;
-          this.minutosFinValores = this.frecuenciaFinValoresSlv.minuto;
-          this.forma.controls.f_clb_h.setValue(this.horaFinValores);
-          this.forma.controls.f_clb_m.setValue(this.minutosFinValores);
-          console.log(this.frecuenciaFinValoresSlv);
-          this.spinnerService.hide();
-        },
-        error => {
-          this.errorHttp('getFrecuenciaFinValoresSlv', '', error.mesage);
-        });
-  }
+
+
+
 
   // SERVICIO - getFrecuenciaRecepcionSlv
   private getFrecuenciaRecepcionSlv(): void {

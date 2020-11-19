@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.loginRequest.password = this.formLogin.get('password').value;
     console.log(this.loginRequest);
     this.callService();
-    //this.router.navigate(['/slv']);
+    // this.router.navigate(['/slv']);
   }
 
   // LLAMADO DEL SERVICIO
