@@ -6,6 +6,7 @@ import { PreliquidadorService } from './slv-services/preliquidador.service';
 import { SenalizadorPreliquidadorService } from './slv-services/senalizador-preliquidador.service';
 import { CompensadorService } from './slv-services/compensador.service';
 import { HoraVO } from './slv-class/HoraVO';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -147,7 +148,8 @@ export class SlvComponent implements OnInit {
     private fb: FormBuilder,
     private preliquidadorService: PreliquidadorService,
     private senalizadorService: SenalizadorPreliquidadorService,
-    private compensadorService: CompensadorService) {
+    private compensadorService: CompensadorService,
+    private http: HttpClient) {
     this.crearFormulario();
   }
 
@@ -159,7 +161,13 @@ export class SlvComponent implements OnInit {
   }
 
   llamar(): void {
-    this.getPrecioTituloMaximoParaCompensacion();
+   // this.getPrecioTituloMaximoParaCompensacion();
+/*
+    this.http.get<any>('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/250/omarnl').subscribe(data => {
+      console.log('$$$$$$ Saliendo - 250');
+      this.getPrecioTituloMaximoParaCompensacion();
+   }, error => { console.error('Error'); });
+   */
     this.modificarPrecioTituloMaximoParaCompensacion();
   }
 
@@ -449,12 +457,13 @@ export class SlvComponent implements OnInit {
   }
 
     // SERVICIO - modificarPrecioTituloMaximoParaCompensacion
-    private modificarPrecioTituloMaximoParaCompensacion(): void {
+    private modificarPrecioTituloMaximoParaCompensacion(): any {
       this.spinnerService.show();
-      this.preliquidadorService.modificarPrecioTituloMaximoParaCompensacion('200', 'omarnl')
+      this.preliquidadorService.modificarPrecioTituloMaximoParaCompensacion('800', 'omarnl')
         .subscribe(
           data => {
-            console.log('Se modifico con exito');
+            console.log('======= Se modifico con exito');
+            this.getPrecioTituloMaximoParaCompensacion();
             this.spinnerService.hide();
           },
           error => {

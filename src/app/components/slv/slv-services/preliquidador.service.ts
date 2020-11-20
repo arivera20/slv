@@ -10,6 +10,13 @@ export class PreliquidadorService {
 
   constructor(private http: HttpClient, private appSettings: AppSettings) { }
 
+
+    public modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): Observable<any> {
+      console.log('SERVICIO - preliquidador - modificarPrecioTituloMaximoParaCompensacion');
+      const headers = new HttpHeaders().append('header', 'value');
+      return this.http.get('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/'+umbral+'/'+usuario, {headers});
+    }
+
   // /slv-preliquidador/api/preliquidador/getVersion
   // getVersion
   public getVersion(): Observable<string> {
@@ -148,16 +155,7 @@ export class PreliquidadorService {
       (this.appSettings.URL_preliquidador_isDiaInhabil, this.appSettings.httpOptionsJson);
   }
 
-  // preliquidador/modificarPrecioTituloMaximoParaCompensacion/{umbralCompensacionPrecioTitulo}/{usuario}
-  public modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): Observable<void> {
-    console.log('SERVICIO - preliquidador - modificarPrecioTituloMaximoParaCompensacion');
-    console.log(this.appSettings.URL_preliquidador_isDiaInhabil);
-    const headers = new HttpHeaders().append('header', 'value');
-    let param2s = new HttpParams().set('umbralCompensacionPrecioTitulo', umbral).set('usuario', usuario); //Create new HttpParams
-    const params = new HttpParams().append('umbralCompensacionPrecioTitulo', umbral).append('usuario', usuario);
-    this.http.get<boolean>('url', { headers, params });
-    return of();
-  }
+
   /*
       const headers = new HttpHeaders().append('header', 'value');
       const params = new HttpParams().append('param', 'value');
