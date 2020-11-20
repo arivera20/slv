@@ -11,11 +11,50 @@ export class PreliquidadorService {
   constructor(private http: HttpClient, private appSettings: AppSettings) { }
 
 
-    public modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): Observable<any> {
-      console.log('SERVICIO - preliquidador - modificarPrecioTituloMaximoParaCompensacion');
-      const headers = new HttpHeaders().append('header', 'value');
-      return this.http.get('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/'+umbral+'/'+usuario, {headers});
-    }
+  public modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarPrecioTituloMaximoParaCompensacion');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/' + umbral + '/' + usuario, { headers });
+  }
+
+  public modificarNumeroTotalMaxInstrucciones(numero: string, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarNumeroTotalMaxInstrucciones');
+    const headers = new HttpHeaders().append('header', 'value');
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarNumeroTotalMaxInstrucciones/' + numero + '/' + usuario, { headers });
+  }
+
+  public modificarMontoTotalMaxInstrucciones(monto: string, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarMontoTotalMaxInstrucciones');
+    const headers = new HttpHeaders().append('header', 'value');
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarMontoTotalMaxInstrucciones/' + monto + '/' + usuario, { headers });
+  }
+
+  public modificarGatilloDinamicoActivo(gatillo: boolean, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarGatilloDinamicoActivo');
+    const headers = new HttpHeaders().append('header', 'value');
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarGatilloDinamicoActivo/' + gatillo + '/' + usuario, { headers });
+  }
+
+  public modificarReencoladoAutomatico(reencolado: boolean, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarReencoladoAutomatico');
+    const headers = new HttpHeaders().append('header', 'value');
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarReencoladoAutomatico/' + reencolado + '/' + usuario, { headers });
+  }
+
+  public modificarLimitarRetiros(limitarRetiros: boolean, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarLimitarRetiros');
+    const headers = new HttpHeaders().append('header', 'value');
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarLimitarRetiros/' + limitarRetiros + '/' + usuario, { headers });
+  }
+
+  public modificarNumeroMaximoRetiros(numeroMaximoRetiros: number, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarNumeroMaximoRetiros');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/modificarNumeroMaximoRetiros/' + numeroMaximoRetiros + '/' + usuario, { headers });
+  }
+
 
   // /slv-preliquidador/api/preliquidador/getVersion
   // getVersion

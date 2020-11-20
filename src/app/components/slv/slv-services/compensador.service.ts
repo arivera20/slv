@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppSettings } from '../../app-settings';
@@ -26,7 +26,12 @@ export class CompensadorService {
       (this.appSettings.URL_compensador_isCompensadorActivo, this.appSettings.httpOptionsJson);
   }
 
-
+  public modificarTimeoutRespuesta(timeoutRespuesta: number, usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - modificarTimeoutRespuesta');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/compensadorController/modificarTimeoutRespuesta/' + timeoutRespuesta + '/' + usuario, { headers });
+  }
 
 
 

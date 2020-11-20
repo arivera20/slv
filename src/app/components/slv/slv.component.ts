@@ -6,7 +6,7 @@ import { PreliquidadorService } from './slv-services/preliquidador.service';
 import { SenalizadorPreliquidadorService } from './slv-services/senalizador-preliquidador.service';
 import { CompensadorService } from './slv-services/compensador.service';
 import { HoraVO } from './slv-class/HoraVO';
-import { HttpClient } from '@angular/common/http';
+import { AppStorageService } from '../app-storage-service';
 
 
 @Component({
@@ -149,26 +149,26 @@ export class SlvComponent implements OnInit {
     private preliquidadorService: PreliquidadorService,
     private senalizadorService: SenalizadorPreliquidadorService,
     private compensadorService: CompensadorService,
-    private http: HttpClient) {
+    private appStorageService: AppStorageService) {
     this.crearFormulario();
   }
 
   ngOnInit(): void {
     this.forma.disable();
     this.editable = false;
-    // this.refresh();
-    this.llamar();
+    this.refresh();
+    // this.llamar();
   }
 
   llamar(): void {
-   // this.getPrecioTituloMaximoParaCompensacion();
-/*
-    this.http.get<any>('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/250/omarnl').subscribe(data => {
-      console.log('$$$$$$ Saliendo - 250');
-      this.getPrecioTituloMaximoParaCompensacion();
-   }, error => { console.error('Error'); });
-   */
-    this.modificarPrecioTituloMaximoParaCompensacion();
+    // this.getPrecioTituloMaximoParaCompensacion();
+    /*
+        this.http.get<any>('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/250/omarnl').subscribe(data => {
+          console.log('$$$$$$ Saliendo - 250');
+          this.getPrecioTituloMaximoParaCompensacion();
+       }, error => { console.error('Error'); });
+       */
+    this.modificarPrecioTituloMaximoParaCompensacion('600', 'omarnl');
   }
 
 
@@ -227,6 +227,69 @@ export class SlvComponent implements OnInit {
 
   applyChanges(): void {
     console.log('Cambios');
+    const user = this.appStorageService.getUserName();
+    if (this.montoTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeMonto.value) {
+      this.modificarMontoTotalMaxInstrucciones(this.forma.controls.f_gatilloDeMonto.value, user);
+    }
+    if (this.numeroTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeNumeroDeOps.value) {
+      this.modificarNumeroTotalMaxInstrucciones(this.forma.controls.f_gatilloDeNumeroDeOps.value, user);
+    }
+    if (this.frecuenciaSlvTmp != this.forma.controls.f_gatilloDeTiempo.value) {
+      this.modificarFrecuenciaSlv(this.forma.controls.f_gatilloDeTiempo.value, user);
+    }
+    if (this.frecuenciaPurgadoSlvTmp != this.forma.controls.f_gatilloDePurgadoAutomatico.value) {
+      this.modificarFrecuenciaPurgadoSlv(this.forma.controls.f_gatilloDePurgadoAutomatico.value, user);
+    }
+    if (this.isGatilloDinamicoActivoTmp != this.forma.controls.f_gatilloDinamicoActivo.value) {
+      this.modificarGatilloDinamicoActivo(this.forma.controls.f_gatilloDinamicoActivo.value, user);
+    }
+    if (this.isReencoladoAutomaticoTmp != this.forma.controls.f_reencoladoAutomaticoActivo.value) {
+      this.modificarReencoladoAutomatico(this.forma.controls.f_reencoladoAutomaticoActivo.value, user);
+    }
+    if (this.isLimitarRetirosTmp != this.forma.controls.f_limitarRetirosDeEfectivo.value) {
+      this.modificarLimitarRetiros(this.forma.controls.f_limitarRetirosDeEfectivo.value, user);
+    }
+    if (this.numeroMaximoRetirosTmp != this.forma.controls.f_lre_i.value) {
+      this.modificarNumeroMaximoRetiros(this.forma.controls.f_lre_i.value, user);
+    }
+    // tslint:disable-next-line: max-line-length
+    if ((this.horaInicioValoresTmp != this.forma.controls.f_alb_h.value) || (this.minutosInicioValoresTmp != this.forma.controls.f_alb_m.value)) {
+      this.modificarFrecuenciaInicioValoresSlv(this.forma.controls.f_alb_h.value, this.forma.controls.f_alb_m.value, user);
+    }
+    // tslint:disable-next-line: max-line-length
+    if ((this.horaFinValoresTmp != this.forma.controls.f_clb_h.value) || (this.minutosFinValoresTmp != this.forma.controls.f_clb_m.value)) {
+      this.modificarFrecuenciaFinValoresSlv(this.forma.controls.f_clb_h.value, this.forma.controls.f_clb_m.value, user);
+    }
+    // tslint:disable-next-line: max-line-length
+    if ((this.horaRecepcionTmp != this.forma.controls.f_r_h.value) || (this.minutosRecepcionTmp != this.forma.controls.f_r_m.value)) {
+      this.modificarFrecuenciaRecepcionSlv(this.forma.controls.f_r_h.value, this.forma.controls.f_r_m.value, user);
+    }
+    // tslint:disable-next-line: max-line-length
+    if ((this.horaAperturaTmp != this.forma.controls.f_a_h.value) || (this.minutosAperturaTmp != this.forma.controls.f_a_m.value)) {
+      this.modificarFrecuenciaAperturaSlv(this.forma.controls.f_a_h.value, this.forma.controls.f_a_m.value, user);
+    }
+    // tslint:disable-next-line: max-line-length
+    if ((this.horaPreCierreTmp != this.forma.controls.f_pc_h.value) || (this.minutosPreCierreTmp != this.forma.controls.f_pc_m.value)) {
+      this.modificarFrecuenciaPreCierreSlv(this.forma.controls.f_pc_h.value, this.forma.controls.f_pc_m.value, user);
+    }
+    // tslint:disable-next-line: max-line-length
+    if ((this.horaCierreTmp != this.forma.controls.f_c_h.value) || (this.minutosCierreTmp != this.forma.controls.f_c_m.value)) {
+      this.modificarFrecuenciaCierreSlv(this.forma.controls.f_c_h.value, this.forma.controls.f_c_m.value, user);
+    }
+
+    if (this.diasLiqTmp != this.forma.controls.f_c_h.value) {
+      console.log('Entro a modificar dias');
+      // this.modificarFrecuenciaDiasLiq('', user);
+    }
+
+    if (this.precioTituloMaximoParaCompensacionTmp != this.forma.controls.f_pmc.value) {
+      this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, user);
+    }
+
+    if (this.timeoutRespuestaCompensadorTmp != this.forma.controls.f_tc.value) {
+      this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value, user);
+    }
+
   }
 
 
@@ -239,6 +302,255 @@ export class SlvComponent implements OnInit {
   }
 
 
+
+  /****************************************************************************
+   ******************  LLAMADO DE SERVICIOS UPDATE ****************************
+   ***************************************************************************/
+
+  private modificarMontoTotalMaxInstrucciones(monto: string, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarMontoTotalMaxInstrucciones(monto, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.montoTotalMaxInstruccionesTmp = this.forma.controls.f_gatilloDeMonto.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarMontoTotalMaxInstrucciones', '', error.mesage);
+        });
+  }
+
+  private modificarNumeroTotalMaxInstrucciones(monto: string, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarNumeroTotalMaxInstrucciones(monto, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.numeroTotalMaxInstruccionesTmp = this.forma.controls.f_gatilloDeNumeroDeOps.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarNumeroTotalMaxInstrucciones', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaSlv(frecuenciaMinutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaSlv(frecuenciaMinutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.frecuenciaSlvTmp = this.forma.controls.f_gatilloDeTiempo.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaPurgadoSlv(frecuenciaMinutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaPurgadoSlv(frecuenciaMinutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.frecuenciaPurgadoSlvTmp = this.forma.controls.f_gatilloDePurgadoAutomatico.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaPurgadoSlv', '', error.mesage);
+        });
+  }
+
+  private modificarGatilloDinamicoActivo(gatilloDinamicoActivo: boolean, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarGatilloDinamicoActivo(gatilloDinamicoActivo, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.isGatilloDinamicoActivoTmp = this.forma.controls.f_gatilloDinamicoActivo.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarGatilloDinamicoActivo', '', error.mesage);
+        });
+  }
+
+  private modificarReencoladoAutomatico(reencoladoAutomatico: boolean, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarReencoladoAutomatico(reencoladoAutomatico, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.isReencoladoAutomaticoTmp = this.forma.controls.f_reencoladoAutomaticoActivo.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarReencoladoAutomatico', '', error.mesage);
+        });
+  }
+
+  private modificarLimitarRetiros(limitarRetiros: boolean, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarLimitarRetiros(limitarRetiros, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.isLimitarRetirosTmp = this.forma.controls.f_limitarRetirosDeEfectivo.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarLimitarRetiros', '', error.mesage);
+        });
+  }
+
+  private modificarNumeroMaximoRetiros(numeroMaximoRetiros: number, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarNumeroMaximoRetiros(numeroMaximoRetiros, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.numeroMaximoRetirosTmp = this.forma.controls.f_lre_i.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarNumeroMaximoRetiros', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaInicioValoresSlv(hora: number, minutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaInicioValoresSlv(hora, minutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.horaInicioValoresTmp = this.forma.controls.f_alb_h.value;
+          this.minutosInicioValoresTmp = this.forma.controls.f_alb_m.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaInicioValoresSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaFinValoresSlv(hora: number, minutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaFinValoresSlv(hora, minutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.horaFinValoresTmp = this.forma.controls.f_clb_h.value;
+          this.minutosFinValoresTmp = this.forma.controls.f_clb_m.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaFinValoresSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaRecepcionSlv(hora: number, minutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaRecepcionSlv(hora, minutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.horaRecepcionTmp = this.forma.controls.f_r_h.value;
+          this.minutosRecepcionTmp = this.forma.controls.f_r_m.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaRecepcionSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaAperturaSlv(hora: number, minutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaAperturaSlv(hora, minutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.horaAperturaTmp = this.forma.controls.f_a_h.value;
+          this.minutosAperturaTmp = this.forma.controls.f_a_m.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaAperturaSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaPreCierreSlv(hora: number, minutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaPreCierreSlv(hora, minutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.horaPreCierreTmp = this.forma.controls.f_pc_h.value;
+          this.minutosPreCierreTmp = this.forma.controls.f_pc_m.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaPreCierreSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaCierreSlv(hora: number, minutos: number, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaCierreSlv(hora, minutos, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.horaCierreTmp = this.forma.controls.f_c_h.value;
+          this.minutosCierreTmp = this.forma.controls.f_c_m.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaCierreSlv', '', error.mesage);
+        });
+  }
+
+  private modificarFrecuenciaDiasLiq(diasLiquidacion: string, usuario: string): any {
+    this.spinnerService.show();
+    this.senalizadorService.updateFrecuenciaDiasLiq(diasLiquidacion, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+
+
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarFrecuenciaDiasLiq', '', error.mesage);
+        });
+  }
+
+  private modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): any {
+    this.spinnerService.show();
+    this.preliquidadorService.modificarPrecioTituloMaximoParaCompensacion(umbral, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.precioTituloMaximoParaCompensacionTmp = this.forma.controls.f_pmc.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarPrecioTituloMaximoParaCompensacionM', '', error.mesage);
+        });
+  }
+
+  private modificarTimeoutRespuesta(timeoutRespuesta: number, usuario: string): any {
+    this.spinnerService.show();
+    this.compensadorService.modificarTimeoutRespuesta(timeoutRespuesta, usuario)
+      .subscribe(
+        data => {
+          console.log('======= Se modifico con exito');
+          this.timeoutRespuestaCompensadorTmp = this.forma.controls.f_tc.value;
+          this.spinnerService.hide();
+        },
+        error => {
+          this.errorHttp('modificarTimeoutRespuesta', '', error.mesage);
+        });
+  }
 
 
 
@@ -455,21 +767,6 @@ export class SlvComponent implements OnInit {
           this.errorHttp('getPrecioTituloMaximoParaCompensacion', '', error.mesage);
         });
   }
-
-    // SERVICIO - modificarPrecioTituloMaximoParaCompensacion
-    private modificarPrecioTituloMaximoParaCompensacion(): any {
-      this.spinnerService.show();
-      this.preliquidadorService.modificarPrecioTituloMaximoParaCompensacion('800', 'omarnl')
-        .subscribe(
-          data => {
-            console.log('======= Se modifico con exito');
-            this.getPrecioTituloMaximoParaCompensacion();
-            this.spinnerService.hide();
-          },
-          error => {
-            this.errorHttp('modificarPrecioTituloMaximoParaCompensacion', '', error.mesage);
-          });
-    }
 
   // SERVICIO - getMontoTotalActualInstrucciones
   private getMontoTotalActualInstrucciones(): void {
