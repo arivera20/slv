@@ -85,6 +85,7 @@ export class SlvComponent implements OnInit {
   isDomingoActivo: boolean;
   timeoutRespuestaCompensador: number;
   compensadorActivo: boolean;
+  statusActualizar: boolean = false;
 
   /** VARIABLES TEMPORALES */
   montoTotalMaxInstruccionesTmp: number;          // 1 Gatillo de monto ($)
@@ -229,73 +230,84 @@ export class SlvComponent implements OnInit {
     const user = this.appStorageService.getUserName();
     if (this.montoTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeMonto.value) {
       this.modificarMontoTotalMaxInstrucciones(this.forma.controls.f_gatilloDeMonto.value, user);
+      this.statusActualizar = true;
     }
 
     if (this.numeroTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeNumeroDeOps.value) {     
       this.modificarNumeroTotalMaxInstrucciones(this.forma.controls.f_gatilloDeNumeroDeOps.value, user);
+      this.statusActualizar = true;
     }
 
     if (this.frecuenciaSlvTmp != this.forma.controls.f_gatilloDeTiempo.value) {     
       this.modificarFrecuenciaSlv(this.forma.controls.f_gatilloDeTiempo.value, user);
+      this.statusActualizar = true;
     }  
     if (this.frecuenciaPurgadoSlvTmp != this.forma.controls.f_gatilloDePurgadoAutomatico.value) {
       this.modificarFrecuenciaPurgadoSlv(this.forma.controls.f_gatilloDePurgadoAutomatico.value, user);
+      this.statusActualizar = true;
     }
        
     if (this.isGatilloDinamicoActivoTmp != this.forma.controls.f_gatilloDinamicoActivo.value) {
       this.modificarGatilloDinamicoActivo(this.forma.controls.f_gatilloDinamicoActivo.value, user);
+      this.statusActualizar = true;
     }
 
     if (this.isReencoladoAutomaticoTmp != this.forma.controls.f_reencoladoAutomaticoActivo.value) {    
       this.modificarReencoladoAutomatico(this.forma.controls.f_reencoladoAutomaticoActivo.value, user);
+      this.statusActualizar = true;
     }
   
     if (this.isLimitarRetirosTmp != this.forma.controls.f_limitarRetirosDeEfectivo.value) {    
       this.modificarLimitarRetiros(this.forma.controls.f_limitarRetirosDeEfectivo.value, user);
+      this.statusActualizar = true;
     }
 
     if (this.numeroMaximoRetirosTmp != this.forma.controls.f_lre_i.value) {
       this.modificarNumeroMaximoRetiros(this.forma.controls.f_lre_i.value, user);
+      this.statusActualizar = true;
     }
 
     // tslint:disable-next-line: max-line-length
     if ((this.horaInicioValoresTmp != this.forma.controls.f_alb_h.value) || (this.minutosInicioValoresTmp != this.forma.controls.f_alb_m.value)) {    
       this.modificarFrecuenciaInicioValoresSlv(this.forma.controls.f_alb_h.value, this.forma.controls.f_alb_m.value, user);
+      this.statusActualizar = true;
     }
 
     // tslint:disable-next-line: max-line-length
     if ((this.horaFinValoresTmp != this.forma.controls.f_clb_h.value) || (this.minutosFinValoresTmp != this.forma.controls.f_clb_m.value)) {
       this.modificarFrecuenciaFinValoresSlv(this.forma.controls.f_clb_h.value, this.forma.controls.f_clb_m.value, user);
+      this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaRecepcionTmp != this.forma.controls.f_r_h.value) || (this.minutosRecepcionTmp != this.forma.controls.f_r_m.value)) {
       this.modificarFrecuenciaRecepcionSlv(this.forma.controls.f_r_h.value, this.forma.controls.f_r_m.value, user);
+      this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaAperturaTmp != this.forma.controls.f_a_h.value) || (this.minutosAperturaTmp != this.forma.controls.f_a_m.value)) {
       this.modificarFrecuenciaAperturaSlv(this.forma.controls.f_a_h.value, this.forma.controls.f_a_m.value, user);
+      this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaPreCierreTmp != this.forma.controls.f_pc_h.value) || (this.minutosPreCierreTmp != this.forma.controls.f_pc_m.value)) {
       this.modificarFrecuenciaPreCierreSlv(this.forma.controls.f_pc_h.value, this.forma.controls.f_pc_m.value, user);
+      this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaCierreTmp != this.forma.controls.f_c_h.value) || (this.minutosCierreTmp != this.forma.controls.f_c_m.value)) {
       this.modificarFrecuenciaCierreSlv(this.forma.controls.f_c_h.value, this.forma.controls.f_c_m.value, user);
+      this.statusActualizar = true;
     }
-
-    console.log(this.diasLiqTmp);
-
 
     if (this.precioTituloMaximoParaCompensacionTmp != this.forma.controls.f_pmc.value) {
       this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, user);
+      this.statusActualizar = true;
     }
 
-    console.log(this.timeoutRespuestaCompensadorTmp);
-    console.log(this.forma.controls.f_tc.value);
     if (this.timeoutRespuestaCompensadorTmp != this.forma.controls.f_tc.value) {
        this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value * 1000, user);
-    }
+       this.statusActualizar = true;
+      }
 
     this.makeDiasLiqStr(user);
   }
@@ -387,8 +399,16 @@ export class SlvComponent implements OnInit {
         console.log('tEMP ' +this.diasLiqTmp);
         console.log(this.diasLiq);
         if (this.diasLiqTmp != this.diasLiq) {
-          console.log('Entro a modificar dias');
+          this.statusActualizar = true;
           this.modificarFrecuenciaDiasLiq(this.diasLiq , user);
+        }
+
+        if(this.statusActualizar){
+          Swal.fire({
+            icon: 'success',
+            title: 'Actualización de información con éxito',
+            text: ''
+          });
         }
 			}
 
