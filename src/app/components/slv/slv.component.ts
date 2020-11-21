@@ -75,7 +75,7 @@ export class SlvComponent implements OnInit {
   horaCierre: number;
   minutosCierre: number;
   frecuenciaDiasLiq: string;
-  diasLiq: string;
+  diasLiq: String;
   isLunesActivo: boolean;
   isMartesActivo: boolean;
   isMiercolesActivo: boolean;
@@ -107,7 +107,7 @@ export class SlvComponent implements OnInit {
   minutosPreCierreTmp: number;                    // 13 Pre-Cierre - minuto
   horaCierreTmp: number;                          // 14 Cierre - hora
   minutosCierreTmp: number;                       // 14 Cierre - minuto
-  diasLiqTmp: string;                             // 15 Dias de Liquidacion
+  diasLiqTmp: String;                             // 15 Dias de Liquidacion
   precioTituloMaximoParaCompensacionTmp: number;  // 16 Precio maximo para compensacion ($)
   timeoutRespuestaCompensadorTmp: number;         // 17 Timeout del compensador (segundos)
 
@@ -267,7 +267,6 @@ export class SlvComponent implements OnInit {
 
     // tslint:disable-next-line: max-line-length
     if ((this.horaFinValoresTmp != this.forma.controls.f_clb_h.value) || (this.minutosFinValoresTmp != this.forma.controls.f_clb_m.value)) {
-      console.log('&&& ENTRO - FrecuenciaFinValoresSlv');
       this.modificarFrecuenciaFinValoresSlv(this.forma.controls.f_clb_h.value, this.forma.controls.f_clb_m.value, user);
     }
     // tslint:disable-next-line: max-line-length
@@ -287,11 +286,11 @@ export class SlvComponent implements OnInit {
       this.modificarFrecuenciaCierreSlv(this.forma.controls.f_c_h.value, this.forma.controls.f_c_m.value, user);
     }
 
+    console.log(this.diasLiqTmp);
     if (this.diasLiqTmp != this.forma.controls.f_c_h.value) {
       console.log('Entro a modificar dias');
       // this.modificarFrecuenciaDiasLiq('', user);
     }
-
 
     if (this.precioTituloMaximoParaCompensacionTmp != this.forma.controls.f_pmc.value) {
       this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, user);
@@ -304,6 +303,90 @@ export class SlvComponent implements OnInit {
     }
 
   }
+
+  makeDiasLiqStr():void
+			{
+				let addComa:boolean=false;
+				let coma:String=new String(",");
+				this.diasLiq = new String("");
+				if (this.isLunesActivo)
+				{
+					this.diasLiq = this.diasLiq + 'MON';
+					addComa=true;
+				}
+				if (this.isMartesActivo)
+				{
+					if (addComa)
+					{
+						this.diasLiq= this.diasLiq + ',TUE';
+					}
+					else
+					{
+						this.diasLiq=this.diasLiq + 'TUE';
+						addComa=true;
+					}
+				}
+				if (this.isMiercolesActivo)
+				{
+					if (addComa)
+					{
+						this.diasLiq=this.diasLiq + ',TUE'coma + new String("WED");
+					}
+					else
+					{
+						diasLiq=diasLiq + new String("WED");
+						addComa=true;
+					}
+				}
+				if (this.isJuevesActivo)
+				{
+					if (addComa)
+					{
+						diasLiq=diasLiq + coma + new String("THU");
+					}
+					else
+					{
+						diasLiq=diasLiq + new String("THU");
+						addComa=new Boolean(true);
+					}
+				}
+				if (this.isViernesActivo)
+				{
+					if (addComa)
+					{
+						diasLiq=diasLiq + coma + new String("FRI");
+					}
+					else
+					{
+						diasLiq=diasLiq + new String("FRI");
+						addComa=new Boolean(true);
+					}
+				}
+				if (this.isSabadoActivo)
+				{
+					if (addComa)
+					{
+						diasLiq=diasLiq + coma + new String("SAT");
+					}
+					else
+					{
+						diasLiq=diasLiq + new String("SAT");
+						addComa=new Boolean(true);
+					}
+				}
+				if (this.isDomingoActivo)
+				{
+					if (addComa)
+					{
+						diasLiq=diasLiq + coma + new String("SUN");
+					}
+					else
+					{
+						diasLiq=diasLiq + new String("SUN");
+						addComa=new Boolean(true);
+					}
+				}
+			}
 
 
   viewVersion(): void {
@@ -1062,10 +1145,10 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaDiasLiq()
       .subscribe(
         data => {
+          this.diasLiqTmp = data;
           this.frecuenciaDiasLiq = data;
           this.loadDiasLiq(this.frecuenciaDiasLiq);
-          console.log(this.frecuenciaDiasLiq);
-          this.spinnerService.hide();
+          
         },
         error => {
           this.errorHttp('getFrecuenciaDiasLiq', '', error.mesage);
@@ -1124,6 +1207,9 @@ export class SlvComponent implements OnInit {
     this.forma.controls.f_vi.setValue(this.isViernesActivo);
     this.forma.controls.f_sa.setValue(this.isSabadoActivo);
     this.forma.controls.f_do.setValue(this.isDomingoActivo);
+
+    console.log(this.frecuenciaDiasLiq);
+    this.spinnerService.hide();
   }
 
   // SERVICIO - getTimeoutRespuesta
