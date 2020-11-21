@@ -177,10 +177,10 @@ export class SlvComponent implements OnInit {
     console.log('Cambiando');
     if (this.isDisabledCheckbox) {
       this.isDisabledCheckbox = false;
-      this.forma.controls.f_lre_i.enable();
+      this.forma.controls.f_lre_i.disable();
     } else {
       this.isDisabledCheckbox = true;
-      this.forma.controls.f_lre_i.disable();
+      this.forma.controls.f_lre_i.enable();
     }
     console.log(this.isDisabledCheckbox);
   }
@@ -218,10 +218,11 @@ export class SlvComponent implements OnInit {
       f_pmc: ['', [Validators.required]],
       f_tc: ['', [Validators.required]]
     });
+    /*
     this.forma.controls.f_gatilloDeMonto.valueChanges.subscribe(data => {
       console.log('f_gatilloDeMonto => ' + data);
     });
-
+*/
 
   }
 
@@ -231,33 +232,42 @@ export class SlvComponent implements OnInit {
     if (this.montoTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeMonto.value) {
       this.modificarMontoTotalMaxInstrucciones(this.forma.controls.f_gatilloDeMonto.value, user);
     }
-    if (this.numeroTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeNumeroDeOps.value) {
+
+    if (this.numeroTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeNumeroDeOps.value) {     
       this.modificarNumeroTotalMaxInstrucciones(this.forma.controls.f_gatilloDeNumeroDeOps.value, user);
     }
-    if (this.frecuenciaSlvTmp != this.forma.controls.f_gatilloDeTiempo.value) {
+
+    if (this.frecuenciaSlvTmp != this.forma.controls.f_gatilloDeTiempo.value) {     
       this.modificarFrecuenciaSlv(this.forma.controls.f_gatilloDeTiempo.value, user);
-    }
+    }  
     if (this.frecuenciaPurgadoSlvTmp != this.forma.controls.f_gatilloDePurgadoAutomatico.value) {
       this.modificarFrecuenciaPurgadoSlv(this.forma.controls.f_gatilloDePurgadoAutomatico.value, user);
     }
+       
     if (this.isGatilloDinamicoActivoTmp != this.forma.controls.f_gatilloDinamicoActivo.value) {
       this.modificarGatilloDinamicoActivo(this.forma.controls.f_gatilloDinamicoActivo.value, user);
     }
-    if (this.isReencoladoAutomaticoTmp != this.forma.controls.f_reencoladoAutomaticoActivo.value) {
+
+    if (this.isReencoladoAutomaticoTmp != this.forma.controls.f_reencoladoAutomaticoActivo.value) {    
       this.modificarReencoladoAutomatico(this.forma.controls.f_reencoladoAutomaticoActivo.value, user);
     }
-    if (this.isLimitarRetirosTmp != this.forma.controls.f_limitarRetirosDeEfectivo.value) {
+  
+    if (this.isLimitarRetirosTmp != this.forma.controls.f_limitarRetirosDeEfectivo.value) {    
       this.modificarLimitarRetiros(this.forma.controls.f_limitarRetirosDeEfectivo.value, user);
     }
+
     if (this.numeroMaximoRetirosTmp != this.forma.controls.f_lre_i.value) {
       this.modificarNumeroMaximoRetiros(this.forma.controls.f_lre_i.value, user);
     }
+
     // tslint:disable-next-line: max-line-length
-    if ((this.horaInicioValoresTmp != this.forma.controls.f_alb_h.value) || (this.minutosInicioValoresTmp != this.forma.controls.f_alb_m.value)) {
+    if ((this.horaInicioValoresTmp != this.forma.controls.f_alb_h.value) || (this.minutosInicioValoresTmp != this.forma.controls.f_alb_m.value)) {    
       this.modificarFrecuenciaInicioValoresSlv(this.forma.controls.f_alb_h.value, this.forma.controls.f_alb_m.value, user);
     }
+
     // tslint:disable-next-line: max-line-length
     if ((this.horaFinValoresTmp != this.forma.controls.f_clb_h.value) || (this.minutosFinValoresTmp != this.forma.controls.f_clb_m.value)) {
+      console.log('&&& ENTRO - FrecuenciaFinValoresSlv');
       this.modificarFrecuenciaFinValoresSlv(this.forma.controls.f_clb_h.value, this.forma.controls.f_clb_m.value, user);
     }
     // tslint:disable-next-line: max-line-length
@@ -282,12 +292,15 @@ export class SlvComponent implements OnInit {
       // this.modificarFrecuenciaDiasLiq('', user);
     }
 
+
     if (this.precioTituloMaximoParaCompensacionTmp != this.forma.controls.f_pmc.value) {
       this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, user);
     }
 
+    console.log(this.timeoutRespuestaCompensadorTmp);
+    console.log(this.forma.controls.f_tc.value);
     if (this.timeoutRespuestaCompensadorTmp != this.forma.controls.f_tc.value) {
-      this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value, user);
+       this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value * 1000, user);
     }
 
   }
@@ -312,7 +325,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarMontoTotalMaxInstrucciones(monto, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - Gatillo de monto');
           this.montoTotalMaxInstruccionesTmp = this.forma.controls.f_gatilloDeMonto.value;
           this.spinnerService.hide();
         },
@@ -326,7 +339,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarNumeroTotalMaxInstrucciones(monto, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - Gatillo de número de ops');
           this.numeroTotalMaxInstruccionesTmp = this.forma.controls.f_gatilloDeNumeroDeOps.value;
           this.spinnerService.hide();
         },
@@ -340,7 +353,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaSlv(frecuenciaMinutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaSlv');
           this.frecuenciaSlvTmp = this.forma.controls.f_gatilloDeTiempo.value;
           this.spinnerService.hide();
         },
@@ -354,7 +367,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaPurgadoSlv(frecuenciaMinutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaPurgadoSlv');
           this.frecuenciaPurgadoSlvTmp = this.forma.controls.f_gatilloDePurgadoAutomatico.value;
           this.spinnerService.hide();
         },
@@ -368,7 +381,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarGatilloDinamicoActivo(gatilloDinamicoActivo, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarGatilloDinamicoActivo');
           this.isGatilloDinamicoActivoTmp = this.forma.controls.f_gatilloDinamicoActivo.value;
           this.spinnerService.hide();
         },
@@ -382,7 +395,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarReencoladoAutomatico(reencoladoAutomatico, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - ReencoladoAutomatico');
           this.isReencoladoAutomaticoTmp = this.forma.controls.f_reencoladoAutomaticoActivo.value;
           this.spinnerService.hide();
         },
@@ -396,7 +409,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarLimitarRetiros(limitarRetiros, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarLimitarRetiros');
           this.isLimitarRetirosTmp = this.forma.controls.f_limitarRetirosDeEfectivo.value;
           this.spinnerService.hide();
         },
@@ -410,7 +423,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarNumeroMaximoRetiros(numeroMaximoRetiros, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarNumeroMaximoRetiros');
           this.numeroMaximoRetirosTmp = this.forma.controls.f_lre_i.value;
           this.spinnerService.hide();
         },
@@ -424,7 +437,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaInicioValoresSlv(hora, minutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaInicioValoresSlv');
           this.horaInicioValoresTmp = this.forma.controls.f_alb_h.value;
           this.minutosInicioValoresTmp = this.forma.controls.f_alb_m.value;
           this.spinnerService.hide();
@@ -439,7 +452,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaFinValoresSlv(hora, minutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaFinValoresSlv');
           this.horaFinValoresTmp = this.forma.controls.f_clb_h.value;
           this.minutosFinValoresTmp = this.forma.controls.f_clb_m.value;
           this.spinnerService.hide();
@@ -454,7 +467,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaRecepcionSlv(hora, minutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaRecepcionSlv');
           this.horaRecepcionTmp = this.forma.controls.f_r_h.value;
           this.minutosRecepcionTmp = this.forma.controls.f_r_m.value;
           this.spinnerService.hide();
@@ -469,7 +482,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaAperturaSlv(hora, minutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaAperturaSlv');
           this.horaAperturaTmp = this.forma.controls.f_a_h.value;
           this.minutosAperturaTmp = this.forma.controls.f_a_m.value;
           this.spinnerService.hide();
@@ -484,7 +497,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaPreCierreSlv(hora, minutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaPreCierreSlv');
           this.horaPreCierreTmp = this.forma.controls.f_pc_h.value;
           this.minutosPreCierreTmp = this.forma.controls.f_pc_m.value;
           this.spinnerService.hide();
@@ -499,7 +512,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaCierreSlv(hora, minutos, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaCierreSlv');
           this.horaCierreTmp = this.forma.controls.f_c_h.value;
           this.minutosCierreTmp = this.forma.controls.f_c_m.value;
           this.spinnerService.hide();
@@ -514,7 +527,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.updateFrecuenciaDiasLiq(diasLiquidacion, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarFrecuenciaDiasLiq');
 
 
           this.spinnerService.hide();
@@ -529,7 +542,7 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.modificarPrecioTituloMaximoParaCompensacion(umbral, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarPrecioTituloMaximoParaCompensacion');
           this.precioTituloMaximoParaCompensacionTmp = this.forma.controls.f_pmc.value;
           this.spinnerService.hide();
         },
@@ -543,7 +556,7 @@ export class SlvComponent implements OnInit {
     this.compensadorService.modificarTimeoutRespuesta(timeoutRespuesta, usuario)
       .subscribe(
         data => {
-          console.log('======= Se modifico con exito');
+          console.log('======= Se modifico con exito - modificarTimeoutRespuesta');
           this.timeoutRespuestaCompensadorTmp = this.forma.controls.f_tc.value;
           this.spinnerService.hide();
         },
@@ -701,6 +714,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.numeroMaximoRetiros = data;
+          this.numeroMaximoRetirosTmp = data;
           this.forma.controls.f_lre_i.setValue(data);
           console.log(this.numeroMaximoRetiros);
           this.spinnerService.hide();
@@ -739,12 +753,15 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaFinValoresSlv()
       .subscribe(
         data => {
-          this.frecuenciaFinValoresSlv = data;
-          this.horaFinValores = this.frecuenciaFinValoresSlv.hora;
-          this.minutosFinValores = this.frecuenciaFinValoresSlv.minuto;
+          this.horaFinValoresTmp = data.hora;
+          this.minutosFinValoresTmp = data.minuto;
+
+          this.horaFinValores =  data.hora;
+          this.minutosFinValores = data.minuto;
+
           this.forma.controls.f_clb_h.setValue(this.horaFinValores);
           this.forma.controls.f_clb_m.setValue(this.minutosFinValores);
-          console.log(this.frecuenciaFinValoresSlv);
+
           this.spinnerService.hide();
         },
         error => {
@@ -759,6 +776,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.precioTituloMaximoParaCompensacion = data;
+          this.precioTituloMaximoParaCompensacionTmp = data;
           console.log(this.precioTituloMaximoParaCompensacion);
           this.forma.controls.f_pmc.setValue(this.precioTituloMaximoParaCompensacion);
           this.spinnerService.hide();
@@ -944,12 +962,15 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaRecepcionSlv()
       .subscribe(
         data => {
-          this.frecuenciaRecepcionSlv = data;
-          this.horaRecepcion = this.frecuenciaRecepcionSlv.hora;
-          this.minutosRecepcion = this.frecuenciaRecepcionSlv.minuto;
+          this.horaRecepcionTmp = data.hora;
+          this.minutosRecepcionTmp = data.minuto;
+
+          this.horaRecepcion = data.hora;;
+          this.minutosRecepcion = data.minuto;
+
           this.forma.controls.f_r_h.setValue(this.horaRecepcion);
           this.forma.controls.f_r_m.setValue(this.minutosRecepcion);
-          console.log(this.frecuenciaRecepcionSlv);
+
           this.spinnerService.hide();
         },
         error => {
@@ -963,13 +984,18 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaAperturaSlv()
       .subscribe(
         data => {
-          this.frecuenciaAperturaSlv = data;
-          this.horaApertura = this.frecuenciaAperturaSlv.hora;
-          this.minutosApertura = this.frecuenciaAperturaSlv.minuto;
-          this.forma.controls.f_a_h.setValue(this.horaApertura);
-          this.forma.controls.f_a_m.setValue(this.minutosApertura);
-          console.log(this.frecuenciaAperturaSlv);
-          this.spinnerService.hide();
+        this.frecuenciaAperturaSlv = data;
+
+        this.horaAperturaTmp = data.hora;
+        this.minutosAperturaTmp = data.minuto;
+
+        this.horaApertura =  data.hora;
+        this.minutosApertura = data.minuto;
+
+        this.forma.controls.f_a_h.setValue(this.horaApertura);
+        this.forma.controls.f_a_m.setValue(this.minutosApertura);
+
+        this.spinnerService.hide();
         },
         error => {
           this.errorHttp('getFrecuenciaAperturaSlv', '', error.mesage);
@@ -983,11 +1009,16 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaPreCierreSlv = data;
-          this.horaPreCierre = this.frecuenciaPreCierreSlv.hora;
-          this.minutosPreCierre = this.frecuenciaPreCierreSlv.minuto;
+
+          this.horaPreCierreTmp = data.hora;
+          this.minutosPreCierreTmp = data.minuto;
+  
+          this.horaPreCierre =  data.hora;
+          this.minutosPreCierre = data.minuto;
+  
           this.forma.controls.f_pc_h.setValue(this.horaPreCierre);
           this.forma.controls.f_pc_m.setValue(this.minutosPreCierre);
-          console.log(this.frecuenciaPreCierreSlv);
+  
           this.spinnerService.hide();
         },
         error => {
@@ -1002,11 +1033,16 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.frecuenciaCierreSlv = data;
-          this.horaCierre = this.frecuenciaCierreSlv.hora;
-          this.minutosCierre = this.frecuenciaCierreSlv.minuto;
+
+          this.horaCierreTmp = data.hora;
+          this.minutosCierreTmp = data.minuto;
+
+          this.horaCierre = data.hora;
+          this.minutosCierre = data.minuto;
+          
           this.forma.controls.f_c_h.setValue(this.horaCierre);
           this.forma.controls.f_c_m.setValue(this.minutosCierre);
-          console.log(this.frecuenciaCierreSlv);
+
           this.spinnerService.hide();
         },
         error => {
@@ -1096,8 +1132,9 @@ export class SlvComponent implements OnInit {
     this.compensadorService.getTimeoutRespuesta()
       .subscribe(
         data => {
-          this.timeoutRespuestaCompensador = data;
-          this.forma.controls.f_tc.setValue(data);
+          this.timeoutRespuestaCompensador = data / 1000;
+          this.timeoutRespuestaCompensadorTmp = data / 1000;
+          this.forma.controls.f_tc.setValue(data / 1000);
           console.log(this.timeoutRespuestaCompensador);
           this.spinnerService.hide();
         },

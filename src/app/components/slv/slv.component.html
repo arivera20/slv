@@ -87,7 +87,7 @@
                 <div class="control espacio">
                     <mat-checkbox formControlName="f_limitarRetirosDeEfectivo" (change)="change()"></mat-checkbox>&nbsp;&nbsp;
                     <mat-form-field>
-                        <input matInput formControlName="f_lre_i">
+                        <input matInput formControlName="f_lre_i" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     </mat-form-field>
                 </div>
             </div>
@@ -102,10 +102,10 @@
                 </div>
                 <div class="control">
                     <mat-form-field class="small">
-                        <input matInput type="number" formControlName="f_alb_h" min="0" max="23">
+                        <input matInput type="number" formControlName="f_alb_h" min="0" max="23" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     </mat-form-field>&nbsp;&nbsp;
                     <mat-form-field class="small">
-                        <input matInput type="number" formControlName="f_alb_m" min="0" max="59">
+                        <input matInput type="number" formControlName="f_alb_m" min="0" max="59" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     </mat-form-field>
                 </div>
             </div>
