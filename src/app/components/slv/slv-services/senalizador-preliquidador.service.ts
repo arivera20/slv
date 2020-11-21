@@ -148,7 +148,7 @@ export class SenalizadorPreliquidadorService {
     return this.http.get('slv-preliquidador/api/senalizadorPreliquidador/updateFrecuenciaCierreSlv/' + hora + '/' + minuto + '/' + usuario, { headers });
   }
 
-  public updateFrecuenciaDiasLiq(diasLiquidacion: string, usuario: string): Observable<any> {
+  public updateFrecuenciaDiasLiq(diasLiquidacion: String, usuario: string): Observable<any> {
     console.log('SERVICIO - senalizadorPreliquidador - updateFrecuenciaDiasLiq');
     const headers = new HttpHeaders().append('header', 'value');
     // tslint:disable-next-line: max-line-length

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -174,15 +174,13 @@ export class SlvComponent implements OnInit {
 
 
   change(): void {
-    console.log('Cambiando');
-    if (this.isDisabledCheckbox) {
-      this.isDisabledCheckbox = false;
-      this.forma.controls.f_lre_i.disable();
+    console.log('Cambiando ' + this.isDisabledCheckbox);
+    console.log(this.forma.controls.f_limitarRetirosDeEfectivo.value);
+    if (this.forma.controls.f_limitarRetirosDeEfectivo.value) {
+      this.forma.controls.f_lre_i.enable();    
     } else {
-      this.isDisabledCheckbox = true;
-      this.forma.controls.f_lre_i.enable();
+      this.forma.controls.f_lre_i.disable();
     }
-    console.log(this.isDisabledCheckbox);
   }
 
   /* Metodo para crear el Fomulario */
@@ -287,10 +285,7 @@ export class SlvComponent implements OnInit {
     }
 
     console.log(this.diasLiqTmp);
-    if (this.diasLiqTmp != this.forma.controls.f_c_h.value) {
-      console.log('Entro a modificar dias');
-      // this.modificarFrecuenciaDiasLiq('', user);
-    }
+
 
     if (this.precioTituloMaximoParaCompensacionTmp != this.forma.controls.f_pmc.value) {
       this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, user);
@@ -302,19 +297,22 @@ export class SlvComponent implements OnInit {
        this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value * 1000, user);
     }
 
+    this.makeDiasLiqStr(user);
   }
 
-  makeDiasLiqStr():void
+  makeDiasLiqStr(user: string):void
 			{
+        
 				let addComa:boolean=false;
 				let coma:String=new String(",");
-				this.diasLiq = new String("");
-				if (this.isLunesActivo)
+        this.diasLiq = new String("");
+        console.log(this.diasLiq);
+				if (this.forma.controls.f_lu.value)
 				{
 					this.diasLiq = this.diasLiq + 'MON';
 					addComa=true;
 				}
-				if (this.isMartesActivo)
+				if (this.forma.controls.f_ma.value)
 				{
 					if (addComa)
 					{
@@ -326,66 +324,72 @@ export class SlvComponent implements OnInit {
 						addComa=true;
 					}
 				}
-				if (this.isMiercolesActivo)
+				if (this.forma.controls.f_mi.value)
 				{
 					if (addComa)
 					{
-						this.diasLiq=this.diasLiq + ',TUE'coma + new String("WED");
+						this.diasLiq=this.diasLiq + ',WED';
 					}
 					else
 					{
-						diasLiq=diasLiq + new String("WED");
+						this.diasLiq = this.diasLiq + 'WED';
 						addComa=true;
 					}
 				}
-				if (this.isJuevesActivo)
+				if (this.forma.controls.f_ju.value)
 				{
 					if (addComa)
 					{
-						diasLiq=diasLiq + coma + new String("THU");
+						this.diasLiq=this.diasLiq + ',THU';
 					}
 					else
 					{
-						diasLiq=diasLiq + new String("THU");
-						addComa=new Boolean(true);
+						this.diasLiq=this.diasLiq + 'THU';
+						addComa=true;
 					}
 				}
-				if (this.isViernesActivo)
+				if (this.forma.controls.f_vi.value)
 				{
 					if (addComa)
 					{
-						diasLiq=diasLiq + coma + new String("FRI");
+						this.diasLiq=this.diasLiq + ',FRI';
 					}
 					else
 					{
-						diasLiq=diasLiq + new String("FRI");
-						addComa=new Boolean(true);
+						this.diasLiq=this.diasLiq + 'FRI';
+						addComa=true;
 					}
-				}
-				if (this.isSabadoActivo)
+        }
+				if (this.forma.controls.f_sa.value)
 				{
 					if (addComa)
 					{
-						diasLiq=diasLiq + coma + new String("SAT");
+						this.diasLiq=this.diasLiq + ',SAT';
 					}
 					else
 					{
-						diasLiq=diasLiq + new String("SAT");
-						addComa=new Boolean(true);
+						this.diasLiq=this.diasLiq + 'SAT';
+						addComa=true;
 					}
 				}
-				if (this.isDomingoActivo)
+				if (this.forma.controls.f_do.value)
 				{
 					if (addComa)
 					{
-						diasLiq=diasLiq + coma + new String("SUN");
+						this.diasLiq=this.diasLiq + ',SUN';
 					}
 					else
 					{
-						diasLiq=diasLiq + new String("SUN");
-						addComa=new Boolean(true);
+						this.diasLiq=this.diasLiq + 'SUN';
+						addComa=true;
 					}
-				}
+        }
+        console.log('tEMP ' +this.diasLiqTmp);
+        console.log(this.diasLiq);
+        if (this.diasLiqTmp != this.diasLiq) {
+          console.log('Entro a modificar dias');
+          this.modificarFrecuenciaDiasLiq(this.diasLiq , user);
+        }
 			}
 
 
@@ -605,7 +609,7 @@ export class SlvComponent implements OnInit {
         });
   }
 
-  private modificarFrecuenciaDiasLiq(diasLiquidacion: string, usuario: string): any {
+  private modificarFrecuenciaDiasLiq(diasLiquidacion: String, usuario: string): any {
     this.spinnerService.show();
     this.senalizadorService.updateFrecuenciaDiasLiq(diasLiquidacion, usuario)
       .subscribe(
@@ -774,15 +778,19 @@ export class SlvComponent implements OnInit {
         data => {
           this.isLimitarRetirosTmp = data;
           this.forma.controls.f_limitarRetirosDeEfectivo.setValue(data);
+          console.log('#####################');
+          console.log(data);
           console.log('isDisabledCheckbox');
           this.isDisabledCheckbox = data;
           if (this.isDisabledCheckbox) {
+            console.log('habilitado');
             this.forma.controls.f_lre_i.enable();
           } else {
+            console.log('deshabilitado');
             this.forma.controls.f_lre_i.disable();
           }
           console.log(this.isDisabledCheckbox);
-          console.log(this.isLimitarRetiros);
+          //console.log(this.isLimitarRetiros);
           this.spinnerService.hide();
         },
         error => {
@@ -1278,6 +1286,8 @@ export class SlvComponent implements OnInit {
       this.classDisabledAccion = 'div-disabled-accion';
       this.isDisabled = false;
       this.aplicarCambiosImg = 'apply.png';
+
+      this.change();
     } else {
       this.editButton = true;
       this.forma.disable();
