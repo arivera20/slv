@@ -276,17 +276,17 @@
         <div class="title new margen"><img src="assets/img/slv/wizard.png">Acciones</div>
         <hr>
         <div class="container-box" [className]="classDisabled">
-            <div class="box"><img src="assets/img/slv/{{finDiaImg}}"><span>Liq. de fin de día</span></div>
-            <div [className]="classDisabledAccion"><img src="assets/img/slv/aperturaPreLiqFinDia_Disabled.png"><span>Apertura pre Liq. de fin de día</span></div>
-            <div [className]="classDisabledAccion"><img src="assets/img/slv/cache_disabled.png"><span>Forzar ciclo de liq.</span></div>
-            <div class="box"><img src="assets/img/slv/{{reanudarImg}}"><span>Reanudar SVL.</span></div>
-            <div class="box"><img src="assets/img/slv/{{desactivarImg}}"><span>Desactivar comp.</span></div>
-            <div class="box"><img src="assets/img/slv/{{purgarImg}}"><span>Purgar y reencolar.</span></div>
-            <div [className]="classDisabledAccion"><img src="assets/img/slv/aperturaPostLiqFinDia_Disabled.png"><span>Apertura Post liq. de fin de día</span></div>
+            <div class="box" (click)="confirmLiquidacionFinDeDia()"><img src="assets/img/slv/{{finDiaImg}}"><span>Liq. de fin de día</span></div>
+            <div [className]="classDisabledAccion" (click)="confirmAperturaPreLiqFinDia()"><img src=" assets/img/slv/aperturaPreLiqFinDia_Disabled.png"><span>Apertura pre Liq. de fin de día</span></div>
+            <div [className]="classDisabledAccion" (click)="iniciarCicloLiquidacionAsincrono()"><img src="assets/img/slv/cache_disabled.png"><span>Forzar ciclo de liq.</span></div>
+            <div class="box " (click)="pauseOrStopSlv()"><img src="assets/img/slv/{{slvPlay}}"><span>{{pauseOrStopSlvButtonLabel}}</span></div>
+            <div class="box " (click)="enableOrDisableCompensador()"><img src="assets/img/slv/{{compensadorActive}}"><span>{{enableOrDisableCompensadorButtonLabel}}</span></div>
+            <div class="box " (click)="resetPreliquidador()"><img src="assets/img/slv/{{purgarImg}}"><span>Purgar y reencolar.</span></div>
+            <div [className]="classDisabledAccion" (click)="confirmAperturaPostLiqFinDia()"><img src="assets/img/slv/aperturaPostLiqFinDia_Disabled.png"><span>Apertura Post liq. de fin de día</span></div>
         </div>
-        <button mat-stroked-button class="btn-edit" (click)="edit()"><img src="assets/img/slv/{{editButtonImg}}">&nbsp;&nbsp;{{labelEditar}}</button>
+        <button mat-stroked-button class="btn-edit " (click)="edit() "><img src="assets/img/slv/{{editButtonImg}} ">&nbsp;&nbsp;{{labelEditar}}</button>
         <!--
-        <mat-slider thumbLabel min="0" max="10" step="1" tickInterval="2"></mat-slider>
+        <mat-slider thumbLabel min="0 " max="10 " step="1 " tickInterval="2 "></mat-slider>
         -->
         <br>
         <br>
@@ -294,7 +294,7 @@
     </div>
 
     <!-- SECCION BOTONES -->
-    <button mat-stroked-button class="btn-left" (click)="refresh()"><img src="assets/img/slv/reload_page.png">&nbsp;&nbsp;Actualizar Info</button> &nbsp;&nbsp;
-    <button mat-stroked-button class="btn" (click)="applyChanges()" [disabled]="isDisabled"><img src="assets/img/slv/{{aplicarCambiosImg}}">&nbsp;&nbsp;Aplicar Cambios</button>
-    <img class="img-version" (click)="viewVersion()" src="assets/img/slv/about_big.png">
+    <button mat-stroked-button class="btn-left " (click)="refresh() "><img src="assets/img/slv/reload_page.png ">&nbsp;&nbsp;Actualizar Info</button> &nbsp;&nbsp;
+    <button mat-stroked-button class="btn " (click)="applyChanges() " [disabled]="isDisabled "><img src="assets/img/slv/{{aplicarCambiosImg}} ">&nbsp;&nbsp;Aplicar Cambios</button>
+    <img class="img-version " (click)="viewVersion() " src="assets/img/slv/about_big.png ">
 </div>

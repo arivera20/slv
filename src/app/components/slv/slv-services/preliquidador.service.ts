@@ -10,6 +10,54 @@ export class PreliquidadorService {
 
   constructor(private http: HttpClient, private appSettings: AppSettings) { }
 
+  public liquidacionFinDeDia(usuario: string): Observable<boolean> {
+    console.log('SERVICIO - preliquidador - liquidacionFinDeDia');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get<boolean>('slv-preliquidador/api/preliquidador/liquidacionFinDeDia/' + usuario, { headers });
+  }
+
+  public procesarAperturaPreLiqFinDia(usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - procesarAperturaPreLiqFinDia');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/procesarAperturaPreLiqFinDia/' + usuario, { headers });
+  }
+
+  public iniciarCicloLiquidacionAsincrono(usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - iniciarCicloLiquidacionAsincrono');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/iniciarCicloLiquidacionAsincrono/' + usuario, { headers });
+  }
+
+  public pausarPreliquidador(usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - pausarPreliquidador');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/pausarPreliquidador/' + usuario, { headers });
+  }
+
+  public reanudarPreliquidador(usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - reanudarPreliquidador');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/reanudarPreliquidador/' + usuario, { headers });
+  }
+
+  public resetPreliquidador(usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - resetPreliquidador');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/resetPreliquidador/' + usuario, { headers });
+  }
+
+  public procesarAperturaPostLiqFinDia(usuario: string): Observable<any> {
+    console.log('SERVICIO - preliquidador - procesarAperturaPostLiqFinDia');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/preliquidador/procesarAperturaPostLiqFinDia/' + usuario, { headers });
+  }
 
   public modificarPrecioTituloMaximoParaCompensacion(umbral: string, usuario: string): Observable<any> {
     console.log('SERVICIO - preliquidador - modificarPrecioTituloMaximoParaCompensacion');
@@ -193,6 +241,9 @@ export class PreliquidadorService {
     return this.http.get<boolean>
       (this.appSettings.URL_preliquidador_isDiaInhabil, this.appSettings.httpOptionsJson);
   }
+
+
+
 
 
   /*

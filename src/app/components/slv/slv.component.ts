@@ -112,6 +112,18 @@ export class SlvComponent implements OnInit {
   precioTituloMaximoParaCompensacionTmp: number;  // 16 Precio maximo para compensacion ($)
   timeoutRespuestaCompensadorTmp: number;         // 17 Timeout del compensador (segundos)
 
+  /** VARIABLES PARA ACCIONES */
+  user: string;
+  isSlvCerrado: boolean;
+  isLiquidacionFinDeDiaActivada: boolean;
+  isSlvRunning: boolean;
+  isCompensadorActive: boolean;
+  isDiaInhabil: boolean;
+  slvPlay = 'slvRunning.png';
+  pauseOrStopSlvButtonLabel = '';
+  enableOrDisableCompensadorButtonLabel = '';
+  compensadorActive = '';
+
 
   refresh(): void {
     this.getVersion();
@@ -138,9 +150,9 @@ export class SlvComponent implements OnInit {
     this.getNumeroInstruccionesRetirosEfectivo();    // 21 Retiros de Efectivo
     this.getMontoTotalActualInstrucciones();         // 22 Monto total actual acumulado de operaciones ($)
     this.getNumeroAdaptableMaxInstrucciones();       // 23 Valor actual de gatillo dinamico:
-    this.isLiquidacionFinDeDiaActivada();
-    this.isSlvCerrado();
-    this.isDiaInhabil();
+    this.isLiquidacionFinDeDiaActivada_M();
+    this.isSlvCerrado_M();
+    this.isDiaInhabil_M();
     this.getEstadoSlv();
     this.isCompensadorActivo();
   }
@@ -157,6 +169,7 @@ export class SlvComponent implements OnInit {
   ngOnInit(): void {
     this.forma.disable();
     this.editable = false;
+    this.user = this.appStorageService.getUserName();
     this.refresh();
     // this.llamar();
   }
@@ -178,7 +191,7 @@ export class SlvComponent implements OnInit {
     console.log('Cambiando ' + this.isDisabledCheckbox);
     console.log(this.forma.controls.f_limitarRetirosDeEfectivo.value);
     if (this.forma.controls.f_limitarRetirosDeEfectivo.value) {
-      this.forma.controls.f_lre_i.enable();    
+      this.forma.controls.f_lre_i.enable();
     } else {
       this.forma.controls.f_lre_i.disable();
     }
@@ -227,190 +240,169 @@ export class SlvComponent implements OnInit {
 
   applyChanges(): void {
     console.log('Cambios');
-    const user = this.appStorageService.getUserName();
+
     if (this.montoTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeMonto.value) {
-      this.modificarMontoTotalMaxInstrucciones(this.forma.controls.f_gatilloDeMonto.value, user);
+      this.modificarMontoTotalMaxInstrucciones(this.forma.controls.f_gatilloDeMonto.value, this.user);
       this.statusActualizar = true;
     }
 
-    if (this.numeroTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeNumeroDeOps.value) {     
-      this.modificarNumeroTotalMaxInstrucciones(this.forma.controls.f_gatilloDeNumeroDeOps.value, user);
+    if (this.numeroTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeNumeroDeOps.value) {
+      this.modificarNumeroTotalMaxInstrucciones(this.forma.controls.f_gatilloDeNumeroDeOps.value, this.user);
       this.statusActualizar = true;
     }
 
-    if (this.frecuenciaSlvTmp != this.forma.controls.f_gatilloDeTiempo.value) {     
-      this.modificarFrecuenciaSlv(this.forma.controls.f_gatilloDeTiempo.value, user);
+    if (this.frecuenciaSlvTmp != this.forma.controls.f_gatilloDeTiempo.value) {
+      this.modificarFrecuenciaSlv(this.forma.controls.f_gatilloDeTiempo.value, this.user);
       this.statusActualizar = true;
-    }  
+    }
     if (this.frecuenciaPurgadoSlvTmp != this.forma.controls.f_gatilloDePurgadoAutomatico.value) {
-      this.modificarFrecuenciaPurgadoSlv(this.forma.controls.f_gatilloDePurgadoAutomatico.value, user);
-      this.statusActualizar = true;
-    }
-       
-    if (this.isGatilloDinamicoActivoTmp != this.forma.controls.f_gatilloDinamicoActivo.value) {
-      this.modificarGatilloDinamicoActivo(this.forma.controls.f_gatilloDinamicoActivo.value, user);
+      this.modificarFrecuenciaPurgadoSlv(this.forma.controls.f_gatilloDePurgadoAutomatico.value, this.user);
       this.statusActualizar = true;
     }
 
-    if (this.isReencoladoAutomaticoTmp != this.forma.controls.f_reencoladoAutomaticoActivo.value) {    
-      this.modificarReencoladoAutomatico(this.forma.controls.f_reencoladoAutomaticoActivo.value, user);
+    if (this.isGatilloDinamicoActivoTmp != this.forma.controls.f_gatilloDinamicoActivo.value) {
+      this.modificarGatilloDinamicoActivo(this.forma.controls.f_gatilloDinamicoActivo.value, this.user);
       this.statusActualizar = true;
     }
-  
-    if (this.isLimitarRetirosTmp != this.forma.controls.f_limitarRetirosDeEfectivo.value) {    
-      this.modificarLimitarRetiros(this.forma.controls.f_limitarRetirosDeEfectivo.value, user);
+
+    if (this.isReencoladoAutomaticoTmp != this.forma.controls.f_reencoladoAutomaticoActivo.value) {
+      this.modificarReencoladoAutomatico(this.forma.controls.f_reencoladoAutomaticoActivo.value, this.user);
+      this.statusActualizar = true;
+    }
+
+    if (this.isLimitarRetirosTmp != this.forma.controls.f_limitarRetirosDeEfectivo.value) {
+      this.modificarLimitarRetiros(this.forma.controls.f_limitarRetirosDeEfectivo.value, this.user);
       this.statusActualizar = true;
     }
 
     if (this.numeroMaximoRetirosTmp != this.forma.controls.f_lre_i.value) {
-      this.modificarNumeroMaximoRetiros(this.forma.controls.f_lre_i.value, user);
+      this.modificarNumeroMaximoRetiros(this.forma.controls.f_lre_i.value, this.user);
       this.statusActualizar = true;
     }
 
     // tslint:disable-next-line: max-line-length
-    if ((this.horaInicioValoresTmp != this.forma.controls.f_alb_h.value) || (this.minutosInicioValoresTmp != this.forma.controls.f_alb_m.value)) {    
-      this.modificarFrecuenciaInicioValoresSlv(this.forma.controls.f_alb_h.value, this.forma.controls.f_alb_m.value, user);
+    if ((this.horaInicioValoresTmp != this.forma.controls.f_alb_h.value) || (this.minutosInicioValoresTmp != this.forma.controls.f_alb_m.value)) {
+      this.modificarFrecuenciaInicioValoresSlv(this.forma.controls.f_alb_h.value, this.forma.controls.f_alb_m.value, this.user);
       this.statusActualizar = true;
     }
 
     // tslint:disable-next-line: max-line-length
     if ((this.horaFinValoresTmp != this.forma.controls.f_clb_h.value) || (this.minutosFinValoresTmp != this.forma.controls.f_clb_m.value)) {
-      this.modificarFrecuenciaFinValoresSlv(this.forma.controls.f_clb_h.value, this.forma.controls.f_clb_m.value, user);
+      this.modificarFrecuenciaFinValoresSlv(this.forma.controls.f_clb_h.value, this.forma.controls.f_clb_m.value, this.user);
       this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaRecepcionTmp != this.forma.controls.f_r_h.value) || (this.minutosRecepcionTmp != this.forma.controls.f_r_m.value)) {
-      this.modificarFrecuenciaRecepcionSlv(this.forma.controls.f_r_h.value, this.forma.controls.f_r_m.value, user);
+      this.modificarFrecuenciaRecepcionSlv(this.forma.controls.f_r_h.value, this.forma.controls.f_r_m.value, this.user);
       this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaAperturaTmp != this.forma.controls.f_a_h.value) || (this.minutosAperturaTmp != this.forma.controls.f_a_m.value)) {
-      this.modificarFrecuenciaAperturaSlv(this.forma.controls.f_a_h.value, this.forma.controls.f_a_m.value, user);
+      this.modificarFrecuenciaAperturaSlv(this.forma.controls.f_a_h.value, this.forma.controls.f_a_m.value, this.user);
       this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaPreCierreTmp != this.forma.controls.f_pc_h.value) || (this.minutosPreCierreTmp != this.forma.controls.f_pc_m.value)) {
-      this.modificarFrecuenciaPreCierreSlv(this.forma.controls.f_pc_h.value, this.forma.controls.f_pc_m.value, user);
+      this.modificarFrecuenciaPreCierreSlv(this.forma.controls.f_pc_h.value, this.forma.controls.f_pc_m.value, this.user);
       this.statusActualizar = true;
     }
     // tslint:disable-next-line: max-line-length
     if ((this.horaCierreTmp != this.forma.controls.f_c_h.value) || (this.minutosCierreTmp != this.forma.controls.f_c_m.value)) {
-      this.modificarFrecuenciaCierreSlv(this.forma.controls.f_c_h.value, this.forma.controls.f_c_m.value, user);
+      this.modificarFrecuenciaCierreSlv(this.forma.controls.f_c_h.value, this.forma.controls.f_c_m.value, this.user);
       this.statusActualizar = true;
     }
 
     if (this.precioTituloMaximoParaCompensacionTmp != this.forma.controls.f_pmc.value) {
-      this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, user);
+      this.modificarPrecioTituloMaximoParaCompensacion(this.forma.controls.f_pmc.value, this.user);
       this.statusActualizar = true;
     }
 
     if (this.timeoutRespuestaCompensadorTmp != this.forma.controls.f_tc.value) {
-       this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value * 1000, user);
-       this.statusActualizar = true;
-      }
+      this.modificarTimeoutRespuesta(this.forma.controls.f_tc.value * 1000, this.user);
+      this.statusActualizar = true;
+    }
 
-    this.makeDiasLiqStr(user);
+    this.makeDiasLiqStr(this.user);
   }
 
-  makeDiasLiqStr(user: string):void
-			{
-        
-				let addComa:boolean=false;
-				let coma:String=new String(",");
-        this.diasLiq = new String("");
-        console.log(this.diasLiq);
-				if (this.forma.controls.f_lu.value)
-				{
-					this.diasLiq = this.diasLiq + 'MON';
-					addComa=true;
-				}
-				if (this.forma.controls.f_ma.value)
-				{
-					if (addComa)
-					{
-						this.diasLiq= this.diasLiq + ',TUE';
-					}
-					else
-					{
-						this.diasLiq=this.diasLiq + 'TUE';
-						addComa=true;
-					}
-				}
-				if (this.forma.controls.f_mi.value)
-				{
-					if (addComa)
-					{
-						this.diasLiq=this.diasLiq + ',WED';
-					}
-					else
-					{
-						this.diasLiq = this.diasLiq + 'WED';
-						addComa=true;
-					}
-				}
-				if (this.forma.controls.f_ju.value)
-				{
-					if (addComa)
-					{
-						this.diasLiq=this.diasLiq + ',THU';
-					}
-					else
-					{
-						this.diasLiq=this.diasLiq + 'THU';
-						addComa=true;
-					}
-				}
-				if (this.forma.controls.f_vi.value)
-				{
-					if (addComa)
-					{
-						this.diasLiq=this.diasLiq + ',FRI';
-					}
-					else
-					{
-						this.diasLiq=this.diasLiq + 'FRI';
-						addComa=true;
-					}
-        }
-				if (this.forma.controls.f_sa.value)
-				{
-					if (addComa)
-					{
-						this.diasLiq=this.diasLiq + ',SAT';
-					}
-					else
-					{
-						this.diasLiq=this.diasLiq + 'SAT';
-						addComa=true;
-					}
-				}
-				if (this.forma.controls.f_do.value)
-				{
-					if (addComa)
-					{
-						this.diasLiq=this.diasLiq + ',SUN';
-					}
-					else
-					{
-						this.diasLiq=this.diasLiq + 'SUN';
-						addComa=true;
-					}
-        }
-        console.log('tEMP ' +this.diasLiqTmp);
-        console.log(this.diasLiq);
-        if (this.diasLiqTmp != this.diasLiq) {
-          this.statusActualizar = true;
-          this.modificarFrecuenciaDiasLiq(this.diasLiq , user);
-        }
+  makeDiasLiqStr(user: string): void {
 
-        if(this.statusActualizar){
-          Swal.fire({
-            icon: 'success',
-            title: 'Actualización de información con éxito',
-            text: ''
-          });
-        }
-			}
+    let addComa = false;
+    this.diasLiq = '';
+    console.log(this.diasLiq);
+    if (this.forma.controls.f_lu.value) {
+      this.diasLiq = this.diasLiq + 'MON';
+      addComa = true;
+    }
+    if (this.forma.controls.f_ma.value) {
+      if (addComa) {
+        this.diasLiq = this.diasLiq + ',TUE';
+      }
+      else {
+        this.diasLiq = this.diasLiq + 'TUE';
+        addComa = true;
+      }
+    }
+    if (this.forma.controls.f_mi.value) {
+      if (addComa) {
+        this.diasLiq = this.diasLiq + ',WED';
+      }
+      else {
+        this.diasLiq = this.diasLiq + 'WED';
+        addComa = true;
+      }
+    }
+    if (this.forma.controls.f_ju.value) {
+      if (addComa) {
+        this.diasLiq = this.diasLiq + ',THU';
+      }
+      else {
+        this.diasLiq = this.diasLiq + 'THU';
+        addComa = true;
+      }
+    }
+    if (this.forma.controls.f_vi.value) {
+      if (addComa) {
+        this.diasLiq = this.diasLiq + ',FRI';
+      }
+      else {
+        this.diasLiq = this.diasLiq + 'FRI';
+        addComa = true;
+      }
+    }
+    if (this.forma.controls.f_sa.value) {
+      if (addComa) {
+        this.diasLiq = this.diasLiq + ',SAT';
+      }
+      else {
+        this.diasLiq = this.diasLiq + 'SAT';
+        addComa = true;
+      }
+    }
+    if (this.forma.controls.f_do.value) {
+      if (addComa) {
+        this.diasLiq = this.diasLiq + ',SUN';
+      }
+      else {
+        this.diasLiq = this.diasLiq + 'SUN';
+        addComa = true;
+      }
+    }
+    console.log('tEMP ' + this.diasLiqTmp);
+    console.log(this.diasLiq);
+    if (this.diasLiqTmp != this.diasLiq) {
+      this.statusActualizar = true;
+      this.modificarFrecuenciaDiasLiq(this.diasLiq, user);
+    }
+
+    if (this.statusActualizar) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Actualización de información con éxito',
+        text: ''
+      });
+    }
+  }
 
 
   viewVersion(): void {
@@ -421,7 +413,347 @@ export class SlvComponent implements OnInit {
     });
   }
 
+  /*************************************************************
+   ***  LIQUIDACION FIN DE DIA  ********************************
+   *************************************************************/
+  confirmLiquidacionFinDeDia(): void {
+    Swal.fire({
+      title: 'Estas seguro que desea ejecutar la liq. fin de dia?',
+      text: 'Confirm liq. fin de dia',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Si',
 
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.liquidacionFinDeDia();
+      }
+    });
+  }
+
+  liquidacionFinDeDia(): void {
+    console.log('liquidacionFinDeDia');
+    // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+    this.producerControlSlv();
+    if (!this.isLiquidacionFinDeDiaActivada) {
+      this.preliquidadorService.liquidacionFinDeDia(this.user)
+        .subscribe(
+          data => {
+            console.log('======= Se modifico con exito - Gatillo de monto');
+            this.isLiquidacionFinDeDiaActivada = data;
+            if (this.isLiquidacionFinDeDiaActivada) {
+              // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+            }
+            else {
+              // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
+            }
+          },
+          error => {
+            this.errorHttp('modificarMontoTotalMaxInstrucciones', '', error.mesage);
+          });
+
+    }
+    else {
+      //fault("Imposible ejecutar de nuevo la liquidacion de fin de dia.");
+      Swal.fire({
+        icon: 'info',
+        title: '',
+        text: 'Imposible ejecutar de nuevo la liquidacion de fin de dia.'
+      });
+    }
+
+  }
+
+  producerControlSlv(): void {
+    this.senalizadorService.getSlvTimeInMillis().subscribe(
+      data => {
+        console.log('======= getSlvTimeInMillis');
+        this.processSlvTimeInMillis(data);
+      },
+      error => {
+        this.errorHttp('getSlvTimeInMillis', '', error.mesage);
+      });
+  }
+
+  processSlvTimeInMillis(slvTime: number): void {
+    /*
+    var message: AsyncMessage = new AsyncMessage();
+    this.dateHraPreCierre.hours = this.horaPreCierre;
+    dateHraPreCierre.minutes = this.minutosPreCierre;
+    dateHraCierre.hours = this.horaCierre;
+    dateHraCierre.minutes = this.minutosCierre;
+    dateHraRecepcion.hours = this.horaRecepcion;
+    dateHraRecepcion.minutes = this.minutosRecepcion;
+    dateHraApertura.hours = this.horaApertura;
+    dateHraApertura.minutes = this.minutosApertura;
+
+    var controlSlv: ControlSlv = new ControlSlv();
+    controlSlv.setHraPreCierre(dateHraPreCierre);
+    controlSlv.setHraCierre(dateHraCierre);
+    controlSlv.setHraRecepcion(dateHraRecepcion);
+    controlSlv.setHraApertura(dateHraApertura);
+    controlSlv.setSlvTimeInMillis(slvTime);
+    if (this.isLiquidacionFinDeDiaActivada) {
+      controlSlv.setLiqFinDeDia(true);
+    }
+    message.body = controlSlv.convertToXML();
+    //Alert.show(isSlvCerrado.toString(), 'Box', mx.controls.Alert.OK);
+    producerSlvTopic.send(message);
+    */
+  }
+
+  /*************************************************************
+   ***  APERTURA PRE LIQ. DE FIN DE DIA  ***********************
+   *************************************************************/
+  confirmAperturaPreLiqFinDia(): void {
+    if (!this.isSlvRunning) {
+      // Alert.show("Estas seguro que desea abrir la pre liq. fin de dia?",
+      Swal.fire({
+        title: 'Estas seguro que desea abrir la pre liq. fin de dia?',
+        text: 'Confirm Apertura pre liq. fin de dia',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No',
+        confirmButtonText: 'Si',
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.aperturaPreLiqFinDia();
+        }
+      });
+    }
+    else {
+      // fault("El SLV debe estar pausado para poder ejecutar esta accion.");
+      Swal.fire({
+        icon: 'info',
+        title: '',
+        text: 'El SLV debe estar pausado para poder ejecutar esta accion.'
+      });
+    }
+  }
+
+  aperturaPreLiqFinDia(): void {
+    if (this.isLiquidacionFinDeDiaActivada) {
+      this.preliquidadorService.procesarAperturaPreLiqFinDia(this.user)
+        .subscribe(
+          data => {
+            console.log('### procesarAperturaPreLiqFinDia');
+          },
+          error => {
+            this.errorHttp('procesarAperturaPreLiqFinDia', '', error.mesage);
+          });
+    }
+    else {
+      // fault("Imposible ejecutar la apertura preliquidacion de fin de dia.");
+      Swal.fire({
+        icon: 'info',
+        title: '',
+        text: 'Imposible ejecutar la apertura preliquidacion de fin de dia.'
+      });
+    }
+  }
+
+  /*************************************************************
+   ***  FORZAR CICLO DE LIQ.  **********************************
+   *************************************************************/
+
+  iniciarCicloLiquidacionAsincrono(): void {
+    this.preliquidadorService.iniciarCicloLiquidacionAsincrono(this.user)
+      .subscribe(
+        data => {
+          console.log('### iniciarCicloLiquidacionAsincrono');
+        },
+        error => {
+          this.errorHttp('iniciarCicloLiquidacionAsincrono', '', error.mesage);
+        });
+  }
+
+  /*************************************************************
+   ***  Pausar SLV o Reanudar SLV  *****************************
+   *************************************************************/
+  pauseOrStopSlv(): void {
+    this.senalizadorService.getEstadoSlv().subscribe(
+      data => {
+        console.log('### getEstadoSlv');
+        this.configPauseOrResumeSlvButton(data);
+      },
+      error => {
+        this.errorHttp('getEstadoSlv', '', error.mesage);
+      });
+
+    if (this.isSlvRunning) {
+      this.preliquidadorService.pausarPreliquidador(this.user).subscribe(
+        data => {
+          console.log('### pausarPreliquidador');
+        },
+        error => {
+          this.errorHttp('pausarPreliquidador', '', error.mesage);
+        });
+    }
+    else {
+      this.preliquidadorService.reanudarPreliquidador(this.user).subscribe(
+        data => {
+          console.log('### reanudarPreliquidador');
+        },
+        error => {
+          this.errorHttp('reanudarPreliquidador', '', error.mesage);
+        });
+    }
+    this.senalizadorService.getEstadoSlv().subscribe(
+      data => {
+        console.log('### getEstadoSlv');
+        this.configPauseOrResumeSlvButton(data);
+      },
+      error => {
+        this.errorHttp('getEstadoSlv', '', error.mesage);
+      });
+  }
+
+  configPauseOrResumeSlvButton(isRunning: boolean): void {
+    this.isSlvRunning = isRunning;
+    if (this.isSlvRunning) {
+      this.slvPlay = 'slvDetenido.png';
+      // pauseOrStopSlvButton.setStyle("icon", slvStop);
+      this.pauseOrStopSlvButtonLabel = 'Pausar SLV';
+    }
+    else {
+      this.slvPlay = 'slvRunning.png';
+      // pauseOrStopSlvButton.setStyle("icon", slvPlay);
+      this.pauseOrStopSlvButtonLabel = 'Reanudar SLV';
+    }
+  }
+  /*
+    [Embed("img/slvDetenido.png")]
+        [Bindable]
+        public var slvStop:Class;
+  
+        [Embed("img/slvRunning.png")]
+        [Bindable]
+        public var slvPlay:Class;
+  */
+
+
+  /*************************************************************
+   ***  Desactivar comp. o  Activar comp. **********************
+   *************************************************************/
+  enableOrDisableCompensador(): void {
+    if (this.isCompensadorActive) {
+      this.compensadorService.desactivarCompensador(this.user).subscribe(
+        data => {
+          console.log('### desactivarCompensador');
+        },
+        error => {
+          this.errorHttp('desactivarCompensador', '', error.mesage);
+        });
+      this.isCompensadorActive = false;
+    }
+    else {
+      this.compensadorService.activarCompensador(this.user).subscribe(
+        data => {
+          console.log('### activarCompensador');
+        },
+        error => {
+          this.errorHttp('activarCompensador', '', error.mesage);
+        });
+      this.isCompensadorActive = true;
+    }
+    this.configEnableOrDisableCompensadorButton(this.isCompensadorActive);
+  }
+
+  configEnableOrDisableCompensadorButton(isActive: boolean): void {
+    this.isCompensadorActive = isActive;
+    if (this.isCompensadorActive) {
+      //  enableOrDisableCompensadorButton.setStyle("icon", compensadorInactive);
+      this.compensadorActive = 'compensadorInactivo.png';
+      this.enableOrDisableCompensadorButtonLabel = 'Desactivar comp.';
+    }
+    else {
+      this.compensadorActive = 'compensadorActivo.png';
+      //  enableOrDisableCompensadorButton.setStyle("icon", compensadorActive);
+      this.enableOrDisableCompensadorButtonLabel = 'Activar comp.';
+    }
+  }
+/*
+  [Embed("img/compensadorInactivo.png")]
+  [Bindable]
+  public var compensadorInactive:Class;
+
+  [Embed("img/compensadorActivo.png")]
+  [Bindable]
+  public var compensadorActive:Class;
+*/
+  /*************************************************************
+   ***  Purgar y reencolar  ************************************
+   *************************************************************/
+  resetPreliquidador(): void {
+    // senalizadorPreliquidador.getEstadoSlv();
+    this.senalizadorService.getEstadoSlv().subscribe(
+      data => {
+        console.log('### getEstadoSlv');
+        this.configPauseOrResumeSlvButton(data);
+      },
+      error => {
+        this.errorHttp('getEstadoSlv', '', error.mesage);
+      });
+    if (!this.isSlvRunning) {
+      // preliquidador.resetPreliquidador()
+      this.preliquidadorService.resetPreliquidador(this.user).subscribe(
+        data => {
+          console.log('### pausarPreliquidador');
+        },
+        error => {
+          this.errorHttp('pausarPreliquidador', '', error.mesage);
+        });
+    }
+    else {
+      // fault("Imposible reestablecer el SLV. Debe estar pausado para poder ejecutar esta accion.");
+    }
+  }
+
+  /*************************************************************
+ ***  Apertura Post liq. de fin de dia  ************************
+ *************************************************************/
+  confirmAperturaPostLiqFinDia(): void {
+    // Alert.show("Estas seguro que desea abrir la post liq. fin de dia?", "Confirm Apertura post liq. fin de dia", Alert.YES | Alert.NO, null, aperturaPostLiqFinDia, null, Alert.NO);
+    Swal.fire({
+      title: 'Estas seguro que desea abrir la post liq. fin de dia?',
+      text: 'Confirm Apertura post liq. fin de dia',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'No',
+      confirmButtonText: 'Si',
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.aperturaPostLiqFinDia();
+      }
+    });
+  }
+
+  aperturaPostLiqFinDia(): void {
+    if (this.isSlvCerrado) {
+      // preliquidador.procesarAperturaPostLiqFinDia();
+      this.preliquidadorService.procesarAperturaPostLiqFinDia(this.user).subscribe(
+        data => {
+          console.log('### procesarAperturaPostLiqFinDia');
+        },
+        error => {
+          this.errorHttp('procesarAperturaPostLiqFinDia', '', error.mesage);
+        });
+
+    }
+    else {
+      // pendiente
+      // fault("Imposible ejecutar la apertura postliquidacion de fin de dia.");
+    }
+  }
 
   /****************************************************************************
    ******************  LLAMADO DE SERVICIOS UPDATE ****************************
@@ -867,7 +1199,7 @@ export class SlvComponent implements OnInit {
           this.horaFinValoresTmp = data.hora;
           this.minutosFinValoresTmp = data.minuto;
 
-          this.horaFinValores =  data.hora;
+          this.horaFinValores = data.hora;
           this.minutosFinValores = data.minuto;
 
           this.forma.controls.f_clb_h.setValue(this.horaFinValores);
@@ -996,12 +1328,14 @@ export class SlvComponent implements OnInit {
   }
 
   // SERVICIO - isLiquidacionFinDeDiaActivada
-  private isLiquidacionFinDeDiaActivada(): void {
+  private isLiquidacionFinDeDiaActivada_M(): void {
     this.spinnerService.show();
     this.preliquidadorService.isLiquidacionFinDeDiaActivada()
       .subscribe(
         data => {
+          this.configEnableOrDisableLiquidacionFinDeDiaButton(data);
           this.liquidacionFinDeDiaActivada = data;
+          this.isLiquidacionFinDeDiaActivada = data;
           console.log(this.liquidacionFinDeDiaActivada);
           this.spinnerService.hide();
         },
@@ -1010,31 +1344,51 @@ export class SlvComponent implements OnInit {
         });
   }
 
+  configEnableOrDisableLiquidacionFinDeDiaButton(isActive: boolean): void {
+    this.isLiquidacionFinDeDiaActivada = isActive;
+    if (this.isLiquidacionFinDeDiaActivada) {
+      // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+      this.finDiaImg = 'liqFinDia_Enabled.png';
+    }
+    else {
+      // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
+      this.finDiaImg = 'mozilla.png';
+    }
+  }
 
+  /*
+  [Embed("img/mozilla.png")]
+      [Bindable]
+      public var liquidacionFinDeDiaIcon:Class;
 
+      [Embed("img/liqFinDia_Enabled.png")]
+      [Bindable]
+      public var liquidacionFinDeDiaIconActived:Class;
+*/
 
 
   // SERVICIO - isSlvCerrado
-  private isSlvCerrado(): void {
+  private isSlvCerrado_M(): void {
     this.spinnerService.show();
     this.preliquidadorService.isSlvCerrado()
       .subscribe(
         data => {
           this.slvCerrado = data;
-          console.log(this.slvCerrado);
+          console.log('isSlvCerrado = ' + this.slvCerrado);
           this.spinnerService.hide();
         },
         error => {
-          this.errorHttp('isSlvCerrado', '', error.mesage);
+          this.errorHttp('isSlvCerrado_M', '', error.mesage);
         });
   }
 
   // SERVICIO - isDiaInhabil
-  private isDiaInhabil(): void {
+  private isDiaInhabil_M(): void {
     this.spinnerService.show();
     this.preliquidadorService.isDiaInhabil()
       .subscribe(
         data => {
+          this.isDiaInhabil = data;
           this.diaInhabil = data;
           console.log(this.diaInhabil);
           this.spinnerService.hide();
@@ -1051,6 +1405,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.estadoSlv = data;
+          this.configPauseOrResumeSlvButton(data);
           console.log(this.estadoSlv);
           this.spinnerService.hide();
         },
@@ -1058,9 +1413,6 @@ export class SlvComponent implements OnInit {
           this.errorHttp('getEstadoSlv', '', error.mesage);
         });
   }
-
-
-
 
 
 
@@ -1095,18 +1447,18 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getFrecuenciaAperturaSlv()
       .subscribe(
         data => {
-        this.frecuenciaAperturaSlv = data;
+          this.frecuenciaAperturaSlv = data;
 
-        this.horaAperturaTmp = data.hora;
-        this.minutosAperturaTmp = data.minuto;
+          this.horaAperturaTmp = data.hora;
+          this.minutosAperturaTmp = data.minuto;
 
-        this.horaApertura =  data.hora;
-        this.minutosApertura = data.minuto;
+          this.horaApertura = data.hora;
+          this.minutosApertura = data.minuto;
 
-        this.forma.controls.f_a_h.setValue(this.horaApertura);
-        this.forma.controls.f_a_m.setValue(this.minutosApertura);
+          this.forma.controls.f_a_h.setValue(this.horaApertura);
+          this.forma.controls.f_a_m.setValue(this.minutosApertura);
 
-        this.spinnerService.hide();
+          this.spinnerService.hide();
         },
         error => {
           this.errorHttp('getFrecuenciaAperturaSlv', '', error.mesage);
@@ -1123,13 +1475,13 @@ export class SlvComponent implements OnInit {
 
           this.horaPreCierreTmp = data.hora;
           this.minutosPreCierreTmp = data.minuto;
-  
-          this.horaPreCierre =  data.hora;
+
+          this.horaPreCierre = data.hora;
           this.minutosPreCierre = data.minuto;
-  
+
           this.forma.controls.f_pc_h.setValue(this.horaPreCierre);
           this.forma.controls.f_pc_m.setValue(this.minutosPreCierre);
-  
+
           this.spinnerService.hide();
         },
         error => {
@@ -1150,7 +1502,7 @@ export class SlvComponent implements OnInit {
 
           this.horaCierre = data.hora;
           this.minutosCierre = data.minuto;
-          
+
           this.forma.controls.f_c_h.setValue(this.horaCierre);
           this.forma.controls.f_c_m.setValue(this.minutosCierre);
 
@@ -1176,7 +1528,7 @@ export class SlvComponent implements OnInit {
           this.diasLiqTmp = data;
           this.frecuenciaDiasLiq = data;
           this.loadDiasLiq(this.frecuenciaDiasLiq);
-          
+
         },
         error => {
           this.errorHttp('getFrecuenciaDiasLiq', '', error.mesage);
@@ -1264,6 +1616,7 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.compensadorActivo = data;
+          this.configEnableOrDisableCompensadorButton(data);
           console.log(this.compensadorActivo);
           this.spinnerService.hide();
         },
@@ -1271,6 +1624,8 @@ export class SlvComponent implements OnInit {
           this.errorHttp('isCompensadorActivo', '', error.mesage);
         });
   }
+
+
 
 
 

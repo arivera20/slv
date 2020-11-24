@@ -11,6 +11,13 @@ export class SenalizadorPreliquidadorService {
 
   constructor(private http: HttpClient, private appSettings: AppSettings) { }
 
+  public getSlvTimeInMillis(): Observable<number> {
+    console.log('SERVICIO - senalizador - getSlvTimeInMillis');
+    console.log('slv-preliquidador/api/senalizadorPreliquidador/getSlvTimeInMillis');
+    return this.http.get<number>
+      ('slv-preliquidador/api/senalizadorPreliquidador/getSlvTimeInMillis', this.appSettings.httpOptionsJson);
+  }
+
   // getEstadoSlv
   public getEstadoSlv(): Observable<boolean> {
     console.log('SERVICIO - preliquidador - getEstadoSlv');

@@ -27,12 +27,25 @@ export class CompensadorService {
   }
 
   public modificarTimeoutRespuesta(timeoutRespuesta: number, usuario: string): Observable<any> {
-    console.log('SERVICIO - preliquidador - modificarTimeoutRespuesta');
+    console.log('SERVICIO - compensador - modificarTimeoutRespuesta');
     const headers = new HttpHeaders().append('header', 'value');
     // tslint:disable-next-line: max-line-length
     return this.http.get('slv-preliquidador/api/compensadorController/modificarTimeoutRespuesta/' + timeoutRespuesta + '/' + usuario, { headers });
   }
 
+  public activarCompensador(usuario: string): Observable<any> {
+    console.log('SERVICIO - compensador - activarCompensador');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/compensadorController/activarCompensador/' + usuario, { headers });
+  }
+
+  public desactivarCompensador(usuario: string): Observable<any> {
+    console.log('SERVICIO - compensador - desactivarCompensador');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/compensadorController/desactivarCompensador/' + usuario, { headers });
+  }
 
 
 }
