@@ -122,7 +122,9 @@ export class SlvComponent implements OnInit {
   slvPlay = 'slvRunning.png';
   pauseOrStopSlvButtonLabel = '';
   enableOrDisableCompensadorButtonLabel = '';
-  compensadorActive = '';
+  compensadorActive = 'compensadorActivo.png';
+  liquidacionFinDeDiaIcon = 'mozilla.png';
+
 
 
   refresh(): void {
@@ -419,7 +421,7 @@ export class SlvComponent implements OnInit {
   confirmLiquidacionFinDeDia(): void {
     Swal.fire({
       title: 'Estas seguro que desea ejecutar la liq. fin de dia?',
-      text: 'Confirm liq. fin de dia',
+      // text: 'Confirm liq. fin de dia',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -678,15 +680,15 @@ export class SlvComponent implements OnInit {
       this.enableOrDisableCompensadorButtonLabel = 'Activar comp.';
     }
   }
-/*
-  [Embed("img/compensadorInactivo.png")]
-  [Bindable]
-  public var compensadorInactive:Class;
-
-  [Embed("img/compensadorActivo.png")]
-  [Bindable]
-  public var compensadorActive:Class;
-*/
+  /*
+    [Embed("img/compensadorInactivo.png")]
+    [Bindable]
+    public var compensadorInactive:Class;
+  
+    [Embed("img/compensadorActivo.png")]
+    [Bindable]
+    public var compensadorActive:Class;
+  */
   /*************************************************************
    ***  Purgar y reencolar  ************************************
    *************************************************************/
@@ -712,6 +714,11 @@ export class SlvComponent implements OnInit {
     }
     else {
       // fault("Imposible reestablecer el SLV. Debe estar pausado para poder ejecutar esta accion.");
+      Swal.fire({
+        icon: 'info',
+        title: '',
+        text: 'Imposible reestablecer el SLV. Debe estar pausado para poder ejecutar esta acción.'
+      });
     }
   }
 
@@ -721,8 +728,8 @@ export class SlvComponent implements OnInit {
   confirmAperturaPostLiqFinDia(): void {
     // Alert.show("Estas seguro que desea abrir la post liq. fin de dia?", "Confirm Apertura post liq. fin de dia", Alert.YES | Alert.NO, null, aperturaPostLiqFinDia, null, Alert.NO);
     Swal.fire({
-      title: 'Estas seguro que desea abrir la post liq. fin de dia?',
-      text: 'Confirm Apertura post liq. fin de dia',
+      title: 'Estas seguro que desea abrir la post liq. fin de día?',
+      // text: 'Confirm Apertura post liq. fin de dia',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -750,8 +757,11 @@ export class SlvComponent implements OnInit {
 
     }
     else {
-      // pendiente
-      // fault("Imposible ejecutar la apertura postliquidacion de fin de dia.");
+      Swal.fire({
+        icon: 'info',
+        title: '',
+        text: 'Imposible ejecutar la apertura postliquidación de fin de día.'
+      });
     }
   }
 
@@ -1374,6 +1384,8 @@ export class SlvComponent implements OnInit {
       .subscribe(
         data => {
           this.slvCerrado = data;
+          this.isSlvCerrado = data;
+          console.log('############### isSlvCerrado = ' + this.isSlvCerrado);
           console.log('isSlvCerrado = ' + this.slvCerrado);
           this.spinnerService.hide();
         },
