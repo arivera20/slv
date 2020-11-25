@@ -257,7 +257,7 @@ export class SlvComponent implements OnInit {
       this.classDisabledAccion = 'div-disabled-accion';
       this.isDisabled = false;
       this.aplicarCambiosImg = 'apply.png';
-
+      this.iniciarCicloIcon = this.iniciarCiclo;
       this.change();
     } else {
       // no editar
