@@ -250,14 +250,16 @@ export class SlvComponent implements OnInit {
       this.classDisabled = '';
       this.labelEditar = 'Bloquear Campos';
       this.editButtonImg = 'encrypted.png';
-      this.liquidacionFinDeDiaIcon = 'mozilla.png';
-      this.reanudarImg = 'slvRunning.png';
-      this.desactivarImg = 'compensadorInactivo.png';
-      this.reencolarInstruccionesIcon = 'konquest.png';
       this.classDisabledAccion = 'div-disabled-accion';
       this.isDisabled = false;
       this.aplicarCambiosImg = 'apply.png';
+
+      this.liquidacionFinDeDiaIcon = 'mozilla.png';
+      // this.aperturaPreLiqFinDiaIcon = this.aperturaPreLiqFinDiaIconDisabled;
       this.iniciarCicloIcon = this.iniciarCiclo;
+      this.pauseOrStopSlvIcon = this.slvStop;
+      this.compensadorIcon = this.compensadorInactive;
+      this.reencolarInstruccionesIcon = 'konquest.png';
       this.change();
     } else {
       // no editar
@@ -274,6 +276,14 @@ export class SlvComponent implements OnInit {
       this.classDisabledAccion = 'box';
       this.isDisabled = true;
       this.aplicarCambiosImg = 'unapply.png';
+
+      this.liquidacionFinDeDiaIcon = this.liquidacionFinDeDiaIconDisabled;
+      //this.aperturaPreLiqFinDiaIcon = this.aperturaPreLiqFinDiaIconDisabled;
+      this.iniciarCicloIcon = this.iniciarCicloDisabled;
+      this.pauseOrStopSlvIcon = this.slvStopDisabled;
+      this.compensadorIcon = this.compensadorInactiveDisabled;
+      this.reencolarInstruccionesIcon = this.reencolarInstruccionesIconDisabled;
+      this.aperturaPostLiqFinDiaIcon = this.aperturaPostLiqFinDiaIconDisabled;
     }
   }
 
