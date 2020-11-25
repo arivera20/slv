@@ -124,6 +124,10 @@ export class SlvComponent implements OnInit {
   enableOrDisableCompensadorButtonLabel = '';
   compensadorActive = 'compensadorActivo.png';
   liquidacionFinDeDiaIcon = 'mozilla.png';
+  dateHraPreCierre: Date;
+  dateHraCierre: Date;
+  dateHraRecepcion: Date;
+  dateHraApertura: Date;
 
 
 
@@ -439,19 +443,23 @@ export class SlvComponent implements OnInit {
   liquidacionFinDeDia(): void {
     console.log('liquidacionFinDeDia');
     // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
-    this.producerControlSlv();
     if (!this.isLiquidacionFinDeDiaActivada) {
       this.preliquidadorService.liquidacionFinDeDia(this.user)
         .subscribe(
           data => {
-            console.log('======= Se modifico con exito - Gatillo de monto');
+            console.log('======= liquidacionFinDeDia');
             this.isLiquidacionFinDeDiaActivada = data;
             if (this.isLiquidacionFinDeDiaActivada) {
               // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+              this.finDiaImg = 'liqFinDia_Enabled.png';
             }
             else {
+              this.finDiaImg = 'mozilla.png';
               // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
             }
+            // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+            this.finDiaImg = 'liqFinDia_Enabled.png';
+            this.producerControlSlv();
           },
           error => {
             this.errorHttp('modificarMontoTotalMaxInstrucciones', '', error.mesage);
@@ -481,16 +489,17 @@ export class SlvComponent implements OnInit {
   }
 
   processSlvTimeInMillis(slvTime: number): void {
+    console.log('Terminar liquidacion ok');
     /*
     var message: AsyncMessage = new AsyncMessage();
-    this.dateHraPreCierre.hours = this.horaPreCierre;
-    dateHraPreCierre.minutes = this.minutosPreCierre;
-    dateHraCierre.hours = this.horaCierre;
-    dateHraCierre.minutes = this.minutosCierre;
-    dateHraRecepcion.hours = this.horaRecepcion;
-    dateHraRecepcion.minutes = this.minutosRecepcion;
-    dateHraApertura.hours = this.horaApertura;
-    dateHraApertura.minutes = this.minutosApertura;
+    this.dateHraPreCierre.setHours(this.horaPreCierre);
+    this.dateHraPreCierre.setMinutes(this.minutosPreCierre);
+    this.dateHraCierre.setHours(this.horaCierre);
+    this.dateHraCierre.setMinutes(this.minutosCierre);
+    this.dateHraRecepcion.setHours(this.horaRecepcion);
+    this.dateHraRecepcion.setMinutes(this.minutosRecepcion);
+    this.dateHraApertura.setHours(this.horaApertura);
+    this.dateHraApertura.setMinutes(this.minutosApertura);
 
     var controlSlv: ControlSlv = new ControlSlv();
     controlSlv.setHraPreCierre(dateHraPreCierre);
@@ -504,7 +513,7 @@ export class SlvComponent implements OnInit {
     message.body = controlSlv.convertToXML();
     //Alert.show(isSlvCerrado.toString(), 'Box', mx.controls.Alert.OK);
     producerSlvTopic.send(message);
-    */
+   */
   }
 
   /*************************************************************
@@ -583,38 +592,39 @@ export class SlvComponent implements OnInit {
       data => {
         console.log('### getEstadoSlv');
         this.configPauseOrResumeSlvButton(data);
-      },
-      error => {
-        this.errorHttp('getEstadoSlv', '', error.mesage);
-      });
-
-    if (this.isSlvRunning) {
-      this.preliquidadorService.pausarPreliquidador(this.user).subscribe(
-        data => {
-          console.log('### pausarPreliquidador');
-        },
-        error => {
-          this.errorHttp('pausarPreliquidador', '', error.mesage);
-        });
-    }
-    else {
-      this.preliquidadorService.reanudarPreliquidador(this.user).subscribe(
-        data => {
-          console.log('### reanudarPreliquidador');
-        },
-        error => {
-          this.errorHttp('reanudarPreliquidador', '', error.mesage);
-        });
-    }
-    this.senalizadorService.getEstadoSlv().subscribe(
-      data => {
-        console.log('### getEstadoSlv');
-        this.configPauseOrResumeSlvButton(data);
+        this.isSlvRunning = data;
+        if (this.isSlvRunning) {
+          this.preliquidadorService.pausarPreliquidador(this.user).subscribe(
+            data1 => {
+              console.log('### pausarPreliquidador');
+            },
+            error => {
+              this.errorHttp('pausarPreliquidador', '', error.mesage);
+            });
+        }
+        else {
+          this.preliquidadorService.reanudarPreliquidador(this.user).subscribe(
+            data2 => {
+              console.log('### reanudarPreliquidador');
+            },
+            error => {
+              this.errorHttp('reanudarPreliquidador', '', error.mesage);
+            });
+        }
+        this.senalizadorService.getEstadoSlv().subscribe(
+          data3 => {
+            console.log('### getEstadoSlv');
+            this.configPauseOrResumeSlvButton(data3);
+          },
+          error => {
+            this.errorHttp('getEstadoSlv', '', error.mesage);
+          });
       },
       error => {
         this.errorHttp('getEstadoSlv', '', error.mesage);
       });
   }
+
 
   configPauseOrResumeSlvButton(isRunning: boolean): void {
     this.isSlvRunning = isRunning;
@@ -684,7 +694,7 @@ export class SlvComponent implements OnInit {
     [Embed("img/compensadorInactivo.png")]
     [Bindable]
     public var compensadorInactive:Class;
-  
+
     [Embed("img/compensadorActivo.png")]
     [Bindable]
     public var compensadorActive:Class;
@@ -697,16 +707,31 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.getEstadoSlv().subscribe(
       data => {
         console.log('### getEstadoSlv');
-        this.configPauseOrResumeSlvButton(data);
+        this.configPauseOrResumeSlvButton2(data);
       },
       error => {
         this.errorHttp('getEstadoSlv', '', error.mesage);
       });
+  }
+
+  configPauseOrResumeSlvButton2(isRunning: boolean): void {
+    this.isSlvRunning = isRunning;
+    if (this.isSlvRunning) {
+      this.slvPlay = 'slvDetenido.png';
+      // pauseOrStopSlvButton.setStyle("icon", slvStop);
+      this.pauseOrStopSlvButtonLabel = 'Pausar SLV';
+    }
+    else {
+      this.slvPlay = 'slvRunning.png';
+      // pauseOrStopSlvButton.setStyle("icon", slvPlay);
+      this.pauseOrStopSlvButtonLabel = 'Reanudar SLV';
+    }
     if (!this.isSlvRunning) {
       // preliquidador.resetPreliquidador()
       this.preliquidadorService.resetPreliquidador(this.user).subscribe(
         data => {
           console.log('### pausarPreliquidador');
+          this.reencolarInstruccionesPendientes();
         },
         error => {
           this.errorHttp('pausarPreliquidador', '', error.mesage);
@@ -720,6 +745,17 @@ export class SlvComponent implements OnInit {
         text: 'Imposible reestablecer el SLV. Debe estar pausado para poder ejecutar esta acción.'
       });
     }
+  }
+
+  reencolarInstruccionesPendientes(): void {
+    // senalizadorPreliquidador.reencolarInstruccionesPendientes();
+    this.senalizadorService.reencolarInstruccionesPendientes(this.user).subscribe(
+      data => {
+        console.log('### reencolarInstruccionesPendientes');
+      },
+      error => {
+        this.errorHttp('reencolarInstruccionesPendientes', '', error.mesage);
+      });
   }
 
   /*************************************************************

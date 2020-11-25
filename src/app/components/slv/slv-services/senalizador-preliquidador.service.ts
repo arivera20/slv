@@ -162,4 +162,11 @@ export class SenalizadorPreliquidadorService {
     return this.http.get('slv-preliquidador/api/senalizadorPreliquidador/updateFrecuenciaDiasLiq/' + diasLiquidacion + '/' + usuario, { headers });
   }
 
+  public reencolarInstruccionesPendientes( usuario: string): Observable<any> {
+    console.log('SERVICIO - senalizadorPreliquidador - reencolarInstruccionesPendientes');
+    const headers = new HttpHeaders().append('header', 'value');
+    // tslint:disable-next-line: max-line-length
+    return this.http.get('slv-preliquidador/api/senalizadorPreliquidador/reencolarInstruccionesPendientes/' + usuario, { headers });
+  }
+
 }
