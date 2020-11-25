@@ -23,10 +23,9 @@ export class SlvComponent implements OnInit {
   public labelEditar = 'Editar Campos';
   private editButton = true;
   public editButtonImg = 'decrypted.png';
-  public finDiaImg = 'liqFinDia_Disabled.png';
+  //public finDiaImg = 'liqFinDia_Disabled.png';
   public reanudarImg = 'slvDetenido_disabled.png';
   public desactivarImg = 'compensadorInactivo_disabled.png';
-  public purgarImg = 'konquest_disabled.png';
   public aplicarCambiosImg = 'unapply.png';
 
   montoTotalMaxInstrucciones: number;
@@ -35,7 +34,7 @@ export class SlvComponent implements OnInit {
 
 
   msg = '';
-  editable: boolean;
+
   version = '';
   precioTituloMaximoParaCompensacion: number;
   montoTotalActualInstrucciones = 8;
@@ -119,15 +118,79 @@ export class SlvComponent implements OnInit {
   isSlvRunning: boolean;
   isCompensadorActive: boolean;
   isDiaInhabil: boolean;
+
+
+
+  // IMAGENES DE LOS BOTONES ACCIONES
   slvPlay = 'slvRunning.png';
-  pauseOrStopSlvButtonLabel = '';
-  enableOrDisableCompensadorButtonLabel = '';
+  slvStop = 'slvDetenido.png';
   compensadorActive = 'compensadorActivo.png';
+  compensadorInactive = 'compensadorInactivo.png';
+  locked = 'encrypted.png';
+  unlocked = 'decrypted.png';
+  faultIcon = 'no.png';
+  slvStopDisabled = 'slvDetenido_disabled.png';
+  compensadorInactiveDisabled = 'compensadorInactivo_disabled.png';
+  iniciarCiclo = 'cache.png';
+  iniciarCicloDisabled = 'cache_disabled.png';
+  applyIconEnabled = 'apply.png';
+  applyIconDisabled = 'unapply.png';
+
+
+  reencolarInstruccionesIconDisabled = 'konquest_disabled.png';
+  liquidacionFinDeDiaIconActived = 'liqFinDia_Enabled.png';
+  liquidacionFinDeDiaIconDisabled = 'liqFinDia_Disabled.png';
+  aboutIcon = 'about_big.png';
+  aperturaPreLiqFinDiaIconActived = 'aperturaPreLiqFinDia.png';
+  aperturaPostLiqFinDiaIconActived = 'aperturaPostLiqFinDia.png';
+  aperturaPreLiqFinDiaIconDisabled = 'aperturaPreLiqFinDia_Disabled.png';
+  aperturaPostLiqFinDiaIconDisabled = 'aperturaPostLiqFinDia_Disabled.png';
+
+  // imagenes de iconos de Acciones
   liquidacionFinDeDiaIcon = 'mozilla.png';
+  aperturaPreLiqFinDiaIcon: string;
+  iniciarCicloIcon: string;
+  pauseOrStopSlvIcon: string;
+  compensadorIcon: string;
+  reencolarInstruccionesIcon = 'konquest.png';
+  aperturaPostLiqFinDiaIcon: string;
+  // label de Acciones
+  pauseOrStopSlvButtonLabel = 'Reanudar SLV';
+  enableOrDisableCompensadorButtonLabel = 'Desactivar Comp.';
+
+  editable: boolean;
+
   dateHraPreCierre: Date;
   dateHraCierre: Date;
   dateHraRecepcion: Date;
   dateHraApertura: Date;
+
+  /** >>>>>>>> CONSTRUCTOR */
+  constructor(private spinnerService: NgxSpinnerService,
+    private fb: FormBuilder,
+    private preliquidadorService: PreliquidadorService,
+    private senalizadorService: SenalizadorPreliquidadorService,
+    private compensadorService: CompensadorService,
+    private appStorageService: AppStorageService) {
+    this.crearFormulario();
+  }
+
+  /** >>>>>>>> INICIANDO */
+  ngOnInit(): void {
+    this.forma.disable();
+    this.editable = false;
+    this.user = this.appStorageService.getUserName();
+    // this.refresh();
+    this.liquidacionFinDeDiaIcon = this.liquidacionFinDeDiaIconDisabled;
+    this.aperturaPreLiqFinDiaIcon = this.aperturaPreLiqFinDiaIconDisabled;
+    this.iniciarCicloIcon = this.iniciarCicloDisabled;
+    this.pauseOrStopSlvIcon = this.slvStopDisabled;
+    this.compensadorIcon = this.compensadorInactiveDisabled;
+    this.reencolarInstruccionesIcon = this.reencolarInstruccionesIconDisabled;
+    this.aperturaPostLiqFinDiaIcon = this.aperturaPostLiqFinDiaIconDisabled;
+
+    // applyChangesButton.setStyle("disabledIcon", applyIconDisabled);
+  }
 
 
 
@@ -163,36 +226,8 @@ export class SlvComponent implements OnInit {
     this.isCompensadorActivo();
   }
 
-  constructor(private spinnerService: NgxSpinnerService,
-    private fb: FormBuilder,
-    private preliquidadorService: PreliquidadorService,
-    private senalizadorService: SenalizadorPreliquidadorService,
-    private compensadorService: CompensadorService,
-    private appStorageService: AppStorageService) {
-    this.crearFormulario();
-  }
 
-  ngOnInit(): void {
-    this.forma.disable();
-    this.editable = false;
-    this.user = this.appStorageService.getUserName();
-    this.refresh();
-    // this.llamar();
-  }
-
-  llamar(): void {
-    // this.getPrecioTituloMaximoParaCompensacion();
-    /*
-        this.http.get<any>('slv-preliquidador/api/preliquidador/modificarPrecioTituloMaximoParaCompensacion/250/omarnl').subscribe(data => {
-          console.log('$$$$$$ Saliendo - 250');
-          this.getPrecioTituloMaximoParaCompensacion();
-       }, error => { console.error('Error'); });
-       */
-    this.modificarPrecioTituloMaximoParaCompensacion('600', 'omarnl');
-  }
-
-
-
+  /** ACCION - CHECKED - Limitar Retiros de Efectivo */
   change(): void {
     console.log('Cambiando ' + this.isDisabledCheckbox);
     console.log(this.forma.controls.f_limitarRetirosDeEfectivo.value);
@@ -200,6 +235,43 @@ export class SlvComponent implements OnInit {
       this.forma.controls.f_lre_i.enable();
     } else {
       this.forma.controls.f_lre_i.disable();
+    }
+  }
+
+  /** ACCION - BOTON editar */
+  public edit(): void {
+    if (this.editButton === true) {
+      // Editar
+      this.editButton = false;
+      this.forma.enable();
+      this.editable = true;
+      this.classDisabled = '';
+      this.labelEditar = 'Bloquear Campos';
+      this.editButtonImg = 'encrypted.png';
+      this.liquidacionFinDeDiaIcon = 'mozilla.png';
+      this.reanudarImg = 'slvRunning.png';
+      this.desactivarImg = 'compensadorInactivo.png';
+      this.reencolarInstruccionesIcon = 'konquest.png';
+      this.classDisabledAccion = 'div-disabled-accion';
+      this.isDisabled = false;
+      this.aplicarCambiosImg = 'apply.png';
+
+      this.change();
+    } else {
+      // no editar
+      this.editButton = true;
+      this.forma.disable();
+      this.editable = false;
+      this.classDisabled = 'div-disabled';
+      this.labelEditar = 'Editar Campos';
+      this.editButtonImg = 'decrypted.png';
+      this.liquidacionFinDeDiaIcon = 'liqFinDia_Disabled.png';
+      this.reanudarImg = 'slvDetenido_disabled.png';
+      this.desactivarImg = 'compensadorInactivo_disabled.png';
+      this.reencolarInstruccionesIcon = 'konquest_disabled.png';
+      this.classDisabledAccion = 'box';
+      this.isDisabled = true;
+      this.aplicarCambiosImg = 'unapply.png';
     }
   }
 
@@ -451,14 +523,14 @@ export class SlvComponent implements OnInit {
             this.isLiquidacionFinDeDiaActivada = data;
             if (this.isLiquidacionFinDeDiaActivada) {
               // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
-              this.finDiaImg = 'liqFinDia_Enabled.png';
+              this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
             }
             else {
-              this.finDiaImg = 'mozilla.png';
+              this.liquidacionFinDeDiaIcon = 'mozilla.png';
               // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
             }
             // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
-            this.finDiaImg = 'liqFinDia_Enabled.png';
+            this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
             this.producerControlSlv();
           },
           error => {
@@ -681,11 +753,11 @@ export class SlvComponent implements OnInit {
     this.isCompensadorActive = isActive;
     if (this.isCompensadorActive) {
       //  enableOrDisableCompensadorButton.setStyle("icon", compensadorInactive);
-      this.compensadorActive = 'compensadorInactivo.png';
+      this.compensadorIcon = 'compensadorInactivo.png';
       this.enableOrDisableCompensadorButtonLabel = 'Desactivar comp.';
     }
     else {
-      this.compensadorActive = 'compensadorActivo.png';
+      this.compensadorIcon = 'compensadorActivo.png';
       //  enableOrDisableCompensadorButton.setStyle("icon", compensadorActive);
       this.enableOrDisableCompensadorButtonLabel = 'Activar comp.';
     }
@@ -1394,11 +1466,11 @@ export class SlvComponent implements OnInit {
     this.isLiquidacionFinDeDiaActivada = isActive;
     if (this.isLiquidacionFinDeDiaActivada) {
       // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
-      this.finDiaImg = 'liqFinDia_Enabled.png';
+      this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
     }
     else {
       // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
-      this.finDiaImg = 'mozilla.png';
+      this.liquidacionFinDeDiaIcon = 'mozilla.png';
     }
   }
 
@@ -1694,38 +1766,7 @@ export class SlvComponent implements OnInit {
   }
 
 
-  /** ACCION - BOTON editar */
-  public edit(): void {
-    if (this.editButton === true) {
-      this.editButton = false;
-      this.forma.enable();
-      this.classDisabled = '';
-      this.labelEditar = 'Bloquear Campos';
-      this.editButtonImg = 'encrypted.png';
-      this.finDiaImg = 'mozilla.png';
-      this.reanudarImg = 'slvRunning.png';
-      this.desactivarImg = 'compensadorInactivo.png';
-      this.purgarImg = 'konquest.png';
-      this.classDisabledAccion = 'div-disabled-accion';
-      this.isDisabled = false;
-      this.aplicarCambiosImg = 'apply.png';
 
-      this.change();
-    } else {
-      this.editButton = true;
-      this.forma.disable();
-      this.classDisabled = 'div-disabled';
-      this.labelEditar = 'Editar Campos';
-      this.editButtonImg = 'decrypted.png';
-      this.finDiaImg = 'liqFinDia_Disabled.png';
-      this.reanudarImg = 'slvDetenido_disabled.png';
-      this.desactivarImg = 'compensadorInactivo_disabled.png';
-      this.purgarImg = 'konquest_disabled.png';
-      this.classDisabledAccion = 'box';
-      this.isDisabled = true;
-      this.aplicarCambiosImg = 'unapply.png';
-    }
-  }
 
 
 
