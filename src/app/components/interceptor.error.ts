@@ -3,6 +3,7 @@ import { HttpEvent, HttpHandler, HttpRequest, HttpInterceptor } from '@angular/c
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -10,15 +11,17 @@ import { Observable } from 'rxjs';
 })
 export class InterceptorError implements HttpInterceptor {
 
-    constructor() { }
+    constructor(private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        //intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(req).pipe(
             catchError(error => {
                 let errorMessage = '';
                 console.log('ERROR = ' + error.status);
+                if (error.status == 403) {
+                    this.router.navigate(['']);
+                }
                 if (error instanceof ErrorEvent) {
                     // client-side error
                     errorMessage = `Client-side error: ${error.error.message}`;
