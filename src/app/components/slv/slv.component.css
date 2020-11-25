@@ -249,8 +249,8 @@ div[disabled="true"] {
     filter: alpha(opacity=50);
     zoom: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-    -moz-opacity: 0.5;
-    -khtml-opacity: 0.5;
+    -moz-opacity: 0.6;
+    -khtml-opacity: 0.6;
 }
 
 .div-disabled {
@@ -259,8 +259,8 @@ div[disabled="true"] {
     filter: alpha(opacity=50);
     zoom: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-    -moz-opacity: 0.5;
-    -khtml-opacity: 0.5;
+    -moz-opacity: 0.6;
+    -khtml-opacity: 0.6;
 }
 
 .div-disabled-accion {
@@ -269,7 +269,7 @@ div[disabled="true"] {
     width: 14.28%;
     height: 100px;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .div-disabled-accion span {
