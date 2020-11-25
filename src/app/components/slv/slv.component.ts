@@ -159,6 +159,7 @@ export class SlvComponent implements OnInit {
   enableOrDisableCompensadorButtonLabel = 'Desactivar Comp.';
 
   editable: boolean;
+  isNgOnInit = true;
 
   dateHraPreCierre: Date;
   dateHraCierre: Date;
@@ -224,6 +225,7 @@ export class SlvComponent implements OnInit {
     this.isDiaInhabil_M();
     this.getEstadoSlv();
     this.isCompensadorActivo();
+    this.isNgOnInit = false;
   }
 
 
@@ -1451,7 +1453,9 @@ export class SlvComponent implements OnInit {
     this.preliquidadorService.isLiquidacionFinDeDiaActivada()
       .subscribe(
         data => {
-          this.configEnableOrDisableLiquidacionFinDeDiaButton(data);
+          if (!this.isNgOnInit) {
+            this.configEnableOrDisableLiquidacionFinDeDiaButton(data);
+          }
           this.liquidacionFinDeDiaActivada = data;
           this.isLiquidacionFinDeDiaActivada = data;
           console.log(this.liquidacionFinDeDiaActivada);
