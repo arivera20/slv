@@ -220,19 +220,19 @@ export class SlvComponent implements OnInit {
     this.getNumeroInstruccionesRetirosEfectivo();    // 21 Retiros de Efectivo
     this.getMontoTotalActualInstrucciones();         // 22 Monto total actual acumulado de operaciones ($)
     this.getNumeroAdaptableMaxInstrucciones();       // 23 Valor actual de gatillo dinamico:
-    this.isLiquidacionFinDeDiaActivada_M();
+    this.isLiquidacionFinDeDiaActivada_M(this.isNgOnInit);
     this.isSlvCerrado_M();
     this.isDiaInhabil_M();
     this.getEstadoSlv();
-    this.isCompensadorActivo();
+    this.isCompensadorActivo(this.isNgOnInit);
     this.isNgOnInit = false;
   }
 
 
   /** ACCION - CHECKED - Limitar Retiros de Efectivo */
   change(): void {
-    console.log('Cambiando ' + this.isDisabledCheckbox);
-    console.log(this.forma.controls.f_limitarRetirosDeEfectivo.value);
+    // console.log('Cambiando ' + this.isDisabledCheckbox);
+    // console.log(this.forma.controls.f_limitarRetirosDeEfectivo.value);
     if (this.forma.controls.f_limitarRetirosDeEfectivo.value) {
       this.forma.controls.f_lre_i.enable();
     } else {
@@ -1458,12 +1458,12 @@ export class SlvComponent implements OnInit {
   }
 
   // SERVICIO - isLiquidacionFinDeDiaActivada
-  private isLiquidacionFinDeDiaActivada_M(): void {
+  private isLiquidacionFinDeDiaActivada_M(isNgOnInit: boolean): void {
     this.spinnerService.show();
     this.preliquidadorService.isLiquidacionFinDeDiaActivada()
       .subscribe(
         data => {
-          if (!this.isNgOnInit) {
+          if (!isNgOnInit) {
             this.configEnableOrDisableLiquidacionFinDeDiaButton(data);
           }
           this.liquidacionFinDeDiaActivada = data;
@@ -1478,16 +1478,16 @@ export class SlvComponent implements OnInit {
 
   configEnableOrDisableLiquidacionFinDeDiaButton(isActive: boolean): void {
     this.isLiquidacionFinDeDiaActivada = isActive;
-    if (!this.isNgOnInit) {
-      if (this.isLiquidacionFinDeDiaActivada) {
-        // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
-        this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
-      }
-      else {
-        // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
-        this.liquidacionFinDeDiaIcon = 'mozilla.png';
-      }
+
+    if (this.isLiquidacionFinDeDiaActivada) {
+      // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+      this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
     }
+    else {
+      // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
+      this.liquidacionFinDeDiaIcon = 'mozilla.png';
+    }
+
   }
 
   /*
@@ -1746,13 +1746,15 @@ export class SlvComponent implements OnInit {
   }
 
   // SERVICIO - isCompensadorActivo
-  private isCompensadorActivo(): void {
+  private isCompensadorActivo(isNgOnInit: boolean): void {
     this.spinnerService.show();
     this.compensadorService.isCompensadorActivo()
       .subscribe(
         data => {
           this.compensadorActivo = data;
-          this.configEnableOrDisableCompensadorButton(data);
+          if (!isNgOnInit) {
+            this.configEnableOrDisableCompensadorButton(data);
+          }
           console.log(this.compensadorActivo);
           this.spinnerService.hide();
         },
