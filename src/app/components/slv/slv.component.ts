@@ -441,7 +441,7 @@ export class SlvComponent implements OnInit {
   }
 
   liquidacionFinDeDia(): void {
-    console.log('liquidacionFinDeDia');
+    console.log('isLiquidacionFinDeDiaActivada = ' + this.isLiquidacionFinDeDiaActivada);
     // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
     if (!this.isLiquidacionFinDeDiaActivada) {
       this.preliquidadorService.liquidacionFinDeDia(this.user)
