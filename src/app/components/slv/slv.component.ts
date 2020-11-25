@@ -330,7 +330,7 @@ export class SlvComponent implements OnInit {
 
   applyChanges(): void {
     console.log('Cambios');
-
+    this.statusActualizar = false;
     if (this.montoTotalMaxInstruccionesTmp != this.forma.controls.f_gatilloDeMonto.value) {
       this.modificarMontoTotalMaxInstrucciones(this.forma.controls.f_gatilloDeMonto.value, this.user);
       this.statusActualizar = true;
