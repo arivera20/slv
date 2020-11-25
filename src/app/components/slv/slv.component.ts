@@ -147,7 +147,7 @@ export class SlvComponent implements OnInit {
   aperturaPostLiqFinDiaIconDisabled = 'aperturaPostLiqFinDia_Disabled.png';
 
   // imagenes de iconos de Acciones
-  liquidacionFinDeDiaIcon = 'mozilla.png';
+  liquidacionFinDeDiaIcon: string;
   aperturaPreLiqFinDiaIcon: string;
   iniciarCicloIcon: string;
   pauseOrStopSlvIcon: string;
