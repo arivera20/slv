@@ -21,18 +21,19 @@ export class InterceptorError implements HttpInterceptor {
                 console.log('ERROR = ' + error.status);
                 if (error.status == 403) {
                     this.router.navigate(['']);
-                }
-                if (error instanceof ErrorEvent) {
-                    // client-side error
-                    errorMessage = `Client-side error: ${error.error.message}`;
                 } else {
-                    // backend error
-                    errorMessage = `Server-side error: ${error.status} ${error.message}`;
-                }
+                    if (error instanceof ErrorEvent) {
+                        // client-side error
+                        errorMessage = `Client-side error: ${error.error.message}`;
+                    } else {
+                        // backend error
+                        errorMessage = `Server-side error: ${error.status} ${error.message}`;
+                    }
 
-                // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
-                // this.errorService.show(errorMessage);
-                return throwError(errorMessage);
+                    // aquí podrías agregar código que muestre el error en alguna parte fija de la pantalla.
+                    // this.errorService.show(errorMessage);
+                    return throwError(errorMessage);
+                }
             })
         );
     }
