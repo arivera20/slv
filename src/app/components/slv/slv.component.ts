@@ -1468,13 +1468,15 @@ export class SlvComponent implements OnInit {
 
   configEnableOrDisableLiquidacionFinDeDiaButton(isActive: boolean): void {
     this.isLiquidacionFinDeDiaActivada = isActive;
-    if (this.isLiquidacionFinDeDiaActivada) {
-      // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
-      this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
-    }
-    else {
-      // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
-      this.liquidacionFinDeDiaIcon = 'mozilla.png';
+    if (!this.isNgOnInit) {
+      if (this.isLiquidacionFinDeDiaActivada) {
+        // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
+        this.liquidacionFinDeDiaIcon = 'liqFinDia_Enabled.png';
+      }
+      else {
+        // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIcon);
+        this.liquidacionFinDeDiaIcon = 'mozilla.png';
+      }
     }
   }
 
