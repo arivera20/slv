@@ -47,11 +47,11 @@ export class LoginComponent implements OnInit {
         console.log('RES = ' + response);
         this.spinnerService.hide();
         this.aux.requiereCaptcha = response.respuesta;
+        console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
       }, err => {
         this.spinnerService.hide();
         console.error(err.error.message);
       });
-    console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
   }
 
   crearFormulario(): void {
