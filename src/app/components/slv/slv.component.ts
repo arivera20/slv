@@ -257,7 +257,7 @@ export class SlvComponent implements OnInit {
       this.liquidacionFinDeDiaIcon = 'mozilla.png';
       // this.aperturaPreLiqFinDiaIcon = this.aperturaPreLiqFinDiaIconDisabled;
       this.iniciarCicloIcon = this.iniciarCiclo;
-      this.pauseOrStopSlvIcon = this.slvStop;
+      // this.pauseOrStopSlvIcon = this.slvStop;
       this.compensadorIcon = this.compensadorInactive;
       this.reencolarInstruccionesIcon = 'konquest.png';
       this.getEstadoSlv(this.isNgOnInit);
