@@ -28,14 +28,14 @@ export class AppSettings {
   // {responseType: 'text'}
 
   //readonly urlLOGIN: string = 'http://10.150.201.205:8380/slv-persistidor/api/auth';
-  readonly urlLOGIN: string = 'slv-persistidor/api/auth';
+  readonly urlLOGIN: string = this.path + 'slv-persistidor/api/auth';
 
   // http://10.150.201.205:8380/slv-preliquidador/api/compensadorController/isCompensadorActivo
   readonly urlTEST: string = 'slv-preliquidador/api/compensadorController/isCompensadorActivo';
 
 
   /** preliquidador */
-  private readonly URL_preliquidador: string = 'slv-preliquidador/api/preliquidador/';
+  private readonly URL_preliquidador: string = this.path + 'slv-preliquidador/api/preliquidador/';
   readonly URL_preliquidador_getVersion = this.URL_preliquidador + 'getVersion';
   readonly URL_preliquidador_getPrecioTituloMaximoParaCompensacion: string = this.URL_preliquidador + 'getPrecioTituloMaximoParaCompensacion';
   readonly URL_preliquidador_getMontoTotalActualInstrucciones: string = this.URL_preliquidador + 'getMontoTotalActualInstrucciones';
@@ -55,7 +55,7 @@ export class AppSettings {
   readonly URL_preliquidador_isDiaInhabil: string = this.URL_preliquidador + 'isDiaInhabil';
 
   /** senalizadorPreliquidador */
-  private readonly URL_senalizadorPreliquidador: string = 'slv-preliquidador/api/senalizadorPreliquidador/';
+  private readonly URL_senalizadorPreliquidador: string = this.path + 'slv-preliquidador/api/senalizadorPreliquidador/';
   readonly URL_senalizador_getEstadoSlv: string = this.URL_senalizadorPreliquidador + 'getEstadoSlv';
   readonly URL_senalizador_getFrecuenciaSlv: string = this.URL_senalizadorPreliquidador + 'getFrecuenciaSlv';
   readonly URL_senalizador_getFrecuenciaPurgadoSlv: string = this.URL_senalizadorPreliquidador + 'getFrecuenciaPurgadoSlv';
@@ -68,7 +68,7 @@ export class AppSettings {
   readonly URL_senalizador_getFrecuenciaDiasLiq: string = this.URL_senalizadorPreliquidador + 'getFrecuenciaDiasLiq';
 
   /** compensador */
-  private readonly URL_compensador: string = 'slv-preliquidador/api/compensadorController/';
+  private readonly URL_compensador: string = this.path + 'slv-preliquidador/api/compensadorController/';
   readonly URL_compensador_getTimeoutRespuesta: string = this.URL_compensador + 'getTimeoutRespuesta';
   readonly URL_compensador_isCompensadorActivo: string = this.URL_compensador + 'isCompensadorActivo';
 

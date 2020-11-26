@@ -44,7 +44,7 @@ export class LoginService {
   */
 
   public getLogin(us: Usuario): Observable<any> {
-    const urlLogin = 'slv-control-rest/api/login/determinaLogin';
+    const urlLogin = this.appSettings.path + 'slv-control-rest/api/login/determinaLogin';
     return this.http.post(urlLogin, us, this.appSettings.httpOptionsJson);
   }
 }
