@@ -695,6 +695,7 @@ export class SlvComponent implements OnInit {
               this.errorHttp('reanudarPreliquidador', '', error.mesage);
             });
         }
+        // ALGO
         this.senalizadorService.getEstadoSlv().subscribe(
           data3 => {
             console.log('### getEstadoSlv');
@@ -713,12 +714,14 @@ export class SlvComponent implements OnInit {
   configPauseOrResumeSlvButton(isRunning: boolean): void {
     this.isSlvRunning = isRunning;
     if (this.isSlvRunning) {
-      this.slvPlay = 'slvDetenido.png';
+      // this.pauseOrStopSlvIcon = 'slvDetenido.png';
+      this.pauseOrStopSlvIcon = this.slvStop;
       // pauseOrStopSlvButton.setStyle("icon", slvStop);
       this.pauseOrStopSlvButtonLabel = 'Pausar SLV';
     }
     else {
-      this.slvPlay = 'slvRunning.png';
+      // this.pauseOrStopSlvIcon = 'slvRunning.png';
+      this.pauseOrStopSlvIcon = this.slvPlay;
       // pauseOrStopSlvButton.setStyle("icon", slvPlay);
       this.pauseOrStopSlvButtonLabel = 'Reanudar SLV';
     }
