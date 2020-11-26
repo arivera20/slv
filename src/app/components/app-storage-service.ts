@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'AuthToken';
 const USER_ID = 'UserId';
 const USER_NAME = 'UserName';
 const PERFIL = 'Perfil';
+const TICKET = 'Ticket';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppStorageService {
 
-  constructor( ) {
+  constructor() {
   }
 
   // QUITAR EL TOKEN SI EXISTE
@@ -28,6 +29,16 @@ export class AppStorageService {
   // RECUPERAR EL TOKEN
   public getToken(): string {
     return localStorage.getItem(TOKEN_KEY);
+  }
+
+  // GUARDAR EL Ticket
+  public setTicket(ticket: string): void {
+    localStorage.setItem(TICKET, ticket);
+  }
+
+  // RECUPERAR EL Ticket
+  public getTicket(): string {
+    return localStorage.getItem(TICKET);
   }
 
   // GUARDAR EL USER ID

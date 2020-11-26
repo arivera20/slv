@@ -18,6 +18,10 @@ export class AppSettings {
     console.error(message);
   }
 
+  readonly sistema = 'CONTROL_SLV';
+  // readonly path = window.location.protocol + '//' + window.location.host + '/';
+  readonly path = '';
+
   // httpOptionsJson
   readonly httpOptionsJson = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
   readonly httpText = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
@@ -63,12 +67,12 @@ export class AppSettings {
   readonly URL_senalizador_getFrecuenciaCierreSlv: string = this.URL_senalizadorPreliquidador + 'getFrecuenciaCierreSlv';
   readonly URL_senalizador_getFrecuenciaDiasLiq: string = this.URL_senalizadorPreliquidador + 'getFrecuenciaDiasLiq';
 
-    /** compensador */
-    private readonly URL_compensador: string = 'slv-preliquidador/api/compensadorController/';
-    readonly URL_compensador_getTimeoutRespuesta: string = this.URL_compensador + 'getTimeoutRespuesta';
-    readonly URL_compensador_isCompensadorActivo: string = this.URL_compensador + 'isCompensadorActivo';
-  
-    
-  
-  
+  /** compensador */
+  private readonly URL_compensador: string = 'slv-preliquidador/api/compensadorController/';
+  readonly URL_compensador_getTimeoutRespuesta: string = this.URL_compensador + 'getTimeoutRespuesta';
+  readonly URL_compensador_isCompensadorActivo: string = this.URL_compensador + 'isCompensadorActivo';
+
+
+
+
 }

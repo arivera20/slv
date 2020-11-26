@@ -1,4 +1,4 @@
-import { Captcha } from './captcha';
+// import { Captcha } from './captcha';
 
 export class Usuario implements Usuario {
   constructor(
@@ -8,7 +8,7 @@ export class Usuario implements Usuario {
     public  direccionIP?: string,
     public  token?: string,
     public  ticket?: string,
-    public captcha?: Captcha,
+   // public captcha?: Captcha,
     public sistemaCaptcha?: boolean,
     public contraseniaCert?: string,
     ){};
