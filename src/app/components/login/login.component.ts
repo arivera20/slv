@@ -53,15 +53,17 @@ export class LoginComponent implements OnInit {
     console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
   }
 
-
   crearFormulario(): void {
 
     this.formLogin = this.fb.group({
-      username: ['omarnl', [Validators.required]],
-      password: ['asff2', [Validators.required]]
+      username: ['indevaldrp', [Validators.required]],
+      password: ['pruebhaq', [Validators.required]]
     });
   }
-
+/*
+  username: ['omarnl', [Validators.required]],
+  password: ['asff2', [Validators.required]]
+*/
   ingresar(): void {
     console.log('Ingresando');
     console.log(this.formLogin);
@@ -78,10 +80,12 @@ export class LoginComponent implements OnInit {
     this.us.sistemaCaptcha = this.aux.requiereCaptcha;
     this.us.usuario = this.formLogin.get('username').value;
     this.us.password = this.formLogin.get('password').value;
+    console.log(this.us);
     /*this.serviceLogin.obtenertoken(this.us).subscribe(
       response => {*/
     this.loginService.getLogin(this.us).subscribe(
       response => {
+        console.log(response);
         this.us.token = response.respuesta.token.token;
         this.usResponse = response;
         if (this.usResponse.tipoAutenticacion == 4) {
