@@ -672,6 +672,7 @@ export class SlvComponent implements OnInit {
    ***  Pausar SLV o Reanudar SLV  *****************************
    *************************************************************/
   pauseOrStopSlv(): void {
+    this.spinnerService.show();
     this.senalizadorService.getEstadoSlv().subscribe(
       data => {
         console.log('### getEstadoSlv');
@@ -695,7 +696,7 @@ export class SlvComponent implements OnInit {
               this.errorHttp('reanudarPreliquidador', '', error.mesage);
             });
         }
-        // ALGO
+        /*
         this.senalizadorService.getEstadoSlv().subscribe(
           data3 => {
             console.log('### getEstadoSlv');
@@ -704,10 +705,12 @@ export class SlvComponent implements OnInit {
           error => {
             this.errorHttp('getEstadoSlv', '', error.mesage);
           });
+          */
       },
       error => {
         this.errorHttp('getEstadoSlv', '', error.mesage);
       });
+    this.spinnerService.hide();
   }
 
 
