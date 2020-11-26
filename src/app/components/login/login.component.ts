@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
     this.spinnerService.show();
     this.loginService.cargaInicial().subscribe(
       response => {
+        console.log('RES = ' + response);
         this.spinnerService.hide();
         this.aux.requiereCaptcha = response.respuesta;
       }, err => {
