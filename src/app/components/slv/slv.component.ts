@@ -223,7 +223,7 @@ export class SlvComponent implements OnInit {
     this.isLiquidacionFinDeDiaActivada_M(this.isNgOnInit);
     this.isSlvCerrado_M();
     this.isDiaInhabil_M();
-    this.getEstadoSlv();
+    this.getEstadoSlv(this.isNgOnInit);
     this.isCompensadorActivo(this.isNgOnInit);
     this.isNgOnInit = false;
   }
@@ -1544,13 +1544,16 @@ export class SlvComponent implements OnInit {
   }
 
   // SERVICIO - getEstadoSlv
-  private getEstadoSlv(): void {
+  private getEstadoSlv(isNgOnInit: boolean): void {
     this.spinnerService.show();
     this.senalizadorService.getEstadoSlv()
       .subscribe(
         data => {
+          this.isSlvRunning = data;
           this.estadoSlv = data;
-          this.configPauseOrResumeSlvButton(data);
+          if (!isNgOnInit) {
+            this.configPauseOrResumeSlvButton(data);
+          }
           console.log(this.estadoSlv);
           this.spinnerService.hide();
         },
