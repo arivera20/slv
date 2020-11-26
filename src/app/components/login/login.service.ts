@@ -31,18 +31,20 @@ export class LoginService {
   }
 
   public cargaInicial(): Observable<any> {
-    const urlCargaInicial = this.appSettings.path + 'slv-control-rest/api/login/isMostrarCaptchaSlv';
+    const urlCargaInicial = 'slv-control-rest/api/login/isMostrarCaptchaSlv';
     console.log('prueba url: ' + urlCargaInicial);
     return this.http.get(urlCargaInicial, this.appSettings.httpOptionsJson);
   }
 
+  /*
   public obtenertoken(us: Usuario): Observable<any> {
     const urlAuthLogin = this.appSettings.path + 'conciliacionRest/api/auth';
     return this.http.post(urlAuthLogin, us, this.appSettings.httpOptionsJson);
   }
+  */
 
   public getLogin(us: Usuario): Observable<any> {
-    const urlLogin = this.appSettings.path + 'slv-control-rest/api/login/determinaLogin';
+    const urlLogin = 'slv-control-rest/api/login/determinaLogin';
     return this.http.post(urlLogin, us, this.appSettings.httpOptionsJson);
   }
 }
