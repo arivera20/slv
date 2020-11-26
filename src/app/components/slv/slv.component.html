@@ -277,7 +277,7 @@
         <hr>
         <div class="container-box" [className]="classDisabled">
             <div [className]="(editable && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmLiquidacionFinDeDia()"><img src="assets/img/slv/{{liquidacionFinDeDiaIcon}}"><span>Liq. de fin de día</span></div>
-            <div [className]="(editable && isLiquidacionFinDeDiaActivada && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmAperturaPreLiqFinDia()"><img src=" assets/img/slv/(editable && isLiquidacionFinDeDiaActivada && !isSlvCerrado) ? 'aperturaPreLiqFinDia.png' : 'aperturaPreLiqFinDia_Disabled.png'"><span>Apertura pre Liq. de fin de día</span></div>
+            <div [className]="(editable && isLiquidacionFinDeDiaActivada && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmAperturaPreLiqFinDia()"><img [attr.src]="[(editable && isLiquidacionFinDeDiaActivada && !isSlvCerrado) ? 'assets/img/slv/aperturaPreLiqFinDia.png' : 'assets/img/slv/aperturaPreLiqFinDia_Disabled.png']"><span>Apertura pre Liq. de fin de día</span></div>
             <div [className]="(editable && isSlvRunning && !isLiquidacionFinDeDiaActivada) ? 'box' : 'div-disabled-accion'" (click)="iniciarCicloLiquidacionAsincrono()"><img src="assets/img/slv/{{iniciarCicloIcon}}"><span>Forzar ciclo de liq.</span></div>
             <div [className]="editable ? 'box' : 'div-disabled-accion'" (click)="pauseOrStopSlv()"><img src="assets/img/slv/{{pauseOrStopSlvIcon}}"><span>{{pauseOrStopSlvButtonLabel}}</span></div>
             <div [className]="editable ? 'box' : 'div-disabled-accion'" (click)="enableOrDisableCompensador()"><img src="assets/img/slv/{{compensadorIcon}}"><span>{{enableOrDisableCompensadorButtonLabel}}</span></div>
