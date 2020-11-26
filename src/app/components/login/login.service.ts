@@ -31,7 +31,7 @@ export class LoginService {
   }
 
   public cargaInicial(): Observable<any> {
-    const urlCargaInicial = 'slv-control-rest/api/login/isMostrarCaptchaSlv';
+    const urlCargaInicial = this.appSettings.path + 'slv-control-rest/api/login/isMostrarCaptchaSlv';
     console.log('prueba url: ' + urlCargaInicial);
     return this.http.get(urlCargaInicial, this.appSettings.httpOptionsJson);
   }
