@@ -685,6 +685,14 @@ export class SlvComponent implements OnInit {
           this.preliquidadorService.pausarPreliquidador(this.user).subscribe(
             data1 => {
               console.log('### pausarPreliquidador');
+              this.senalizadorService.getEstadoSlv().subscribe(
+                data3 => {
+                  console.log('### getEstadoSlv');
+                  this.configPauseOrResumeSlvButton(data3);
+                },
+                error => {
+                  this.errorHttp('getEstadoSlv', '', error.mesage);
+                });
             },
             error => {
               this.errorHttp('pausarPreliquidador', '', error.mesage);
@@ -694,21 +702,22 @@ export class SlvComponent implements OnInit {
           this.preliquidadorService.reanudarPreliquidador(this.user).subscribe(
             data2 => {
               console.log('### reanudarPreliquidador');
+              this.senalizadorService.getEstadoSlv().subscribe(
+                data3 => {
+                  console.log('### getEstadoSlv');
+                  this.configPauseOrResumeSlvButton(data3);
+                },
+                error => {
+                  this.errorHttp('getEstadoSlv', '', error.mesage);
+                });
             },
             error => {
               this.errorHttp('reanudarPreliquidador', '', error.mesage);
             });
         }
-        /*
-        this.senalizadorService.getEstadoSlv().subscribe(
-          data3 => {
-            console.log('### getEstadoSlv');
-            this.configPauseOrResumeSlvButton(data3);
-          },
-          error => {
-            this.errorHttp('getEstadoSlv', '', error.mesage);
-          });
-          */
+
+
+
       },
       error => {
         this.errorHttp('getEstadoSlv', '', error.mesage);
