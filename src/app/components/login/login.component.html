@@ -6,14 +6,18 @@
         <img src="./assets/img/Login/fondo_tabla_login.gif" />
     </div>
 
-    <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
-        <div class="contenedor-form">
-
-            <div class="logo">
-                <img src="./assets/img/Login/logo_indeval_inicio_n.png" class="logo_indeval_login" />
-            </div>
 
 
+
+    <div class="contenedor-form">
+
+        <div class="logo">
+            <img src="./assets/img/Login/logo_indeval_inicio_n.png" class="logo_indeval_login" />
+        </div>
+        <!--
+        <form (ngSubmit)="ingresar()" #captchaProtectedForm="ngForm">
+        -->
+        <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
             <div class="text-input">
                 <mat-form-field>
                     <mat-label>Usuario:</mat-label>
@@ -34,16 +38,14 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <!--
-            <div class="text-input" [hidden]="!aux.requiereCaptcha">
-                <div id="gwd-reCAPTCHA_2" class="g-recaptcha" data-sitekey="6Le5l9kZAAAAAGjUnzlhTo12A1RiymjTl7_V2ndH"></div>
-            </div>
--->
+            <div class="text-input" *ngIf="aux.requiereCaptcha">
 
+                <re-captcha id="gwd-reCAPTCHA_2" formControlName="captcha" name="captcha" required siteKey="6Le5l9kZAAAAAGjUnzlhTo12A1RiymjTl7_V2ndH"></re-captcha>
+
+            </div>
             <div>
-                <button type="submit" [disabled]="!formLogin.valid" mat-raised-button color="primary">Ingresar</button>
+                <button class="button-sub" type="submit" [disabled]="!formLogin.valid" mat-raised-button color="primary">Ingresar</button>
             </div>
-
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

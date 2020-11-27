@@ -92,3 +92,51 @@ body {
 .text-input {
     margin-bottom: 15px;
 }
+
+
+/**
+* Estilos Captcha */
+
+#gwd-reCAPTCHA_2 {
+    -webkit-transform: scale(0.84);
+    -moz-transform: scale(0.84);
+    -ms-transform: scale(0.84);
+    -o-transform: scale(0.84);
+    transform: scale(0.84);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.button-sub {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    margin-top: 30px;
+}
+
+.g-recaptcha-outer {
+    text-align: center;
+    border-radius: 2px;
+    background: #f9f9f9;
+    border-style: solid;
+    border-color: #37474f;
+    border-width: 1px;
+    border-bottom-width: 2px;
+}
+
+.g-recaptcha-inner {
+    width: 154px;
+    height: 82px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.g-recaptcha {
+    position: relative;
+    left: -2px;
+    top: -1px;
+}

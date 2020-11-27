@@ -16,12 +16,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './components/interceptor.service';
 import { InterceptorError } from './components/interceptor.error';
+
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
+
 
 @NgModule({
   declarations: [
@@ -34,8 +37,9 @@ import { InterceptorError } from './components/interceptor.error';
     BrowserAnimationsModule,
     MatSliderModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     MatButtonModule, MatIconModule,
-    ReactiveFormsModule,
-    HttpClientModule
+    ReactiveFormsModule, FormsModule,
+    HttpClientModule,
+    RecaptchaModule, RecaptchaFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
