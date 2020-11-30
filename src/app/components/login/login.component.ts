@@ -56,7 +56,10 @@ export class LoginComponent implements OnInit {
     console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
     this.spinnerService.hide();
     this.formLogin.controls.captcha.clearValidators();
-    /*
+    this.servicioCaptcha();
+  }
+
+  servicioCaptcha(): void {
     this.spinnerService.show();
     this.loginService.cargaInicial().subscribe(
       response => {
@@ -72,18 +75,13 @@ export class LoginComponent implements OnInit {
         this.spinnerService.hide();
         console.error(err.error.message);
       });
-      */
-    console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
   }
 
-
-
   crearFormulario(): void {
-
     this.formLogin = this.fb.group({
       username: ['indevaldrp', [Validators.required]],
       password: ['pruebhaq', [Validators.required]],
-      captcha: [null ]
+      captcha: [null]
     });
   }
 
@@ -123,7 +121,7 @@ export class LoginComponent implements OnInit {
           this.appStorageService.setTicket(this.usResponse.ticket);
           this.appStorageService.setToken(this.us.token);
           const aux = (response.respuesta.timeToken - 1);
-         // this.appStorageService.setTimerToken(aux + '');
+          // this.appStorageService.setTimerToken(aux + '');
           this.appStorageService.setTimerToken('1');
           this.appStorageService.setTimerTicket(response.respuesta.timeTicket);
           this.router.navigate(['/slv']);
