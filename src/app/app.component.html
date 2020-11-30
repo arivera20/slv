@@ -3,3 +3,25 @@
 </ngx-spinner>
 <router-outlet>
 </router-outlet>
+
+
+<div id="idle" bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-child-name" class="modal-title pull-left">La session expiro,<br/> por favor vuelva a iniciar sessión.</h4>
+            </div>
+            <div class="modal-body">
+                {{idleState}}
+                <div class="row mrgbtm">
+                    <div class="col-md-6">
+                        <button type="button" (click)="logout()" class="btn btn-danger">Cerrar sesión</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" (click)="stay()" class="btn btn-success">Renovar tiket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

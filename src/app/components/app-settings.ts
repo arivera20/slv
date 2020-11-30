@@ -1,10 +1,19 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AppStorageService } from './app-storage-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppSettings {
+
+  constructor(private appStorageService: AppStorageService) {}
+
+  public httpHeadersToken(): any {
+    return {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.appStorageService.getToken() })
+    };
+  }
 
 
   // ERROR - HANDLER

@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
   aux = { requiereCaptcha: false };
   us: Usuario = new Usuario();
   private usResponse = new UserResponse();
+  captchaStatus = false;
 
   constructor(private spinnerService: NgxSpinnerService,
     private fb: FormBuilder,
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
     console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
     this.spinnerService.hide();
     this.formLogin.controls.captcha.clearValidators();
+    /*
     this.spinnerService.show();
     this.loginService.cargaInicial().subscribe(
       response => {
@@ -64,13 +66,17 @@ export class LoginComponent implements OnInit {
         console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
         if (this.aux.requiereCaptcha) {
           this.formLogin.controls.captcha.setValidators([Validators.required]);
+          this.captchaStatus = true;
         }
       }, err => {
         this.spinnerService.hide();
         console.error(err.error.message);
       });
+      */
     console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
   }
+
+
 
   crearFormulario(): void {
 
@@ -101,6 +107,7 @@ export class LoginComponent implements OnInit {
     this.us.sistemaCaptcha = this.aux.requiereCaptcha;
     this.us.usuario = this.formLogin.get('username').value;
     this.us.password = this.formLogin.get('password').value;
+    this.us.captchaStatus = this.captchaStatus;
     console.log(this.us);
     /*this.serviceLogin.obtenertoken(this.us).subscribe(
       response => {*/
@@ -115,6 +122,10 @@ export class LoginComponent implements OnInit {
           this.appStorageService.setUserName(this.us.usuario);
           this.appStorageService.setTicket(this.usResponse.ticket);
           this.appStorageService.setToken(this.us.token);
+          const aux = (response.respuesta.timeToken - 1);
+         // this.appStorageService.setTimerToken(aux + '');
+          this.appStorageService.setTimerToken('1');
+          this.appStorageService.setTimerTicket(response.respuesta.timeTicket);
           this.router.navigate(['/slv']);
         } else {
           this.spinnerService.hide();

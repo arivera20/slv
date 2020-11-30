@@ -11,5 +11,6 @@ export class Usuario implements Usuario {
    // public captcha?: Captcha,
     public sistemaCaptcha?: boolean,
     public contraseniaCert?: string,
+    public captchaStatus ?: boolean,
     ){};
 }

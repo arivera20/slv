@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 const TOKEN_KEY = 'AuthToken';
 const USER_ID = 'UserId';
 const USER_NAME = 'UserName';
 const PERFIL = 'Perfil';
 const TICKET = 'Ticket';
+const TIMERTOKEN_KEY = 'timerToken';
+const TIMERTICKET = 'timerTiket';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppStorageService {
 
+  private userLoggedIn = new Subject<boolean>();
+
   constructor() {
+    this.userLoggedIn.next(false);
   }
 
   // QUITAR EL TOKEN SI EXISTE
@@ -73,6 +79,35 @@ export class AppStorageService {
 
   public isLogged(): boolean {
     return localStorage.getItem(TOKEN_KEY) ? true : false;
+  }
+
+  public getUserLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn.asObservable();
+  }
+
+  setUserLoggedIn(userLoggedIn: boolean) {
+    this.userLoggedIn.next(userLoggedIn);
+  }
+
+  // RECUPERAR EL TIMER TOKEN
+  public getTimerToken(): string {
+    return localStorage.getItem(TIMERTOKEN_KEY);
+  }
+
+  // GUARDAR EL TIMER TOKEN
+  public setTimerToken(timerToken: string): void {
+    localStorage.setItem(TIMERTOKEN_KEY, timerToken);
+    this.userLoggedIn.next(true);
+  }
+
+  // GUARDAR EL TIMER Ticket
+  public setTimerTicket(timerToken: string): void {
+    localStorage.setItem(TIMERTICKET, timerToken);
+  }
+
+  // RECUPERAR EL TIMER Ticket
+  public getTimerTicket(): string {
+    return localStorage.getItem(TIMERTICKET);
   }
 
 }

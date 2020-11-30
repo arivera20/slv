@@ -25,6 +25,8 @@ import { InterceptorError } from './components/interceptor.error';
 
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
     MatButtonModule, MatIconModule,
     ReactiveFormsModule, FormsModule,
     HttpClientModule,
-    RecaptchaModule, RecaptchaFormsModule
+    RecaptchaModule, RecaptchaFormsModule,
+    NgIdleKeepaliveModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

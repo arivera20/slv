@@ -5,13 +5,16 @@ import { LoginRequest } from './login-class/loginRequest';
 import { Observable } from 'rxjs';
 import { AppSettings } from '../app-settings';
 import { Usuario } from './login-class/usuario';
+import { AppStorageService } from '../app-storage-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: HttpClient, private appSettings: AppSettings) { }
+  constructor(private http: HttpClient,
+    private appSettings: AppSettings,
+    private appStorageService: AppStorageService) { }
 
   // Obtener token
   public getLogin2(dataInput: LoginRequest): Observable<LoginResponse> {
@@ -46,5 +49,18 @@ export class LoginService {
   public getLogin(us: Usuario): Observable<any> {
     const urlLogin = this.appSettings.path + 'slv-control-rest/api/login/determinaLogin';
     return this.http.post(urlLogin, us, this.appSettings.httpOptionsJson);
+  }
+
+  public cerrarSession(): Observable<any> {
+    const response = {
+      token: this.appStorageService.getToken,
+      ticket: this.appStorageService.getTicket
+    }
+    const url = this.appSettings.path + '/conciliacionRest/api/login/logout';
+    return this.http.post<any>(url, response, this.appSettings.httpOptionsJson);
+  }
+  public actualizaToken(): Observable<any> {
+    const url = this.appSettings.path + '/conciliacionRest/api/login/actualizaToken';
+    return this.http.get<any>(url, this.appSettings.httpHeadersToken());
   }
 }
