@@ -689,6 +689,7 @@ export class SlvComponent implements OnInit {
                 data3 => {
                   console.log('### getEstadoSlv');
                   this.configPauseOrResumeSlvButton(data3);
+                  this.spinnerService.hide();
                 },
                 error => {
                   this.errorHttp('getEstadoSlv', '', error.mesage);
@@ -706,6 +707,7 @@ export class SlvComponent implements OnInit {
                 data3 => {
                   console.log('### getEstadoSlv');
                   this.configPauseOrResumeSlvButton(data3);
+                  this.spinnerService.hide();
                 },
                 error => {
                   this.errorHttp('getEstadoSlv', '', error.mesage);
@@ -715,14 +717,10 @@ export class SlvComponent implements OnInit {
               this.errorHttp('reanudarPreliquidador', '', error.mesage);
             });
         }
-
-
-
       },
       error => {
         this.errorHttp('getEstadoSlv', '', error.mesage);
       });
-    this.spinnerService.hide();
   }
 
 
