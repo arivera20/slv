@@ -330,7 +330,7 @@ export class SlvComponent implements OnInit {
       console.log('f_gatilloDeMonto => ' + data);
       if (this.forma.controls.f_gatilloDeMonto.value == '') {
         this.forma.controls.f_gatilloDeMonto.setValue('0');
-      } else if (this.regexpNumber.test(this.forma.controls.f_gatilloDeMonto.value)){
+      } else {
         this.forma.controls.f_gatilloDeMonto.setValue(this.forma.controls.f_gatilloDeMonto.value.substr(1));
       }
     });
