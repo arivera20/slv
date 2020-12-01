@@ -700,7 +700,6 @@ export class SlvComponent implements OnInit {
                 data3 => {
                   console.log('### getEstadoSlv');
                   this.configPauseOrResumeSlvButton(data3);
-                  this.spinnerService.hide();
                 },
                 error => {
                   this.errorHttp('getEstadoSlv', '', error.mesage);
@@ -718,7 +717,6 @@ export class SlvComponent implements OnInit {
                 data3 => {
                   console.log('### getEstadoSlv');
                   this.configPauseOrResumeSlvButton(data3);
-                  this.spinnerService.hide();
                 },
                 error => {
                   this.errorHttp('getEstadoSlv', '', error.mesage);
@@ -740,15 +738,18 @@ export class SlvComponent implements OnInit {
     if (this.isSlvRunning) {
       // this.pauseOrStopSlvIcon = 'slvDetenido.png';
       this.pauseOrStopSlvIcon = this.slvStop;
+      console.log(this.pauseOrStopSlvIcon);
       // pauseOrStopSlvButton.setStyle("icon", slvStop);
       this.pauseOrStopSlvButtonLabel = 'Pausar SLV';
     }
     else {
       // this.pauseOrStopSlvIcon = 'slvRunning.png';
       this.pauseOrStopSlvIcon = this.slvPlay;
+      console.log(this.pauseOrStopSlvIcon);
       // pauseOrStopSlvButton.setStyle("icon", slvPlay);
       this.pauseOrStopSlvButtonLabel = 'Reanudar SLV';
     }
+    this.spinnerService.hide();
   }
   /*
     [Embed("img/slvDetenido.png")]
