@@ -111,8 +111,8 @@ export class LoginComponent implements OnInit {
       response => {*/
     this.loginService.getLogin(this.us).subscribe(
       response => {
+        console.log(response);
         if (response.status) {
-          console.log(response);
           this.us.token = response.respuesta.token.token;
           this.usResponse = response;
           if (this.usResponse.tipoAutenticacion == 4) {
