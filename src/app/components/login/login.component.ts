@@ -106,7 +106,8 @@ export class LoginComponent implements OnInit {
     this.us.usuario = this.formLogin.get('username').value;
     this.us.password = this.formLogin.get('password').value;
     this.us.captchaStatus = this.captchaStatus;
-    console.log('>> US ' + this.us);
+    console.log('>> US ');
+    console.log(this.us);
     /*this.serviceLogin.obtenertoken(this.us).subscribe(
       response => {*/
     this.loginService.getLogin(this.us).subscribe(
