@@ -20,7 +20,7 @@
         <form [formGroup]="formLogin" (ngSubmit)="ingresar()">
             <div class="text-input">
                 <mat-form-field>
-                    <mat-label>Usuario:</mat-label>
+                    <mat-label style="color:white">Usuario:</mat-label>
                     <span matPrefix><mat-icon class="white-icon">person</mat-icon> &nbsp;</span>
                     <input matInput formControlName="username" required>
                     <mat-error *ngIf="formLogin.get('username').hasError('required')">
