@@ -79,8 +79,8 @@ export class LoginComponent implements OnInit {
 
   crearFormulario(): void {
     this.formLogin = this.fb.group({
-      username: ['indevaldrp', [Validators.required]],
-      password: ['pruebhaq', [Validators.required]],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
       captcha: [null]
     });
   }
