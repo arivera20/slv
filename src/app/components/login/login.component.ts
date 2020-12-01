@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit {
     this.us.usuario = this.formLogin.get('username').value;
     this.us.password = this.formLogin.get('password').value;
     this.us.captchaStatus = this.captchaStatus;
-    console.log(this.us);
+    console.log('>> US ' + this.us);
     /*this.serviceLogin.obtenertoken(this.us).subscribe(
       response => {*/
     this.loginService.getLogin(this.us).subscribe(
@@ -135,7 +135,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/slv']);
           }
         } else {
-          this.msg = this.loginResponse.msg;
+          this.msg = response.msg;
           swal.fire({
             icon: 'error',
             title: 'Autentificación Fallida',
