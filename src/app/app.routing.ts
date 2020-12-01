@@ -8,8 +8,8 @@ const routes: Routes = [
 
     { path: '', component: LoginComponent },
     { path: 'slv', component: SlvComponent },
-    { path: 'login', component: LoginComponent },
-     /*{ path: 'home', component: HomeComponent },
+    /*{ path: 'login', component: LoginComponent },
+     { path: 'home', component: HomeComponent },
     { path: 'conciliation', component: ConciliationComponent },
     { path: 'slv', component: SlvComponent }
     */
