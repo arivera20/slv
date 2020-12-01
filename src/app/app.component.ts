@@ -103,12 +103,16 @@ export class AppComponent {
       this.appService.setUserLoggedIn(false);
       this.appService.setToken('');
       this.appService.setTicket('');
-      this.router.navigate(['']);
+      // this.router.navigate(['']);
+      this.router.navigateByUrl('/DummyComponent', { skipLocationChange: true }).then(() =>
+        this.router.navigate(['']));
     }, error => {
       console.error('Ocurrio un error al cerrar la sesión' + error);
       this.appService.setToken('');
       this.appService.setTicket('');
-      this.router.navigate(['']);
+      // this.router.navigate(['']);
+      this.router.navigateByUrl('/DummyComponent', { skipLocationChange: true }).then(() =>
+        this.router.navigate(['']));
     });
   }
 
