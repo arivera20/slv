@@ -56,11 +56,11 @@ export class LoginService {
       token: this.appStorageService.getToken,
       ticket: this.appStorageService.getTicket
     }
-    const url = this.appSettings.path + '/conciliacionRest/api/login/logout';
+    const url = this.appSettings.path + 'slv-control-rest/api/login/logout';
     return this.http.post<any>(url, response, this.appSettings.httpOptionsJson);
   }
   public actualizaToken(): Observable<any> {
-    const url = this.appSettings.path + '/conciliacionRest/api/login/actualizaToken';
+    const url = this.appSettings.path + 'slv-control-rest/api/login/actualizaToken';
     return this.http.get<any>(url, this.appSettings.httpHeadersToken());
   }
 }
