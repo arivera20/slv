@@ -116,27 +116,28 @@ export class LoginComponent implements OnInit {
           this.us.token = response.respuesta.token.token;
           this.usResponse = response;
           // if (this.usResponse.tipoAutenticacion == 4) {
-            this.spinnerService.hide();
-            this.appStorageService.setPerfil(this.us.usuario);
-            this.appStorageService.setUserName(this.us.usuario);
-            this.appStorageService.setTicket(this.usResponse.ticket);
-            this.appStorageService.setToken(this.us.token);
-            const aux = (response.respuesta.timeToken - 1);
-            this.appStorageService.setTimerToken(aux + '');
-            // this.appStorageService.setTimerToken('1');
-            this.appStorageService.setTimerTicket(response.respuesta.timeTicket);
-            this.router.navigate(['/slv']);
-         // } else {
-           /*
-            this.spinnerService.hide();
-            this.appStorageService.setPerfil(this.us.usuario);
-            this.appStorageService.setUserName(this.us.usuario);
-            this.appStorageService.setTicket(this.usResponse.ticket);
-            this.appStorageService.setToken(this.us.token);
-            this.router.navigate(['/slv']);
-            */
-         // }
+          this.spinnerService.hide();
+          this.appStorageService.setPerfil(this.us.usuario);
+          this.appStorageService.setUserName(this.us.usuario);
+          this.appStorageService.setTicket(this.usResponse.ticket);
+          this.appStorageService.setToken(this.us.token);
+          const aux = (response.respuesta.timeToken - 1);
+          this.appStorageService.setTimerToken(aux + '');
+          // this.appStorageService.setTimerToken('1');
+          this.appStorageService.setTimerTicket(response.respuesta.timeTicket);
+          this.router.navigate(['/slv']);
+          // } else {
+          /*
+           this.spinnerService.hide();
+           this.appStorageService.setPerfil(this.us.usuario);
+           this.appStorageService.setUserName(this.us.usuario);
+           this.appStorageService.setTicket(this.usResponse.ticket);
+           this.appStorageService.setToken(this.us.token);
+           this.router.navigate(['/slv']);
+           */
+          // }
         } else {
+          this.spinnerService.hide();
           this.msg = response.msg;
           swal.fire({
             icon: 'error',
