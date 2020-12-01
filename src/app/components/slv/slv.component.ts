@@ -147,13 +147,13 @@ export class SlvComponent implements OnInit {
   aperturaPostLiqFinDiaIconDisabled = 'aperturaPostLiqFinDia_Disabled.png';
 
   // imagenes de iconos de Acciones
-  liquidacionFinDeDiaIcon: string;
-  aperturaPreLiqFinDiaIcon: string;
-  iniciarCicloIcon: string;
-  pauseOrStopSlvIcon: string;
-  compensadorIcon: string;
-  reencolarInstruccionesIcon = 'konquest.png';
-  aperturaPostLiqFinDiaIcon: string;
+  public liquidacionFinDeDiaIcon: string;
+  public aperturaPreLiqFinDiaIcon: string;
+  public iniciarCicloIcon: string;
+  public pauseOrStopSlvIcon: string;
+  public compensadorIcon: string;
+  public reencolarInstruccionesIcon = 'konquest.png';
+  public aperturaPostLiqFinDiaIcon: string;
   // label de Acciones
   pauseOrStopSlvButtonLabel = 'Reanudar SLV';
   enableOrDisableCompensadorButtonLabel = 'Desactivar Comp.';
@@ -738,15 +738,19 @@ export class SlvComponent implements OnInit {
     console.log('############');
     console.log(this.isSlvRunning);
     if (this.isSlvRunning) {
+      console.log('############ TRUE');
       // this.pauseOrStopSlvIcon = 'slvDetenido.png';
-      this.pauseOrStopSlvIcon = this.slvStop;
+      this.pauseOrStopSlvIcon = '';
+      this.pauseOrStopSlvIcon = 'slvDetenido.png';
       console.log(this.pauseOrStopSlvIcon);
       // pauseOrStopSlvButton.setStyle("icon", slvStop);
       this.pauseOrStopSlvButtonLabel = 'Pausar SLV';
     }
     else {
+      console.log('############ FALSE');
       // this.pauseOrStopSlvIcon = 'slvRunning.png';
-      this.pauseOrStopSlvIcon = this.slvPlay;
+      this.pauseOrStopSlvIcon = '';
+      this.pauseOrStopSlvIcon = 'slvRunning.png';
       console.log(this.pauseOrStopSlvIcon);
       // pauseOrStopSlvButton.setStyle("icon", slvPlay);
       this.pauseOrStopSlvButtonLabel = 'Reanudar SLV';
