@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit {
       response => {*/
     this.loginService.getLogin(this.us).subscribe(
       response => {
-        console.log(response);
+        console.log('RES-login ' + response);
         if (response.status) {
           this.us.token = response.respuesta.token.token;
           this.usResponse = response;
@@ -122,8 +122,8 @@ export class LoginComponent implements OnInit {
             this.appStorageService.setTicket(this.usResponse.ticket);
             this.appStorageService.setToken(this.us.token);
             const aux = (response.respuesta.timeToken - 1);
-            // this.appStorageService.setTimerToken(aux + '');
-            this.appStorageService.setTimerToken('1');
+            this.appStorageService.setTimerToken(aux + '');
+            // this.appStorageService.setTimerToken('1');
             this.appStorageService.setTimerTicket(response.respuesta.timeTicket);
             this.router.navigate(['/slv']);
           } else {
