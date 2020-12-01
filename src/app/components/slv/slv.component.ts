@@ -30,7 +30,7 @@ export class SlvComponent implements OnInit {
 
   montoTotalMaxInstrucciones: number;
 
-
+  
 
 
   msg = '';
@@ -166,6 +166,8 @@ export class SlvComponent implements OnInit {
   dateHraRecepcion: Date;
   dateHraApertura: Date;
 
+
+  regexpNumber = new RegExp('^[0-9]*$');
   /** >>>>>>>> CONSTRUCTOR */
   constructor(private spinnerService: NgxSpinnerService,
     private fb: FormBuilder,
@@ -328,6 +330,8 @@ export class SlvComponent implements OnInit {
       console.log('f_gatilloDeMonto => ' + data);
       if (this.forma.controls.f_gatilloDeMonto.value == '') {
         this.forma.controls.f_gatilloDeMonto.setValue('0');
+      } else if (this.regexpNumber.test(this.forma.controls.f_gatilloDeMonto.value)){
+        this.forma.controls.f_gatilloDeMonto.setValue(this.forma.controls.f_gatilloDeMonto.value.substr(1));
       }
     });
 
@@ -640,10 +644,12 @@ export class SlvComponent implements OnInit {
 
   aperturaPreLiqFinDia(): void {
     if (this.isLiquidacionFinDeDiaActivada) {
+      this.spinnerService.show();
       this.preliquidadorService.procesarAperturaPreLiqFinDia(this.user)
         .subscribe(
           data => {
             console.log('### procesarAperturaPreLiqFinDia');
+            this.spinnerService.hide();
           },
           error => {
             this.errorHttp('procesarAperturaPreLiqFinDia', '', error.mesage);
@@ -664,10 +670,12 @@ export class SlvComponent implements OnInit {
    *************************************************************/
 
   iniciarCicloLiquidacionAsincrono(): void {
+    this.spinnerService.show();
     this.preliquidadorService.iniciarCicloLiquidacionAsincrono(this.user)
       .subscribe(
         data => {
           console.log('### iniciarCicloLiquidacionAsincrono');
+          this.spinnerService.hide();
         },
         error => {
           this.errorHttp('iniciarCicloLiquidacionAsincrono', '', error.mesage);
@@ -758,9 +766,11 @@ export class SlvComponent implements OnInit {
    *************************************************************/
   enableOrDisableCompensador(): void {
     if (this.isCompensadorActive) {
+      this.spinnerService.show();
       this.compensadorService.desactivarCompensador(this.user).subscribe(
         data => {
           console.log('### desactivarCompensador');
+          this.spinnerService.hide();
         },
         error => {
           this.errorHttp('desactivarCompensador', '', error.mesage);
@@ -768,9 +778,11 @@ export class SlvComponent implements OnInit {
       this.isCompensadorActive = false;
     }
     else {
+      this.spinnerService.show();
       this.compensadorService.activarCompensador(this.user).subscribe(
         data => {
           console.log('### activarCompensador');
+          this.spinnerService.hide();
         },
         error => {
           this.errorHttp('activarCompensador', '', error.mesage);
