@@ -323,11 +323,14 @@ export class SlvComponent implements OnInit {
       f_pmc: ['', [Validators.required]],
       f_tc: ['', [Validators.required]]
     });
-    /*
+
     this.forma.controls.f_gatilloDeMonto.valueChanges.subscribe(data => {
       console.log('f_gatilloDeMonto => ' + data);
+      if (this.forma.controls.f_gatilloDeMonto.value == '') {
+        this.forma.controls.f_gatilloDeMonto.setValue('0');
+      }
     });
-*/
+
 
   }
 
