@@ -20,7 +20,7 @@ export class InterceptorError implements HttpInterceptor {
                 let errorMessage = '';
                 console.log('ERROR = ' + error.status);
                 if (error.status == 403) {
-                    this.router.navigate(['login']);
+                    this.router.navigate(['']);
                 } else {
                     if (error instanceof ErrorEvent) {
                         // client-side error
