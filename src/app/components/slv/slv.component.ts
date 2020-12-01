@@ -698,7 +698,7 @@ export class SlvComponent implements OnInit {
               console.log('### pausarPreliquidador');
               this.senalizadorService.getEstadoSlv().subscribe(
                 data3 => {
-                  console.log('### getEstadoSlv');
+                  console.log('### getEstadoSlv TRUE');
                   this.configPauseOrResumeSlvButton(data3);
                 },
                 error => {
@@ -714,9 +714,9 @@ export class SlvComponent implements OnInit {
             data2 => {
               console.log('### reanudarPreliquidador');
               this.senalizadorService.getEstadoSlv().subscribe(
-                data3 => {
-                  console.log('### getEstadoSlv');
-                  this.configPauseOrResumeSlvButton(data3);
+                data4 => {
+                  console.log('### getEstadoSlv FALSE');
+                  this.configPauseOrResumeSlvButton(data4);
                 },
                 error => {
                   this.errorHttp('getEstadoSlv', '', error.mesage);
@@ -735,6 +735,8 @@ export class SlvComponent implements OnInit {
 
   configPauseOrResumeSlvButton(isRunning: boolean): void {
     this.isSlvRunning = isRunning;
+    console.log('############');
+    console.log(this.isSlvRunning);
     if (this.isSlvRunning) {
       // this.pauseOrStopSlvIcon = 'slvDetenido.png';
       this.pauseOrStopSlvIcon = this.slvStop;
