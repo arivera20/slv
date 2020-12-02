@@ -538,6 +538,7 @@ export class SlvComponent implements OnInit {
     console.log('isLiquidacionFinDeDiaActivada = ' + this.isLiquidacionFinDeDiaActivada);
     // liquidacionFinDeDiaButton.setStyle("icon", liquidacionFinDeDiaIconActived);
     if (!this.isLiquidacionFinDeDiaActivada) {
+      this.spinnerService.show();
       this.preliquidadorService.liquidacionFinDeDia(this.user)
         .subscribe(
           data => {
@@ -576,6 +577,7 @@ export class SlvComponent implements OnInit {
       data => {
         console.log('======= getSlvTimeInMillis');
         this.processSlvTimeInMillis(data);
+        this.spinnerService.hide();
       },
       error => {
         this.errorHttp('getSlvTimeInMillis', '', error.mesage);
@@ -826,6 +828,7 @@ export class SlvComponent implements OnInit {
    *************************************************************/
   resetPreliquidador(): void {
     // senalizadorPreliquidador.getEstadoSlv();
+    this.spinnerService.show();
     this.senalizadorService.getEstadoSlv().subscribe(
       data => {
         console.log('### getEstadoSlv');
@@ -860,6 +863,7 @@ export class SlvComponent implements OnInit {
         });
     }
     else {
+      this.spinnerService.hide();
       // fault("Imposible reestablecer el SLV. Debe estar pausado para poder ejecutar esta accion.");
       Swal.fire({
         icon: 'info',
@@ -874,6 +878,7 @@ export class SlvComponent implements OnInit {
     this.senalizadorService.reencolarInstruccionesPendientes(this.user).subscribe(
       data => {
         console.log('### reencolarInstruccionesPendientes');
+        this.spinnerService.hide();
       },
       error => {
         this.errorHttp('reencolarInstruccionesPendientes', '', error.mesage);
@@ -905,9 +910,11 @@ export class SlvComponent implements OnInit {
   aperturaPostLiqFinDia(): void {
     if (this.isSlvCerrado) {
       // preliquidador.procesarAperturaPostLiqFinDia();
+      this.spinnerService.show();
       this.preliquidadorService.procesarAperturaPostLiqFinDia(this.user).subscribe(
         data => {
           console.log('### procesarAperturaPostLiqFinDia');
+          this.spinnerService.hide();
         },
         error => {
           this.errorHttp('procesarAperturaPostLiqFinDia', '', error.mesage);

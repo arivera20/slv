@@ -62,12 +62,12 @@ body {
 /*::ng-deep.mat-form-field-underline {
     change color of underline*/
 
-.mat-form-field-underline {
+::ng-deep.mat-form-field-underline {
     background-color: white !important;
     z-index: 10 !important;
 }
 
-.mat-form-field-ripple {
+::ng-deep.mat-form-field-ripple {
     /*change color of underline when focused*/
     background-color: white !important;
     z-index: 10 !important;
@@ -76,8 +76,8 @@ body {
 
 /** Overrides label color **/
 
-.mat-form-field-appearance-legacy .mat-form-field-label,
-.mat-form-field-appearance-legacy.mat-focused .mat-form-field-label {
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-label,
+::ng-deep.mat-form-field-appearance-legacy.mat-focused .mat-form-field-label {
     color: white;
     z-index: 10 !important;
 }
@@ -85,7 +85,7 @@ body {
 
 /** Overrides caret & text color **/
 
-.mat-form-field-appearance-legacy .mat-input-element {
+::ng-deep.mat-form-field-appearance-legacy .mat-input-element {
     caret-color: white;
     color: white;
     z-index: 10 !important;
