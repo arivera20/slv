@@ -276,7 +276,7 @@
         <div class="title new margen"><img src="assets/img/slv/wizard.png">Acciones</div>
         <hr>
         <div class="container-box" [className]="classDisabled">
-            <div [className]="(editable && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmLiquidacionFinDeDia()"><img [attr.src]="[(editable && isSlvCerrado && !isDiaInhabil) ? 'assets/img/slv/liqFinDia_Disabled.png' : 'assets/img/slv/{liquidacionFinDeDiaIcon}']"><span>Liq. de fin de día</span></div>
+            <div [className]="(editable && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmLiquidacionFinDeDia()"><img [attr.src]='[(editable && isSlvCerrado && !isDiaInhabil) ? "assets/img/slv/liqFinDia_Disabled.png" : "assets/img/slv/{liquidacionFinDeDiaIcon}"]'><span>Liq. de fin de día</span></div>
             <div [className]="(editable && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmLiquidacionFinDeDia()"><img src="assets/img/slv/{{liquidacionFinDeDiaIcon}}"><span>Liq. de fin de día</span></div>
             <div [className]="(editable && isLiquidacionFinDeDiaActivada && !isSlvCerrado) ? 'box' : 'div-disabled-accion'" (click)="confirmAperturaPreLiqFinDia()"><img [attr.src]="[(editable && isLiquidacionFinDeDiaActivada && !isSlvCerrado) ? 'assets/img/slv/aperturaPreLiqFinDia.png' : 'assets/img/slv/aperturaPreLiqFinDia_Disabled.png']"><span>Apertura pre Liq. de fin de día</span></div>
             <div [className]="(editable && isSlvRunning && !isLiquidacionFinDeDiaActivada) ? 'box' : 'div-disabled-accion'" (click)="iniciarCicloLiquidacionAsincrono()"><img src="assets/img/slv/{{iniciarCicloIcon}}"><span>Forzar ciclo de liq.</span></div>
