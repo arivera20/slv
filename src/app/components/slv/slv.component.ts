@@ -167,7 +167,6 @@ export class SlvComponent implements OnInit {
   dateHraApertura: Date;
 
 
-  regexpNumber = new RegExp('^[0-9]*$');
   /** >>>>>>>> CONSTRUCTOR */
   constructor(private spinnerService: NgxSpinnerService,
     private fb: FormBuilder,
