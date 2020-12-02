@@ -255,13 +255,14 @@ export class SlvComponent implements OnInit {
       this.isDisabled = false;
       this.aplicarCambiosImg = 'apply.png';
 
-      this.liquidacionFinDeDiaIcon = 'mozilla.png';
+      // this.liquidacionFinDeDiaIcon = 'mozilla.png';
       // this.aperturaPreLiqFinDiaIcon = this.aperturaPreLiqFinDiaIconDisabled;
       this.iniciarCicloIcon = this.iniciarCiclo;
       // this.pauseOrStopSlvIcon = this.slvStop;
       this.compensadorIcon = this.compensadorInactive;
       this.reencolarInstruccionesIcon = 'konquest.png';
       this.getEstadoSlv(this.isNgOnInit);
+      // this.refresh();
       this.change();
     } else {
       // no editar
