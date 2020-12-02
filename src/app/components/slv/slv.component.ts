@@ -261,8 +261,8 @@ export class SlvComponent implements OnInit {
       // this.pauseOrStopSlvIcon = this.slvStop;
       this.compensadorIcon = this.compensadorInactive;
       this.reencolarInstruccionesIcon = 'konquest.png';
-      this.getEstadoSlv(this.isNgOnInit);
-      // this.refresh();
+      // this.getEstadoSlv(this.isNgOnInit);
+      this.refresh();
       this.change();
     } else {
       // no editar
