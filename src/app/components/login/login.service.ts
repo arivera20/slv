@@ -53,11 +53,11 @@ export class LoginService {
 
   public cerrarSession(): Observable<any> {
     const response = {
-      token: this.appStorageService.getToken,
-      ticket: this.appStorageService.getTicket
+      token: this.appStorageService.getToken(),
+      ticket: this.appStorageService.getTicket()
     }
     const url = this.appSettings.path + 'slv-control-rest/api/login/logout';
-    return this.http.post<any>(url, response, this.appSettings.httpOptionsJson);
+    return this.http.post<any>(url, response, this.appSettings.httpHeadersToken());
   }
   public actualizaToken(): Observable<any> {
     const url = this.appSettings.path + 'slv-control-rest/api/login/actualizaToken';

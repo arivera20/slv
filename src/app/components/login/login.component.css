@@ -1,9 +1,37 @@
-html,
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #434363;
+.principal-Login {
+    background: linear-gradient(#6e97b7, #434363, #434363, #434363, #434363, #434363, #434363, #434363, #434363);
+    height: 100vh;
 }
+
+.login {
+    background: linear-gradient(#6e97b7, #434363, #434363, #434363, #434363, #434363, #434363, #434363, #434363);
+    padding-top: 80px;
+}
+
+.logo_edificio_xs {
+    position: fixed;
+    top: 50px;
+    z-index: 1;
+}
+
+.form_login {
+    color: white;
+    padding-top: 30px;
+}
+
+mat-form-field.input-login {
+    width: 260px !important;
+    height: 80px !important;
+}
+
+.contenido-formulario>.row {
+    padding-bottom: 15px;
+}
+
+
+/**
+  * Estilos Modal
+  */
 
 .header {
     font-family: Arial, Helvetica, sans-serif;
@@ -14,90 +42,68 @@ body {
     height: 147px;
 }
 
-.principal-Login {
-    background: linear-gradient(#6e97b7, #434363, #434363, #434363, #434363, #434363, #434363, #434363, #434363);
-    height: 647px;
+.modal-header-firma {
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(.3rem - 1px);
+    border-top-right-radius: calc(.3rem - 1px);
+    padding-top: 0px;
 }
 
-.contenedor {
-    position: relative;
-    display: block;
+.form-group {
+    margin-bottom: 10px !important;
+}
+
+.modal-body,
+.modal-body>.row>.col-md-12>label {
+    color: white !important;
+}
+
+.modal-body>mat-form-field {
+    width: 100% !important;
+}
+
+.modal-content {
+    background-color: #434363 !important;
+}
+
+.img-seguridad {
+    z-index: 10;
     width: 100%;
+    padding-top: 20px;
 }
 
-.contenedor-form {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 100;
+.logo-certificado {
+    z-index: 10;
+    width: 100%;
+    padding-top: 30px;
 }
 
-.logo {
-    position: relative;
-    display: block;
-    margin-bottom: 60px;
+mat-form-field.input-modal {
+    width: 100% !important;
 }
 
-.white-icon {
-    color: white;
+label,
+.mat-form-field-label.mat-empty.mat-form-field-empty {
+    font-size: 14px;
 }
 
-.contenedor-img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
+.input-group-sm>.form-control:not(textarea) {
+    height: calc(1em + .5rem + 1px) !important;
 }
 
-.contenedor-img>img {
-    position: relative;
-    display: block;
-    margin: auto;
+.input-group-sm>.input-group-prepend,
+.input-group-sm>.input-group-addon {
+    height: calc(15px + 7px + 1px) !important;
 }
 
-
-/*::ng-deep.mat-form-field-underline {
-    change color of underline*/
-
-::ng-deep.mat-form-field-underline {
-    background-color: white !important;
-    z-index: 10 !important;
-}
-
-::ng-deep.mat-form-field-ripple {
-    /*change color of underline when focused*/
-    background-color: white !important;
-    z-index: 10 !important;
-}
-
-
-/** Overrides label color **/
-
-::ng-deep.mat-form-field-appearance-legacy .mat-form-field-label,
-::ng-deep.mat-form-field-appearance-legacy.mat-focused .mat-form-field-label {
-    color: white;
-    z-index: 10 !important;
-}
-
-
-/** Overrides caret & text color **/
-
-::ng-deep.mat-form-field-appearance-legacy .mat-input-element {
-    caret-color: white;
-    color: white;
-    z-index: 10 !important;
-}
-
-.text-input {
-    margin-bottom: 15px;
+.input-group-sm {
+    padding: .25rem .5rem;
 }
 
 
 /**
-* Estilos Captcha */
+  * Estilos Captcha */
 
 #gwd-reCAPTCHA_2 {
     -webkit-transform: scale(0.84);
@@ -112,33 +118,82 @@ body {
     transform-origin: 0 0;
 }
 
-.button-sub {
+.matlab {
     position: relative;
     display: block;
-    margin: 0 auto;
-    width: 200px;
-    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.g-recaptcha-outer {
-    text-align: center;
-    border-radius: 2px;
-    background: #f9f9f9;
-    border-style: solid;
-    border-color: #37474f;
-    border-width: 1px;
-    border-bottom-width: 2px;
-}
-
-.g-recaptcha-inner {
-    width: 154px;
-    height: 82px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.g-recaptcha {
+input {
     position: relative;
-    left: -2px;
-    top: -1px;
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    -webkit-box-sizing: border-box;
+    -mow-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+    font-size: 16px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    border: 1px solid #fff;
+    padding-left: 40px;
+}
+
+.input-error {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    -webkit-box-sizing: border-box;
+    -mow-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+    font-size: 16px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    border: 1px solid red;
+    padding-left: 40px;
+}
+
+.errspan {
+    float: left;
+    margin-left: 15px;
+    margin-top: -33px;
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.errspann {
+    float: left;
+    margin-left: 205px;
+    margin-top: -42px;
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.input-width {
+    width: 260px;
+}
+
+.div-error {
+    position: relative;
+    display: block;
+    width: 260px;
+    height: 40px;
+}
+
+.btn-ingreso {
+    width: 100px;
+    margin-left: 143px;
 }

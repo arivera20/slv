@@ -28,8 +28,7 @@ export class AppSettings {
   }
 
   readonly sistema = 'CONTROL_SLV';
-  // readonly path = window.location.protocol + '//' + window.location.host + '/';
-  readonly path = '';
+  readonly path =  window.location.hostname=='localhost'?'':window.location.protocol+"//"+window.location.host+"/";
 
   // httpOptionsJson
   readonly httpOptionsJson = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };

@@ -4,6 +4,7 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AppStorageService } from './app-storage-service';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class InterceptorError implements HttpInterceptor {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router,private appStorageService: AppStorageService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -20,7 +21,9 @@ export class InterceptorError implements HttpInterceptor {
                 let errorMessage = '';
                 console.log('ERROR = ' + error.status);
                 if (error.status == 403) {
-                    this.router.navigate(['']);
+                    this.appStorageService.setTicket('');
+                    this.appStorageService.setToken('');
+                    this.router.navigate(['login']);
                 } else {
                     if (error instanceof ErrorEvent) {
                         // client-side error

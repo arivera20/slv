@@ -1,21 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginRequest } from './login-class/loginRequest';
-import { LoginResponse } from './login-class/loginResponse';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import swal from 'sweetalert2';
+import { LoginRequest } from './login-class/loginRequest';
+import { LoginResponse } from './login-class/loginResponse';
 import { AppStorageService } from '../app-storage-service';
-import { Usuario } from './login-class/usuario';
-import { UserResponse } from './login-class/userResponse';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AppSettings } from '../app-settings';
+import { UserResponse } from './login-class/userResponse';
+import { Usuario } from './login-class/usuario';
 
-export interface FormModel {
-  username?: string;
-  captcha?: string;
-  password?: string;
-}
+declare var $: any;
+declare var toastr: any;
 
 @Component({
   selector: 'app-login',
@@ -24,132 +21,86 @@ export interface FormModel {
 })
 export class LoginComponent implements OnInit {
 
-  public formModel: FormModel = {};
-
-  public formLogin: FormGroup;
   public loginRequest = new LoginRequest();
-  private loginResponse = new LoginResponse();
+  private loginResponse: LoginResponse;
+  private usResponse = new UserResponse();
   private msg = '';
-  public hidePass = true;
+
+  usuarioForm = new FormControl('', [
+    Validators.required,
+  ]);
+
+  msgErrorCaptcha = false;
   aux = { requiereCaptcha: false };
   us: Usuario = new Usuario();
-  private usResponse = new UserResponse();
+  hidePassModal = true;
+  hidePass = true;
   captchaStatus = false;
 
-  constructor(private spinnerService: NgxSpinnerService,
-    private fb: FormBuilder,
+  constructor(private loginService: LoginService,
     private router: Router,
-    private loginService: LoginService,
+    private serviceLogin: LoginService,
     private appStorageService: AppStorageService,
-    private appSettings: AppSettings) {
-
-    this.crearFormulario();
-    this.appStorageService.logout();
-  }
-
-  // tslint:disable-next-line: typedef
-  setRequired() {
-    return [Validators.required];
-  }
+    private spinnerService: NgxSpinnerService,
+    private appSettings: AppSettings) { }
 
   ngOnInit(): void {
-    console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
-    this.spinnerService.hide();
-    this.formLogin.controls.captcha.clearValidators();
-    this.servicioCaptcha();
-  }
-
-  servicioCaptcha(): void {
     this.spinnerService.show();
-    this.loginService.cargaInicial().subscribe(
+    this.serviceLogin.cargaInicial().subscribe(
       response => {
-        console.log('RES = ' + response);
         this.spinnerService.hide();
         this.aux.requiereCaptcha = response.respuesta;
-        console.log('requiereCaptcha ' + this.aux.requiereCaptcha);
-        if (this.aux.requiereCaptcha) {
-          this.formLogin.controls.captcha.setValidators([Validators.required]);
-          this.captchaStatus = true;
-        }
       }, err => {
         this.spinnerService.hide();
         console.error(err.error.message);
       });
+
+    toastr.options.closeButton = true;
+    toastr.options.showMethod = 'slideDown';
+    toastr.options.hideMethod = 'slideUp';
+    toastr.options.closeMethod = 'slideUp';
   }
 
-  crearFormulario(): void {
-    this.formLogin = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      captcha: [null]
-    });
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+    if (captchaResponse != null) {
+      this.captchaStatus = true;
+    } else {
+      this.captchaStatus = false;
+    }
   }
 
-  /*
-    username: ['omarnl', [Validators.required]],
-    password: ['asff2', [Validators.required]]
-  */
-  ingresar(): void {
-    console.log('Ingresando');
-    console.log(this.formLogin);
-    this.loginRequest.username = this.formLogin.get('username').value;
-    this.loginRequest.password = this.formLogin.get('password').value;
-    this.login();
-    // this.callService();
-    // this.router.navigate(['/slv']);
-  }
-
-  login(): void {
+  login() {
     this.spinnerService.show();
     this.us.sistema = this.appSettings.sistema;
     this.us.sistemaCaptcha = this.aux.requiereCaptcha;
-    this.us.usuario = this.formLogin.get('username').value;
-    this.us.password = this.formLogin.get('password').value;
     this.us.captchaStatus = this.captchaStatus;
-    console.log('>> US ');
-    console.log(this.us);
-    /*this.serviceLogin.obtenertoken(this.us).subscribe(
-      response => {*/
-    this.loginService.getLogin(this.us).subscribe(
+    /*
+    this.appStorageService.setTimerToken('1');
+    this.router.navigate(['/slv']);
+    */
+    this.serviceLogin.getLogin(this.us).subscribe(
       response => {
-        console.log('RES-login ' + response);
         if (response.status) {
           this.us.token = response.respuesta.token.token;
           this.usResponse = response;
-          // if (this.usResponse.tipoAutenticacion == 4) {
-          this.spinnerService.hide();
           this.appStorageService.setPerfil(this.us.usuario);
           this.appStorageService.setUserName(this.us.usuario);
-          this.appStorageService.setTicket(this.usResponse.ticket);
-          this.appStorageService.setToken(this.us.token);
           const aux = (response.respuesta.timeToken - 1);
           this.appStorageService.setTimerToken(aux + '');
-          // this.appStorageService.setTimerToken('1');
           this.appStorageService.setTimerTicket(response.respuesta.timeTicket);
+          this.appStorageService.setTicket(this.usResponse.ticket);
+          this.appStorageService.setToken(this.us.token);
           this.router.navigate(['/slv']);
-          // } else {
-          /*
-           this.spinnerService.hide();
-           this.appStorageService.setPerfil(this.us.usuario);
-           this.appStorageService.setUserName(this.us.usuario);
-           this.appStorageService.setTicket(this.usResponse.ticket);
-           this.appStorageService.setToken(this.us.token);
-           this.router.navigate(['/slv']);
-           */
-          // }
-        } else {
+        }
+        else {
           this.spinnerService.hide();
-          this.msg = response.msg;
-          swal.fire({
-            icon: 'error',
-            title: 'Autentificación Fallida',
-            text: this.msg
-          });
+          toastr.error(response.msg, 'Error');
         }
       }, error => {
         this.spinnerService.hide();
-        // toastr.error(error.error.msg, 'Error');
-        console.error('ERROR AL RECUPERAR EL USUARIO - (LoginComponent)');
+        toastr.error(error.error.msg, 'Error');
+        console.error('ERROR AL RECUPERAR EL USUARIO - (LoginInitComponent)');
         swal.fire({
           icon: 'error',
           title: 'Autentificación Fallida',
@@ -159,68 +110,32 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  // LLAMADO DEL SERVICIO
-  private callService(): void {
-    this.spinnerService.show();
-    this.loginService.getLogin2(this.loginRequest)
-      .subscribe(
-        data => {
-          this.loginResponse = data;
-          console.log(this.loginResponse);
-          this.validUser();
-          this.spinnerService.hide();
-        },
-        error => {
-          this.spinnerService.hide();
-          this.msg = 'En este momento no podemos ingresar, inténtelo en otro momento.';
-          console.error('ERROR AL RECUPERAR EL USUARIO - (LoginComponent)');
-          swal.fire({
-            icon: 'error',
-            title: 'Autentificación Fallida',
-            text: this.msg
-          });
-        });
-  }
-
-  // VALIDANDO LA RESPUESTA DEL SERVICIO
-  private validUser(): void {
-    if (this.loginResponse.token != '') {
-      console.log('Usuario entro correctamente');
-      this.appStorageService.setToken(this.loginResponse.token);
-      this.appStorageService.setUserName(this.loginRequest.username);
-      console.log(this.appStorageService.getToken);
-      this.callServiceTest();
-      this.router.navigate(['/slv']);
-    } else {
-      this.msg = this.loginResponse.msg;
-      swal.fire({
-        icon: 'error',
-        title: 'Autentificación Fallida',
-        text: this.msg
-      });
+  firmar() {
+    if (this.us != null) {
+      if (this.us.contraseniaCert === '1234') {
+        $("#abrirCertificado").modal("hide");
+        this.appStorageService.setPerfil(this.us.usuario);
+        this.appStorageService.setUserName(this.us.usuario);
+        this.appStorageService.setTicket(this.usResponse.ticket);
+        this.router.navigate(['/conciliacion']);
+      } else {
+        toastr.error('Las credenciales son incorrectas', 'Error')
+      }
     }
   }
 
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      let formData: FormData = new FormData();
+      formData.append('uploadFile', file, file.name);
+      let headers = new Headers();
 
-  // LLAMADO DEL SERVICIO TEST
-  private callServiceTest(): void {
-    this.spinnerService.show();
-    this.loginService.getTest()
-      .subscribe(
-        data => {
-          this.loginResponse = data;
-          console.log(this.loginResponse);
-        },
-        error => {
-          this.spinnerService.hide();
-          this.msg = 'En este momento no podemos ingresar, inténtelo en otro momento.';
-          console.error('ERROR AL RECUPERAR INFORMACION - (LoginComponent)');
-          swal.fire({
-            icon: 'error',
-            title: 'Autentificación Fallida',
-            text: this.msg
-          });
-        });
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+    }
   }
+
 
 }

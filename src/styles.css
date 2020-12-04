@@ -1,6 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-html {
-    background-color: #434363;
+
+/* Login Formulario */
+.input-login.mat-form-field .mat-form-field-label {
+    color: white !important;
+    font-size: 16px !important;
+}
+.input-login.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: white !important;
+}
+/*  Linea debajo del input*/
+.input-login.mat-form-field .mat-form-field-underline {
+    background-color: white !important;
 }

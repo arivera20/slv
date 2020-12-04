@@ -65,7 +65,7 @@ export class AppComponent {
       if (userLoggedIn) {
         console.log('La session tiene una duracion de: ' + aux + 'segundos');
         idle.setIdle(aux);
-        idle.setTimeout(60);
+        idle.setTimeout(50);
         idle.watch();
         this.timedOut = false;
       } else {

@@ -16,6 +16,7 @@ export class InterceptorService implements HttpInterceptor {
     let request = req;
     // console.log('>>>>> Interceptor == ' + token);
 
+    //if (token != null && token != '' ) {
     if (token) {
       // console.log('>>>>> Entro a modificar el request == ' + token);
       request = req.clone({
