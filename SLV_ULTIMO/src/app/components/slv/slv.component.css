@@ -1,0 +1,322 @@
+.contenedor {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 30px;
+    background-color: #B2BFC6;
+}
+
+.contenedor>span {
+    position: relative;
+    display: block;
+    font-size: 15px;
+    padding-left: 1%;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 12px;
+}
+
+.contenedor>div {
+    position: relative;
+    display: block;
+    width: 98%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 0 25px;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.8);
+    -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.8);
+    -o-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.8);
+}
+
+.title {
+    position: relative;
+    display: block;
+    font-weight: bold;
+}
+
+.title img {
+    margin-right: 10px;
+}
+
+.label {
+    position: relative;
+    display: block;
+    width: 24%;
+    float: left;
+    font-size: 13px;
+    padding-top: 8px;
+    height: 30px;
+    text-align: right;
+    padding-right: 15px;
+}
+
+.control {
+    position: relative;
+    display: block;
+    float: left;
+    width: 76%;
+}
+
+.btn {
+    background-color: #D7DCDE;
+}
+
+.btn-left {
+    margin-top: 15px;
+    background-color: #D7DCDE;
+    margin-left: 1%;
+}
+
+.img-version {
+    position: relative;
+    display: block;
+    float: right;
+    cursor: pointer;
+    margin-top: 13px;
+    margin-right: 1%;
+}
+
+.btn-edit {
+    float: right;
+    margin-top: 20px;
+    background-color: #fff;
+    width: 200px;
+}
+
+.espacio {
+    padding-top: 4px;
+}
+
+.espacio-5 {
+    padding-top: 6px;
+}
+
+.small {
+    width: 40px;
+}
+
+.container-box {
+    position: relative;
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.box {
+    position: relative;
+    display: inline-block;
+    width: 14.28%;
+    height: 100px;
+}
+
+.box:hover {
+    background-color: #ADDEFF;
+    cursor: pointer;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.box span {
+    position: absolute;
+    bottom: 10px;
+    font-size: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.box img {
+    position: absolute;
+    top: 10px;
+    font-size: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.day {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.margen {
+    margin-top: 60px;
+}
+
+.new {
+    clear: both;
+}
+
+.new-space {
+    clear: both;
+    padding-bottom: 45px;
+}
+
+.example-margin {
+    margin: 8px;
+}
+
+.mat-slider-horizontal {
+    width: 100%;
+}
+
+.mat-slider-vertical {
+    height: 300px;
+}
+
+.mat-card+.mat-card {
+    margin-top: 8px;
+}
+
+.example-result-card h2 {
+    margin: 0 8px;
+}
+
+.text-op {
+    font-size: 13px;
+    padding: 0;
+    vertical-align: middle;
+    padding-top: 15px;
+}
+
+.row {
+    padding: 0;
+    height: 40px;
+}
+
+.col-sm-2 {
+    padding: 0;
+    height: 40px;
+}
+
+mat-form-field {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    height: 30px;
+    top: 0;
+}
+
+::ng-deep .mat-form-field-flex>.mat-form-field-infix {
+    padding: 0 0px !important;
+}
+
+
+/*
+:host ::ng-deep mat-slider.mat-slider.mat-slider-horizontal .mat-slider-ticks {
+
+  height: 20px;
+
+  opacity: 1;
+  background-size: 10.101% 2px !important;
+  transform: translateZ(0px) translateX(5.05051%); 
+}*/
+
+.label-min {
+    position: absolute;
+    display: block;
+    font-size: 11px;
+    top: -3px;
+    left: 5px;
+}
+
+.label-max {
+    position: absolute;
+    display: block;
+    font-size: 11px;
+    top: -3px;
+    right: 5px;
+}
+
+:host ::ng-deep mat-slider.mat-slider.mat-slider-horizontal .mat-slider-ticks {
+    /* make ticks fill full height */
+    height: 20px;
+    /* this will force show the ticks */
+    opacity: 1;
+    transform: translateZ(0px) translateX(5.05051%);
+    /* I adjusted my slider to be thicker, so the correct values for you here may be different*/
+}
+
+div[disabled="true"] {
+    pointer-events: none;
+    opacity: 0.6;
+    filter: alpha(opacity=50);
+    zoom: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    -moz-opacity: 0.6;
+    -khtml-opacity: 0.6;
+}
+
+.div-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    filter: alpha(opacity=50);
+    zoom: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    -moz-opacity: 0.6;
+    -khtml-opacity: 0.6;
+}
+
+.div-disabled-accion {
+    position: relative;
+    display: inline-block;
+    width: 14.28%;
+    height: 100px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.div-disabled-accion span {
+    position: absolute;
+    bottom: 10px;
+    font-size: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.div-disabled-accion img {
+    position: absolute;
+    top: 10px;
+    font-size: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: black !important;
+}
+
+ ::ng-deep.mat-form-field-ripple {
+    /*change color of underline when focused*/
+    background-color: black !important;
+}
+
+
+/** Overrides label color **/
+
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-label,
+::ng-deep.mat-form-field-appearance-legacy.mat-focused .mat-form-field-label {
+    color: black;
+}
+
+
+/** Overrides caret & text color **/
+
+::ng-deep.mat-form-field-appearance-legacy .mat-input-element {
+    caret-color: black;
+    color: black;
+}
+
+.swal2-popup {
+    font-size: 10px;
+}
